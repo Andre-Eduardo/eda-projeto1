@@ -1,7 +1,11 @@
 #include<stdio.h>
 #define QUANTIDADE 2
+
+int recebe_notas(float *NOTAS, int num);
+
 int main()
 {   float NOTAS[10];
+    int num_aprovados;
     printf("Por favor informe as 10 notas:");
     for( int i = 0; i < QUANTIDADE; i++)
     {
@@ -18,6 +22,7 @@ int main()
     return 0;
 }
 // ========== FUNÇÕES =============
+
 int recebe_notas(float *NOTAS, int num){
     int APR[QUANTIDADE];
     for(int i = 0; i < num; i++)
@@ -31,5 +36,38 @@ int recebe_notas(float *NOTAS, int num){
     }
     return APR;
 
+
+}
+
+void conta_notas(int *APR,int num, int *num_aprovados, int *num_reprovados){
+    for(size_t i = 0; i < num; i++)
+    {
+       if (*(APR + 1) == 1) {
+           *num_aprovados =+ 1;
+           
+       }else
+       {
+           num_reprovados =+ 1;
+       }
+       
+       
+    }
+}
+
+int percent_aprov(int *num_aprovados, int *num_reprovados,float *prec_aprovados, float *perc_reprovados){
+
+int total = *num_aprovados + num_reprovados;
+
+prec_aprovados = (*num_aprovados/total)*100;
+perc_reprovados = (*num_reprovados/total)*100;
+
+    if ((*prec_aprovados) >= (*perc_reprovados)){
+        return 1;
+
+    }else
+    {
+        return 0;
+    }
+    
 
 }
