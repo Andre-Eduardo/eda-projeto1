@@ -7,7 +7,7 @@ Hugo Aragão de Oliveira - 16/0124581
 
 #include <stdio.h>
 
-// ======= fUNCAO RECURSIVA ========
+// ======= FUNCAO RECURSIVA ========
 
 void resolve(int n, char atual, char final, char intermediaria){
     if (n == 1) {
