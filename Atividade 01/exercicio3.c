@@ -7,6 +7,8 @@ Hugo Aragão de Oliveira - 16/0124581
 
 #include <stdio.h>
 
+// ======= fUNCAO RECURSIVA ========
+
 void resolve(int n, char atual, char final, char intermediaria){
     if (n == 1) {
         printf("\nMover o disco 1 da torre %c para a torre %c", atual, final);
