@@ -1,4 +1,13 @@
+/*
+Hércules Ismael de Abreu Santos - 16/0124450
+André Eduardo Souza de Oliveira - 16/0111978
+Hugo Aragão de Oliveira - 16/0124581
+*/
+
+
 #include <stdio.h>
+
+// ======= FUNCAO RECURSIVA ========
 
 void resolve(int n, char atual, char final, char intermediaria){
     if (n == 1) {
