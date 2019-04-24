@@ -20,15 +20,15 @@ int homogeneidade(int *m_glcm);
 void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(int *vetor1, int *vetor2, int tam);
 int *media_vet_feat();
-void lista_resultado(int acertos, int falsa_rej, int falsa_ace);
+void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
 int *le_imagem();
 
 int main(){
     // Declarações:
-    
+
     // Instruções:
 
-
+    lista_resultado(40, 7, 3);
 
     return 0;
 }
@@ -278,10 +278,22 @@ int *media_vet_feat(){
 //            de falsas rejeições
 // Retorno:
 
-void lista_resultado(int acertos, int falsa_rej, int falsa_ace){
+void lista_resultado(int acertos, int falsa_rej, int falsa_acei){
     // Declarações:
-
+    float taxa_acer;
+    float taxa_fals_acei;
+    float taxa_fals_rej;
     // Instruções:
+
+    taxa_acer= 100*((float)acertos)/50;
+    taxa_fals_rej= 100*((float)falsa_rej)/50;
+    taxa_fals_acei= 100*((float)falsa_acei)/50;
+
+
+    printf("taxa de acerto: %2f\n", taxa_acer);
+    printf("taxa de falsa rejeição: %2f\n", taxa_fals_rej);
+    printf("taxa de falsa aceitação: %2f\n", taxa_fals_acei);
+    
     return;
 }
 // Objetivo: Ler txt que contém imagem
