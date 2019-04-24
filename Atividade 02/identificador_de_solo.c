@@ -4,12 +4,29 @@
 // Saída: porcentagens de acertos e erros em identificar as imagens
 
 #include <stdio.h>
+#include <math.h>
+
+int* ilbd(int *imagem);
+int calcula_media_viz(int *posicao);
+int *cria_matriz_bin(int posicao_imagem, int media);
+int desloca_bin(int binario);
+int min_bin(int binario);
+void inc_vetor(int *vetor_freq, int min_bin);
+int *glcm(int *imagem);
+void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
+int contraste(int *m_glcm);
+int energia(int *m_glcm);
+int homogeneidade(int *m_glcm);
+void normaliza_vet(int *vetor, int tam);
+double calcula_dist_eucl(int *vetor1, int *vetor2, int tam);
+int *media_vet_feat();
+void lista_resultado(int acertos, int falsa_rej, int falsa_ace);
+int *le_imagem();
 
 int main(){
     // Declarações:
 
     // Instruções:
-
 
 
     return 0;
@@ -118,7 +135,7 @@ void inc_vetor(int *vetor_freq, int min_bin){
 
     // Instruções:
 
-    *(vetor_freq+min_bin)++;
+    (*(vetor_freq+min_bin))++;
 
     return;
 }
@@ -149,7 +166,7 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm){
 
     // Instruções:
 
-    *(m_glcm+(*posicao_imagem)*256+(*vizinho))++;
+    (*(m_glcm+(*posicao_imagem)*256+(*vizinho)))++;
 
     return;
 }
@@ -227,10 +244,17 @@ void normaliza_vet(int *vetor, int tam){
 // Parâmetro: ponteiro para vetor 1, e vetor 2
 // Retorno: distância euclidianda
 
-int calcula_dist_eucl(){
+double calcula_dist_eucl(int *vetor1, int *vetor2, int tam){
     // Declarações:
-    int dist_eucl;
+    double dist_eucl=0;
+    int i;
     // Instruções:
+
+    for(i=0; i<tam; i++){
+      dist_eucl+= (double)((*(vetor1+i)-*(vetor2+i))*(*(vetor1+i)-*(vetor2+i)));
+    }
+
+    dist_eucl= sqrt(dist_eucl);
 
     return dist_eucl;
 }
