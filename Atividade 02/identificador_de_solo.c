@@ -4,7 +4,11 @@
 // Saída: porcentagens de acertos e erros em identificar as imagens
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <math.h>
+
+#define TAMANHO_IMG 1025*1025
 
 int* ilbd(int *imagem);
 int calcula_media_viz(int *posicao);
@@ -25,10 +29,12 @@ int *le_imagem();
 
 int main(){
     // Declarações:
-
+    int *oi;
     // Instruções:
 
-    lista_resultado(40, 7, 3);
+    oi = le_imagem();
+
+    printf("%d %d %d\n%d %d %d\n %d", *oi, *(oi +1), *(oi +2), *(oi +1025), *(oi +1026), *(oi +1027),*(oi+TAMANHO_IMG-1));
 
     return 0;
 }
@@ -293,7 +299,7 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei){
     printf("taxa de acerto: %2f\n", taxa_acer);
     printf("taxa de falsa rejeição: %2f\n", taxa_fals_rej);
     printf("taxa de falsa aceitação: %2f\n", taxa_fals_acei);
-    
+
     return;
 }
 // Objetivo: Ler txt que contém imagem
@@ -302,7 +308,28 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei){
 int *le_imagem(){
     // Declarações:
     int *imagem;
+    int i=0, cont_img=0;
+    char numero[4];
+
+    imagem = (int*)malloc(TAMANHO_IMG*sizeof(int));
+
+    FILE *arq_imagem;
     // Instruções:
+    arq_imagem = fopen("asphalt_01.txt","r");
+
+    while(!feof(arq_imagem)){
+      if(!fread(numero+i, sizeof(char), 1, arq_imagem))
+        break;
+      if(numero[i]==';'||numero[i]=='\n'){
+        numero[i]='\0';
+        *(imagem+cont_img)=atoi(numero);
+        cont_img++;
+        i=0;
+      }else
+        i++;
+    }
+
+    fclose(arq_imagem);
 
     return imagem;
 }
