@@ -17,7 +17,7 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
 int contraste(int *m_glcm);
 int energia(int *m_glcm);
 int homogeneidade(int *m_glcm);
-void normaliza_vet(int *vetor, int tam);
+void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(int *vetor1, int *vetor2, int tam);
 int *media_vet_feat();
 void lista_resultado(int acertos, int falsa_rej, int falsa_ace);
@@ -25,8 +25,9 @@ int *le_imagem();
 
 int main(){
     // Declarações:
-
+    
     // Instruções:
+
 
 
     return 0;
@@ -213,9 +214,9 @@ int homogeneidade(int *m_glcm){
 // Parâmetro: ponteiro para o vetor
 // Retorno: vetor normalizado
 
-void normaliza_vet(int *vetor, int tam){
+void normaliza_vet(float *vetor, int tam){
     // Declarações:
-	int minimo, maximo;
+	float minimo, maximo;
 	int i;
     // Instruções:
 
