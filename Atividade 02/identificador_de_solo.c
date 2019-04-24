@@ -196,11 +196,29 @@ int homogeneidade(int *m_glcm){
 // Parâmetro: ponteiro para o vetor
 // Retorno: vetor normalizado
 
-void normaliza_vet(){
+void normaliza_vet(int *vetor, int tam){
     // Declarações:
-
+	int minimo, maximo;
+	int i;
     // Instruções:
 
+
+	minimo= *vetor;
+	maximo= *vetor;
+
+	for(i=0; i<tam; i++){
+		if(minimo>*(vetor+i))
+			minimo=*(vetor+i);
+	}
+
+	for(i=0; i<tam; i++){
+    if(maximo<*(vetor+i))
+      maximo=*(vetor+i);
+  }
+
+	for(i=0; i<tam; i++){
+		*(vetor+i)= (*(vetor+i)-minimo)/(maximo-minimo);
+	}
 
     return;
 }
