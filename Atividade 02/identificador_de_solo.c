@@ -12,7 +12,7 @@
 
 int* ilbd(int *imagem);
 int calcula_media_viz(int *posicao);
-int *cria_matriz_bin(int posicao_imagem, int media);
+int *cria_matriz_bin(int posicao_im, int media);
 int desloca_bin(int binario);
 int min_bin(int binario);
 void inc_vetor(int *vetor_freq, int min_bin);
@@ -25,16 +25,41 @@ void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(int *vetor1, int *vetor2, int tam);
 int *media_vet_feat();
 void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
-int *le_imagem();
+int *le_imagem(char asf_gram, int num_img);
+void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat);
+int gera_num_alea();
 
 int main(){
     // Declarações:
-    int *oi;
+    int *imagem;
+    int *vet_ilbd;
+    int *vet_glcm;
+    float *vet_feat_grama;
+    float *vet_feat_asfalto;
+    float *media_vet_feat_grama;
+    float *media_vet_feat_asfalto;
+    int i, num_alea;
+
     // Instruções:
+/*
+    vet_feat_grama=(float*)malloc(25*516*sizeof(float));
+    vet_feat_asfalto=(float*)malloc(25*516*sizeof(float));
 
-    oi = le_imagem();
+    calcula_vet_feat('g', num_alea, vet_feat_grama);
+    calcula_vet_feat('a', num_alea, vet_feat_asfalto);
 
-    printf("%d %d %d\n%d %d %d\n %d", *oi, *(oi +1), *(oi +2), *(oi +1025), *(oi +1026), *(oi +1027),*(oi+TAMANHO_IMG-1));
+    media_vet_feat_grama = media_vet_feat(vet_feat_grama);
+    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto);
+
+    free(vet_feat_grama);
+    free(vet_feat_asfalto);
+*/
+    for(i=0;i<50; i++){
+        printf("%d\n", gera_num_alea());
+    }
+
+
+
 
     return 0;
 }
@@ -305,7 +330,7 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei){
 // Objetivo: Ler txt que contém imagem
 // Parâmetro: Nome do arquivo
 // Retorno:  matriz em tons de cinza
-int *le_imagem(){
+int *le_imagem(char asf_gram, int num_img){
     // Declarações:
     int *imagem;
     int i=0, cont_img=0;
@@ -332,4 +357,50 @@ int *le_imagem(){
     fclose(arq_imagem);
 
     return imagem;
+}
+
+// Objetivo: Calcular vetor de features
+// Parâmetro: byte se for asfalto ou grama, numero da imagem a ser lida, e ponteiro para vetor de features
+// Retorno:  vetor de features calculado
+
+void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
+    // Declarações:
+    int *imagem;
+    int *vet_ilbd;
+    int *vet_glcm;
+    int i;
+
+    // Instruções:
+    imagem = le_imagem(asf_gram, num_img);
+    vet_ilbd = ilbd(imagem);
+    vet_glcm = glcm(imagem);
+
+    for(i=0; i<512; i++){
+        *(vet_feat+i)=(float)(*(vet_ilbd+i));
+    }
+
+    for(i=0; i<4; i++){
+        *(vet_feat+512+i)=(float)(*(vet_glcm+i));
+    }
+
+    free(vet_ilbd);
+    free(vet_glcm);
+    free(imagem);
+
+    return;
+}
+
+int gera_num_alea(){
+    // Declarações:
+    int num_alea;
+    static char num_usados[50] = {0};
+
+    // Instruções:
+    do{
+        num_alea= rand()%50;
+    }while(num_usados[num_alea]);
+
+    num_usados[num_alea]=1;
+
+    return num_alea+1;
 }
