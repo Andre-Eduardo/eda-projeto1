@@ -11,8 +11,8 @@
 
 #define TAMANHO_IMG 1025*1025
 #define LADO_IMG 1025
-#define NUM_IMG 3
-#define TAM_VET_FEAT 10//516
+#define NUM_IMG 25
+#define TAM_VET_FEAT 516
 
 //ILBD
 int* ilbd(int *imagem);
@@ -39,76 +39,70 @@ char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalt
 
 int main(){
     // Declarações:
-    // int *imagem;
-    // int *vet_ilbd;
-    // int *vet_glcm;
-    // float *vet_feat_grama;
-    // float *vet_feat_asfalto;
-    // float *media_vet_feat_grama;
-    // float *media_vet_feat_asfalto;
-    // int i;
-    // char teste;
-    // int acertos=0, falsa_rej=0, falsa_acei=0;
-    float vet_feat[NUM_IMG*TAM_VET_FEAT]={3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
-    float *vet_media;
+    int *imagem;
+    int *vet_ilbd;
+    int *vet_glcm;
+    float *vet_feat_grama;
+    float *vet_feat_asfalto;
+    float *media_vet_feat_grama;
+    float *media_vet_feat_asfalto;
     int i;
+    char teste;
+    int acertos=0, falsa_rej=0, falsa_acei=0;
+
     // Instruções:
 
-    // vet_feat_grama=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
-    // vet_feat_asfalto=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
-    // vet_feat_grama_teste=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
-    // vet_feat_asfalto_teste=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
-    //
-    // for(i=0; i<25; i++){
-    //   calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
-    // }
-    // for(i=0; i<25; i++){
-    //   calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
-    // }
-    //
-    // gera_num_alea(1);
-    // for(i=0; i<25; i++){
-    //   calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
-    // }
-    // for(i=0; i<25; i++){
-    //   calcula_vet_feat(1 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
-    // }
-    // gera_num_alea(1);
-    //
-    // media_vet_feat_grama = media_vet_feat(vet_feat_grama);
-    // media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto);
-    //
-    // free(vet_feat_grama);
-    // free(vet_feat_asfalto);
-    //
-    // for(i=0; i<25; i++){
-    //   teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
-    //   if(teste){
-    //     acertos++;
-    //   }else{
-    //     falsa_acei++;
-    //   }
-    // }
-    //
-    // for(i=0; i<25; i++){
-    //   teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
-    //   if(!teste){
-    //     acertos++;
-    //   }else{
-    //     falsa_rej++;
-    //   }
-    // }
-    //
-    // lista_resultado(acertos, falsa_rej, falsa_acei);
-    //
-    // free(vet_feat_grama_teste);
-    // free(vet_feat_asfalto_teste);
+    vet_feat_grama=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
+    vet_feat_asfalto=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
+    vet_feat_grama_teste=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
+    vet_feat_asfalto_teste=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
 
-    vet_media=media_vet_feat(vet_feat, NUM_IMG);
-    for(i=0; i<TAM_VET_FEAT; i++){
-      printf("%f ", *(vet_media+i));
+    for(i=0; i<NUM_IMG; i++){
+      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
+    }
+    for(i=0; i<NUM_IMG; i++){
+      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
     }
 
+    gera_num_alea(1);
+    for(i=0; i<NUM_IMG; i++){
+      calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
+    }
+    for(i=0; i<NUM_IMG; i++){
+      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
+    }
+    gera_num_alea(1);
+
+    media_vet_feat_grama = media_vet_feat(vet_feat_grama);
+    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto);
+
+    free(vet_feat_grama);
+    free(vet_feat_asfalto);
+
+    for(i=0; i<NUM_IMG; i++){
+      teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
+      if(teste){
+        acertos++;
+      }else{
+        falsa_acei++;
+      }
+    }
+
+    for(i=0; i<NUM_IMG; i++){
+      teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
+      if(!teste){
+        acertos++;
+      }else{
+        falsa_rej++;
+      }
+    }
+
+    lista_resultado(acertos, falsa_rej, falsa_acei);
+
+    free(vet_feat_grama_teste);
+    free(vet_feat_asfalto_teste);
+    free(media_vet_feat_asfalto);
+    free(media_feat_asfalto);
 
     return 0;
 }
