@@ -12,67 +12,104 @@
 #define TAMANHO_IMG 1025*1025
 #define LADO_IMG 1025
 #define NUM_IMG 5
+#define TAM_VET_FEAT 516
 
+//ILBD
 int* ilbd(int *imagem);
 int calcula_media_viz(int *posicao);
 int *cria_matriz_bin(int posicao_im, int media);
 int desloca_bin(int binario);
 int min_bin(int binario);
 void inc_vetor(int *vetor_freq, int min_bin);
+//GLCM
 int *glcm(int *imagem);
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
 int contraste(int *m_glcm);
 int energia(int *m_glcm);
 int homogeneidade(int *m_glcm);
+//Outras funções
 void normaliza_vet(float *vetor, int tam);
-double calcula_dist_eucl(int *vetor1, int *vetor2, int tam);
+double calcula_dist_eucl(float *vetor1, float *vetor2, int tam);
 int *media_vet_feat();
 void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
 int *le_imagem(char asf_gram, int num_img);
 void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat);
 int gera_num_alea(char zera);
+char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalto);
 
 int main(){
     // Declarações:
-    int *imagem;
-    int *vet_ilbd;
-    int *vet_glcm;
-    float *vet_feat_grama;
-    float *vet_feat_asfalto;
-    float *media_vet_feat_grama;
-    float *media_vet_feat_asfalto;
-    int i, num_alea;
-
+    // int *imagem;
+    // int *vet_ilbd;
+    // int *vet_glcm;
+    // float *vet_feat_grama;
+    // float *vet_feat_asfalto;
+    // float *media_vet_feat_grama;
+    // float *media_vet_feat_asfalto;
+    // int i;
+    // char teste;
+    // int acertos=0, falsa_rej=0, falsa_acei=0;
+    float vet_feat_teste[TAM_VET_FEAT]={1};
+    float vet_feat_grama[TAM_VET_FEAT]={2};
+    float vet_feat_asfalto[TAM_VET_FEAT]={7};
     // Instruções:
-/*
-    vet_feat_grama=(float*)malloc(25*516*sizeof(float));
-    vet_feat_asfalto=(float*)malloc(25*516*sizeof(float));
 
-    calcula_vet_feat('g', num_alea, vet_feat_grama);
-    calcula_vet_feat('a', num_alea, vet_feat_asfalto);
+    // vet_feat_grama=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
+    // vet_feat_asfalto=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
+    // vet_feat_grama_teste=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
+    // vet_feat_asfalto_teste=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
+    //
+    // for(i=0; i<25; i++){
+    //   calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
+    // }
+    // for(i=0; i<25; i++){
+    //   calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
+    // }
+    //
+    // gera_num_alea(1);
+    // for(i=0; i<25; i++){
+    //   calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
+    // }
+    // for(i=0; i<25; i++){
+    //   calcula_vet_feat(1 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
+    // }
+    // gera_num_alea(1);
+    //
+    // media_vet_feat_grama = media_vet_feat(vet_feat_grama);
+    // media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto);
+    //
+    // free(vet_feat_grama);
+    // free(vet_feat_asfalto);
+    //
+    // for(i=0; i<25; i++){
+    //   teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
+    //   if(teste){
+    //     acertos++;
+    //   }else{
+    //     falsa_acei++;
+    //   }
+    // }
+    //
+    // for(i=0; i<25; i++){
+    //   teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
+    //   if(!teste){
+    //     acertos++;
+    //   }else{
+    //     falsa_rej++;
+    //   }
+    // }
+    //
+    // lista_resultado(acertos, falsa_rej, falsa_acei);
+    //
+    // free(vet_feat_grama_teste);
+    // free(vet_feat_asfalto_teste);
 
-    media_vet_feat_grama = media_vet_feat(vet_feat_grama);
-    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto);
-
-    free(vet_feat_grama);
-    free(vet_feat_asfalto);
-*/
-    imagem=le_imagem(0, 25);
-
-    for(i=0; i<6; i++){
-      printf("%d ", *(imagem+i));
+    if(!grama_ou_asfalto(vet_feat_teste, vet_feat_grama, vet_feat_asfalto)){
+      printf("grama!\n");
+    }else{
+      printf("asfalto!!\n");
     }
-    puts("");
 
-    for(i=0; i<6; i++){
-      printf("%d ", *(imagem+LADO_IMG+i));
-    }
-    puts("");
-
-    for(i=0; i<6; i++){
-      printf("%d ", *(imagem+1024*LADO_IMG+i));
-    }
-    puts("");
 
 
     return 0;
@@ -290,7 +327,7 @@ void normaliza_vet(float *vetor, int tam){
 // Parâmetro: ponteiro para vetor 1, e vetor 2
 // Retorno: distância euclidianda
 
-double calcula_dist_eucl(int *vetor1, int *vetor2, int tam){
+double calcula_dist_eucl(float *vetor1, float *vetor2, int tam){
     // Declarações:
     double dist_eucl=0;
     int i;
@@ -301,6 +338,7 @@ double calcula_dist_eucl(int *vetor1, int *vetor2, int tam){
     }
 
     dist_eucl= sqrt(dist_eucl);
+    printf("%f\n", dist_eucl);
 
     return dist_eucl;
 }
@@ -342,7 +380,7 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei){
     return;
 }
 // Objetivo: Ler txt que contém imagem
-// Parâmetro: Nome do arquivo
+// Parâmetro: byte se for asfalto(0) ou grama(1), numero da imagem a ser lida
 // Retorno:  matriz em tons de cinza
 int *le_imagem(char asf_gram, int num_img){
     // Declarações:
@@ -382,7 +420,7 @@ int *le_imagem(char asf_gram, int num_img){
 }
 
 // Objetivo: Calcular vetor de features
-// Parâmetro: byte se for asfalto ou grama, numero da imagem a ser lida, e ponteiro para vetor de features
+// Parâmetro: byte se for asfalto(0) ou grama(1), numero da imagem a ser lida, e ponteiro para vetor de features
 // Retorno:  vetor de features calculado
 
 void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
@@ -404,6 +442,8 @@ void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
     for(i=0; i<4; i++){
         *(vet_feat+512+i)=(float)(*(vet_glcm+i));
     }
+
+    normaliza_vet(vet_feat, TAM_VET_FEAT);
 
     free(vet_ilbd);
     free(vet_glcm);
@@ -431,5 +471,19 @@ int gera_num_alea(char zera){
       num_usados[num_alea]=1;
 
       return num_alea+1;
+    }
+}
+
+char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalto){
+    // Declarações:
+    int dist_grama, dist_asfalto;
+    // Instruções:
+    dist_grama=calcula_dist_eucl(vet_feat_teste, feat_grama, TAM_VET_FEAT);
+    dist_asfalto=calcula_dist_eucl(vet_feat_teste, feat_asfalto, TAM_VET_FEAT);
+
+    if(dist_grama<dist_asfalto){
+      return 0;
+    }else{
+      return 1;
     }
 }
