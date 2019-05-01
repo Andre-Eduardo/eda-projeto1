@@ -39,25 +39,25 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
 int *le_imagem(char asf_gram, int num_img);
 void calcula_vet_feat(char asf_gram, int num_img, float *vet_feat);
 int gera_num_alea(char zera);
-char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalto);
+char grama_ou_asfalto(float *vet_feat_teste, float *feat_grama, float *feat_asfalto);
 void verifica_aloc_int(int *aloc);
 void verifica_aloc_float(float *aloc);
 
-int main(){
-    // Declarações:
-    int *imagem;
-    float *vet_feat_grama;
-    float *vet_feat_asfalto;
-    float *vet_feat_grama_teste;
-    float *vet_feat_asfalto_teste;
-    float *media_vet_feat_grama;
-    float *media_vet_feat_asfalto;
-    int i;
-    char teste;
-    int acertos=0, falsa_rej=0, falsa_acei=0;
+int main()
+{
+  // Declarações:
+  int *imagem;
+  float *vet_feat_grama;
+  float *vet_feat_asfalto;
+  float *vet_feat_grama_teste;
+  float *vet_feat_asfalto_teste;
+  float *media_vet_feat_grama;
+  float *media_vet_feat_asfalto;
+  int i;
+  char teste;
+  int acertos = 0, falsa_rej = 0, falsa_acei = 0;
 
-
-    // Instruções:
+  // Instruções:
 
   //   vet_feat_grama=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
   //   vet_feat_asfalto=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
@@ -122,8 +122,9 @@ int main(){
   // free(media_vet_feat_grama);
 
   int *oi = glcm(le_imagem(0, 1));
-  for(int i=0; i<TAM_GLCM; i++){
-    printf("%d\n", *(oi+i));
+  for (int i = 0; i < TAM_GLCM; i++)
+  {
+    printf("%d\n", *(oi + i));
   }
 
   return 0;
@@ -257,22 +258,21 @@ int *glcm(int *imagem)
   float vet_glcm[TAM_VT_GLCM];
   int ***mats_glcm;
   int i, j, n;
-      // Instruções:
-      mats_glcm = (int ***)calloc(8, sizeof(int **));
+  // Instruções:
+  mats_glcm = (int ***)calloc(8, sizeof(int **));
   verifica_aloc_int(mats_glcm);
 
   for (i = 0; i < 8; i++)
   {
     mats_glcm[i] = (int **)calloc(DIM_GLCM, sizeof(int *));
     verifica_aloc_int(mats_glcm[i]);
-  }
 
-  for (j = 0; j < DIM_GLCM; j++)
-  {
-    mats_glcm[i][j] = (int *)calloc(DIM_GLCM, sizeof(int));
-    verifica_aloc_int(mats_glcm[i][j]);
+    for (j = 0; j < DIM_GLCM; j++)
+    {
+      mats_glcm[i][j] = (int *)calloc(DIM_GLCM, sizeof(int));
+      verifica_aloc_int(mats_glcm[i][j]);
+    }
   }
-
   for (i = 1; i < TAMANHO_IMG - 1; i++)
   {
     for (j = 1; j < TAMANHO_IMG - 1; j++)
@@ -289,9 +289,9 @@ int *glcm(int *imagem)
   }
   for (n = 0; n < 8; n++)
   {
-    vet_glcm[n]=contraste(mats_glcm[n]);
-    vet_glcm[n+8]=energia(mats_glcm[n]);
-    vet_glcm[n+16]=homogeneidade(mats_glcm[n]);
+    vet_glcm[n] = contraste(mats_glcm[n]);
+    vet_glcm[n + 8] = energia(mats_glcm[n]);
+    vet_glcm[n + 16] = homogeneidade(mats_glcm[n]);
   }
   // liberando memoria
   for (i = 0; i < 8; i++)
@@ -339,7 +339,7 @@ int contraste(int *m_glcm)
   {
     for (j = 0; j < DIM_GLCM; j++)
     {
-      n_contraste+= m_glcm[i][j]*pow((i-j),2);
+      n_contraste += m_glcm[i][j] * pow((i - j), 2);
     }
   }
 
@@ -360,7 +360,7 @@ int energia(int *m_glcm)
   {
     for (j = 0; j < DIM_GLCM; j++)
     {
-      n_energia += pow((m_glcm[i][j]),2);
+      n_energia += pow((m_glcm[i][j]), 2);
     }
   }
   return n_energia;
@@ -380,7 +380,7 @@ int homogeneidade(int *m_glcm)
   {
     for (j = 0; j < DIM_GLCM; j++)
     {
-      n_homogeneidade += m_glcm[i][j]/(1 + pow((i-j),2));
+      n_homogeneidade += m_glcm[i][j] / (1 + pow((i - j), 2));
     }
   }
   return n_homogeneidade;
@@ -438,7 +438,7 @@ double calcula_dist_eucl(float *vetor1, float *vetor2, int tam)
     dist_eucl += (double)((*(vetor1 + i) - *(vetor2 + i)) * (*(vetor1 + i) - *(vetor2 + i)));
   }
 
-    dist_eucl= sqrt(dist_eucl);
+  dist_eucl = sqrt(dist_eucl);
 
   return dist_eucl;
 }
@@ -484,19 +484,19 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei)
   float taxa_fals_rej;
   // Instruções:
 
-    taxa_acer= 100*((float)acertos)/NUM_IMG;
-    taxa_fals_rej= 100*((float)falsa_rej)/NUM_IMG;
-    taxa_fals_acei= 100*((float)falsa_acei)/NUM_IMG;
+  taxa_acer = 100 * ((float)acertos) / NUM_IMG;
+  taxa_fals_rej = 100 * ((float)falsa_rej) / NUM_IMG;
+  taxa_fals_acei = 100 * ((float)falsa_acei) / NUM_IMG;
 
   printf("taxa de acerto: %2f\n", taxa_acer);
   printf("taxa de falsa rejeição: %2f\n", taxa_fals_rej);
   printf("taxa de falsa aceitação: %2f\n", taxa_fals_acei);
 
-    printf("taxa de acerto: %.2f%%\n", taxa_acer);
-    printf("taxa de falsa rejeição: %.2f%%\n", taxa_fals_rej);
-    printf("taxa de falsa aceitação: %.2f%%\n", taxa_fals_acei);
+  printf("taxa de acerto: %.2f%%\n", taxa_acer);
+  printf("taxa de falsa rejeição: %.2f%%\n", taxa_fals_rej);
+  printf("taxa de falsa aceitação: %.2f%%\n", taxa_fals_acei);
 
-    return;
+  return;
 }
 // Objetivo: Ler txt que contém imagem
 // Parâmetro: byte se for asfalto(0) ou grama(1), numero da imagem a ser lida
@@ -549,25 +549,28 @@ int *le_imagem(char asf_gram, int num_img)
 // Parâmetro: byte se for asfalto(0) ou grama(1), numero da imagem a ser lida, e ponteiro para vetor de features
 // Retorno:  vetor de features calculado
 
-void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
-    // Declarações:
-    int *imagem;
-    int *vet_ilbd;
-    int *vet_glcm;
-    int i;
+void calcula_vet_feat(char asf_gram, int num_img, float *vet_feat)
+{
+  // Declarações:
+  int *imagem;
+  int *vet_ilbd;
+  int *vet_glcm;
+  int i;
 
-    // Instruções:
-    imagem = le_imagem(asf_gram, num_img);
-    vet_ilbd = ilbd(imagem);
-    vet_glcm = glcm(imagem);
+  // Instruções:
+  imagem = le_imagem(asf_gram, num_img);
+  vet_ilbd = ilbd(imagem);
+  vet_glcm = glcm(imagem);
 
-    for(i=0; i<TAM_ILBD; i++){
-        *(vet_feat+i)=(float)(*(vet_ilbd+i));
-    }
+  for (i = 0; i < TAM_ILBD; i++)
+  {
+    *(vet_feat + i) = (float)(*(vet_ilbd + i));
+  }
 
-    for(i=0; i<4; i++){
-        *(vet_feat+TAM_ILBD+i)=(float)(*(vet_glcm+i));
-    }
+  for (i = 0; i < 4; i++)
+  {
+    *(vet_feat + TAM_ILBD + i) = (float)(*(vet_glcm + i));
+  }
 
   normaliza_vet(vet_feat, TAM_VET_FEAT);
 
