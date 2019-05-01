@@ -7,8 +7,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
+#include <string.h>
 
 #define TAMANHO_IMG 1025*1025
+#define LADO_IMG 1025
 #define NUM_IMG 5
 
 int* ilbd(int *imagem);
@@ -55,16 +57,22 @@ int main(){
     free(vet_feat_grama);
     free(vet_feat_asfalto);
 */
-    for(i=0;i<NUM_IMG; i++){
-        printf("%d\n", gera_num_alea(0));
+    imagem=le_imagem(0, 25);
+
+    for(i=0; i<6; i++){
+      printf("%d ", *(imagem+i));
     }
-    printf("%d\n", gera_num_alea(1));
+    puts("");
 
-    for(i=0;i<NUM_IMG; i++){
-        printf("%d\n", gera_num_alea(0));
+    for(i=0; i<6; i++){
+      printf("%d ", *(imagem+LADO_IMG+i));
     }
+    puts("");
 
-
+    for(i=0; i<6; i++){
+      printf("%d ", *(imagem+1024*LADO_IMG+i));
+    }
+    puts("");
 
 
     return 0;
@@ -341,12 +349,20 @@ int *le_imagem(char asf_gram, int num_img){
     int *imagem;
     int i=0, cont_img=0;
     char numero[4];
-
-    imagem = (int*)malloc(TAMANHO_IMG*sizeof(int));
-
+    char nome_arq[31];
     FILE *arq_imagem;
     // Instruções:
-    arq_imagem = fopen("asphalt_01.txt","r");
+    imagem = (int*)malloc(TAMANHO_IMG*sizeof(int));
+    if(asf_gram){
+      strcpy(nome_arq,"DataSet/grass/grass_01.txt");
+      nome_arq[20]= '0'+num_img/10;
+      nome_arq[21]= '0'+num_img%10;
+    }else{
+      strcpy(nome_arq,"DataSet/asphalt/asphalt_01.txt");
+      nome_arq[24]= '0'+num_img/10;
+      nome_arq[25]= '0'+num_img%10;
+    }
+    arq_imagem = fopen(nome_arq,"r");
 
     while(!feof(arq_imagem)){
       if(!fread(numero+i, sizeof(char), 1, arq_imagem))
