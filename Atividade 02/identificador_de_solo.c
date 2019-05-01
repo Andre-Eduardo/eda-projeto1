@@ -56,7 +56,7 @@ int main()
   int i;
   char teste;
   int acertos = 0, falsa_rej = 0, falsa_acei = 0;
-
+  
   // Instruções:
 
   //   vet_feat_grama=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
@@ -254,6 +254,7 @@ void inc_vetor(int *vetor_freq, int min_bin)
 
 int *glcm(int *imagem)
 {
+  
   // Declarações:
   int vet_glcm[TAM_VT_GLCM];
   int *vet;
@@ -274,26 +275,34 @@ int *glcm(int *imagem)
       verifica_aloc_int(mats_glcm[i][j]);
     }
   }
-  for (i = 1; i < TAMANHO_IMG - 1; i++)
+ 
+  
+  
+  for (i = 1; i < LADO_IMG - 1; i++)
   {
-    for (j = 1; j < TAMANHO_IMG - 1; j++)
+    for (j = 1; j < LADO_IMG - 1; j++)
     {
-      mats_glcm[0][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)*(TAMANHO_IMG+j + 1))]++;
-      mats_glcm[1][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)*(TAMANHO_IMG+j))]++;
-      mats_glcm[2][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)*(TAMANHO_IMG+j - 1))]++;
-      mats_glcm[3][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)*(TAMANHO_IMG+j + 1))]++;
-      mats_glcm[4][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)*(TAMANHO_IMG+j - 1))]++;
-      mats_glcm[5][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)*(TAMANHO_IMG+j + 1))]++;
-      mats_glcm[6][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)*(TAMANHO_IMG+j))]++;
-      mats_glcm[7][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)*(TAMANHO_IMG+j - 1))]++;
+      
+      
+      mats_glcm[0][*(imagem+i*LADO_IMG+j)][*(imagem+(i + 1)*LADO_IMG+j + 1)]++;
+      mats_glcm[1][*(imagem+i*LADO_IMG+j)][*(imagem+(i + 1)*LADO_IMG+j)]++;
+      mats_glcm[2][*(imagem+i*LADO_IMG+j)][*(imagem+(i + 1)*LADO_IMG+j - 1)]++;
+      mats_glcm[3][*(imagem+i*LADO_IMG+j)][*(imagem+(i)*LADO_IMG+j + 1)]++;
+      mats_glcm[4][*(imagem+i*LADO_IMG+j)][*(imagem+(i)*LADO_IMG+j - 1)]++;
+      mats_glcm[5][*(imagem+i*LADO_IMG+j)][*(imagem+(i - 1)*LADO_IMG+j + 1)]++;
+      mats_glcm[6][*(imagem+i*LADO_IMG+j)][*(imagem+(i - 1)*LADO_IMG+j)]++;
+      mats_glcm[7][*(imagem+i*LADO_IMG+j)][*(imagem+(i - 1)*LADO_IMG+j - 1)]++;
+      
     }
   }
+ 
   for (n = 0; n < 8; n++)
   {
     vet_glcm[n] = contraste(mats_glcm[n]);
     vet_glcm[n + 8] = energia(mats_glcm[n]);
     vet_glcm[n + 16] = homogeneidade(mats_glcm[n]);
   }
+  
   // liberando memoria
   for (i = 0; i < 8; i++)
   {
@@ -307,6 +316,7 @@ int *glcm(int *imagem)
 
   //obs.1:matriz glcm é 256x256
   vet = vet_glcm;
+
   return vet;
 }
 
