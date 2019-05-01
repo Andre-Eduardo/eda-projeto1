@@ -28,9 +28,9 @@ void inc_vetor(int *vetor_freq, int min_bin);
 //GLCM
 int *glcm(int *imagem);
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
-int contraste(int *m_glcm);
-int energia(int *m_glcm);
-int homogeneidade(int *m_glcm);
+int contraste(int **m_glcm);
+int energia(int **m_glcm);
+int homogeneidade(int **m_glcm);
 //Outras funções
 void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(float *vetor1, float *vetor2, int tam);
@@ -255,17 +255,18 @@ void inc_vetor(int *vetor_freq, int min_bin)
 int *glcm(int *imagem)
 {
   // Declarações:
-  float vet_glcm[TAM_VT_GLCM];
+  int vet_glcm[TAM_VT_GLCM];
+  int *vet;
   int ***mats_glcm;
   int i, j, n;
   // Instruções:
   mats_glcm = (int ***)calloc(8, sizeof(int **));
-  verifica_aloc_int(mats_glcm);
+  
 
   for (i = 0; i < 8; i++)
   {
     mats_glcm[i] = (int **)calloc(DIM_GLCM, sizeof(int *));
-    verifica_aloc_int(mats_glcm[i]);
+    
 
     for (j = 0; j < DIM_GLCM; j++)
     {
@@ -277,14 +278,14 @@ int *glcm(int *imagem)
   {
     for (j = 1; j < TAMANHO_IMG - 1; j++)
     {
-      mats_glcm[0][image[i][j]][image[i + 1][j + 1]]++;
-      mats_glcm[1][image[i][j]][image[i + 1][j]]++;
-      mats_glcm[2][image[i][j]][image[i + 1][j - 1]]++;
-      mats_glcm[3][image[i][j]][image[i][j + 1]]++;
-      mats_glcm[4][image[i][j]][image[i][j - 1]]++;
-      mats_glcm[5][image[i][j]][image[i - 1][j + 1]]++;
-      mats_glcm[6][image[i][j]][image[i - 1][j]]++;
-      mats_glcm[7][image[i][j]][image[i - 1][j - 1]]++;
+      mats_glcm[0][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)+(j + 1))]++;
+      mats_glcm[1][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)+(j))]++;
+      mats_glcm[2][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)+(j - 1))]++;
+      mats_glcm[3][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)+(j + 1))]++;
+      mats_glcm[4][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)+(j - 1))]++;
+      mats_glcm[5][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)+(j + 1))]++;
+      mats_glcm[6][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)+(j))]++;
+      mats_glcm[7][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)+(j - 1))]++;
     }
   }
   for (n = 0; n < 8; n++)
@@ -305,8 +306,8 @@ int *glcm(int *imagem)
   free(mats_glcm);
 
   //obs.1:matriz glcm é 256x256
-
-  return vet_glcm;
+  vet = vet_glcm;
+  return vet;
 }
 
 // Objetivo: Incrementa a matriz GLCM
@@ -328,7 +329,7 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: contraste da matriz
 
-int contraste(int *m_glcm)
+int contraste(int **m_glcm)
 {
   // Declarações:
   int n_contraste;
@@ -350,7 +351,7 @@ int contraste(int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: energia da matriz
 
-int energia(int *m_glcm)
+int energia(int **m_glcm)
 {
   // Declarações:
   int n_energia;
@@ -369,7 +370,7 @@ int energia(int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: homogeneidade da matriz
 
-int homogeneidade(int *m_glcm)
+int homogeneidade(int **m_glcm)
 {
   // Declarações:
   int n_homogeneidade;
