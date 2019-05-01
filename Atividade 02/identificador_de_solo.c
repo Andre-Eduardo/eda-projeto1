@@ -11,8 +11,10 @@
 
 #define TAMANHO_IMG 1025*1025
 #define LADO_IMG 1025
-#define NUM_IMG 25
+#define NUM_IMG 50
 #define TAM_VET_FEAT 516
+#define TAM_GLCM 4
+#define TAM_ILBD 512
 
 //ILBD
 int* ilbd(int *imagem);
@@ -40,47 +42,48 @@ char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalt
 int main(){
     // Declarações:
     int *imagem;
-    int *vet_ilbd;
-    int *vet_glcm;
     float *vet_feat_grama;
     float *vet_feat_asfalto;
+    float *vet_feat_grama_teste;
+    float *vet_feat_asfalto_teste;
     float *media_vet_feat_grama;
     float *media_vet_feat_asfalto;
     int i;
     char teste;
     int acertos=0, falsa_rej=0, falsa_acei=0;
 
+
     // Instruções:
 
-    vet_feat_grama=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
-    vet_feat_asfalto=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
-    vet_feat_grama_teste=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
-    vet_feat_asfalto_teste=(float*)malloc(NUM_IMG*TAM_VET_FEAT*sizeof(float));
+    vet_feat_grama=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+    vet_feat_asfalto=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+    vet_feat_grama_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+    vet_feat_asfalto_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
 
-    for(i=0; i<NUM_IMG; i++){
+    for(i=0; i<(NUM_IMG/2); i++){
       calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
     }
-    for(i=0; i<NUM_IMG; i++){
+    for(i=0; i<(NUM_IMG/2); i++){
       calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
     }
 
     gera_num_alea(1);
-    for(i=0; i<NUM_IMG; i++){
+    for(i=0; i<(NUM_IMG/2); i++){
       calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
     }
-    for(i=0; i<NUM_IMG; i++){
-      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
+    for(i=0; i<(NUM_IMG/2); i++){
+      calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
     }
     gera_num_alea(1);
 
-    media_vet_feat_grama = media_vet_feat(vet_feat_grama);
-    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto);
+    media_vet_feat_grama = media_vet_feat(vet_feat_grama, (NUM_IMG/2));
+    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto, (NUM_IMG/2));
 
     free(vet_feat_grama);
     free(vet_feat_asfalto);
 
-    for(i=0; i<NUM_IMG; i++){
-      teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
+    for(i=0; i<(NUM_IMG/2); i++){
+      teste=grama_ou_asfalto(vet_feat_asfalto_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
       if(teste){
         acertos++;
       }else{
@@ -88,8 +91,8 @@ int main(){
       }
     }
 
-    for(i=0; i<NUM_IMG; i++){
-      teste=grama_ou_asfalto(vet_feat_asfalto_teste, media_vet_feat_grama, media_vet_feat_asfalto);
+    for(i=0; i<(NUM_IMG/2); i++){
+      teste=grama_ou_asfalto(vet_feat_grama_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
       if(!teste){
         acertos++;
       }else{
@@ -102,7 +105,7 @@ int main(){
     free(vet_feat_grama_teste);
     free(vet_feat_asfalto_teste);
     free(media_vet_feat_asfalto);
-    free(media_feat_asfalto);
+    free(media_vet_feat_grama);
 
     return 0;
 }
@@ -330,7 +333,6 @@ double calcula_dist_eucl(float *vetor1, float *vetor2, int tam){
     }
 
     dist_eucl= sqrt(dist_eucl);
-    printf("%f\n", dist_eucl);
 
     return dist_eucl;
 }
@@ -371,14 +373,14 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei){
     float taxa_fals_rej;
     // Instruções:
 
-    taxa_acer= 100*((float)acertos)/50;
-    taxa_fals_rej= 100*((float)falsa_rej)/50;
-    taxa_fals_acei= 100*((float)falsa_acei)/50;
+    taxa_acer= 100*((float)acertos)/NUM_IMG;
+    taxa_fals_rej= 100*((float)falsa_rej)/NUM_IMG;
+    taxa_fals_acei= 100*((float)falsa_acei)/NUM_IMG;
 
 
-    printf("taxa de acerto: %2f\n", taxa_acer);
-    printf("taxa de falsa rejeição: %2f\n", taxa_fals_rej);
-    printf("taxa de falsa aceitação: %2f\n", taxa_fals_acei);
+    printf("taxa de acerto: %.2f%%\n", taxa_acer);
+    printf("taxa de falsa rejeição: %.2f%%\n", taxa_fals_rej);
+    printf("taxa de falsa aceitação: %.2f%%\n", taxa_fals_acei);
 
     return;
 }
@@ -438,12 +440,12 @@ void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
     vet_ilbd = ilbd(imagem);
     vet_glcm = glcm(imagem);
 
-    for(i=0; i<512; i++){
+    for(i=0; i<TAM_ILBD; i++){
         *(vet_feat+i)=(float)(*(vet_ilbd+i));
     }
 
     for(i=0; i<4; i++){
-        *(vet_feat+512+i)=(float)(*(vet_glcm+i));
+        *(vet_feat+TAM_ILBD+i)=(float)(*(vet_glcm+i));
     }
 
     normaliza_vet(vet_feat, TAM_VET_FEAT);
