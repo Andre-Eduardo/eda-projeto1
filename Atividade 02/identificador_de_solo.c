@@ -9,6 +9,7 @@
 #include <math.h>
 
 #define TAMANHO_IMG 1025*1025
+#define NUM_IMG 5
 
 int* ilbd(int *imagem);
 int calcula_media_viz(int *posicao);
@@ -27,7 +28,7 @@ int *media_vet_feat();
 void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
 int *le_imagem(char asf_gram, int num_img);
 void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat);
-int gera_num_alea();
+int gera_num_alea(char zera);
 
 int main(){
     // Declarações:
@@ -54,8 +55,13 @@ int main(){
     free(vet_feat_grama);
     free(vet_feat_asfalto);
 */
-    for(i=0;i<50; i++){
-        printf("%d\n", gera_num_alea());
+    for(i=0;i<NUM_IMG; i++){
+        printf("%d\n", gera_num_alea(0));
+    }
+    printf("%d\n", gera_num_alea(1));
+
+    for(i=0;i<NUM_IMG; i++){
+        printf("%d\n", gera_num_alea(0));
     }
 
 
@@ -390,17 +396,24 @@ void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
     return;
 }
 
-int gera_num_alea(){
+int gera_num_alea(char zera){
     // Declarações:
-    int num_alea;
-    static char num_usados[50] = {0};
+    int num_alea, i;
+    static char num_usados[NUM_IMG] = {0};
 
     // Instruções:
-    do{
-        num_alea= rand()%50;
-    }while(num_usados[num_alea]);
+    if(zera){
+      for(i=0;i<NUM_IMG;i++){
+        num_usados[i]= 0;
+      }
+      return 0;
+    }else{
+      do{
+          num_alea= rand()%NUM_IMG;
+      }while(num_usados[num_alea]);
 
-    num_usados[num_alea]=1;
+      num_usados[num_alea]=1;
 
-    return num_alea+1;
+      return num_alea+1;
+    }
 }
