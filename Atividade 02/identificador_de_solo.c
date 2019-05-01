@@ -11,8 +11,8 @@
 
 #define TAMANHO_IMG 1025*1025
 #define LADO_IMG 1025
-#define NUM_IMG 5
-#define TAM_VET_FEAT 516
+#define NUM_IMG 3
+#define TAM_VET_FEAT 10//516
 
 //ILBD
 int* ilbd(int *imagem);
@@ -30,7 +30,7 @@ int homogeneidade(int *m_glcm);
 //Outras funções
 void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(float *vetor1, float *vetor2, int tam);
-int *media_vet_feat();
+float *media_vet_feat(float *vet_feat, int num_img);
 void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
 int *le_imagem(char asf_gram, int num_img);
 void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat);
@@ -49,9 +49,9 @@ int main(){
     // int i;
     // char teste;
     // int acertos=0, falsa_rej=0, falsa_acei=0;
-    float vet_feat_teste[TAM_VET_FEAT]={1};
-    float vet_feat_grama[TAM_VET_FEAT]={2};
-    float vet_feat_asfalto[TAM_VET_FEAT]={7};
+    float vet_feat[NUM_IMG*TAM_VET_FEAT]={3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+    float *vet_media;
+    int i;
     // Instruções:
 
     // vet_feat_grama=(float*)malloc(25*TAM_VET_FEAT*sizeof(float));
@@ -104,12 +104,10 @@ int main(){
     // free(vet_feat_grama_teste);
     // free(vet_feat_asfalto_teste);
 
-    if(!grama_ou_asfalto(vet_feat_teste, vet_feat_grama, vet_feat_asfalto)){
-      printf("grama!\n");
-    }else{
-      printf("asfalto!!\n");
+    vet_media=media_vet_feat(vet_feat, NUM_IMG);
+    for(i=0; i<TAM_VET_FEAT; i++){
+      printf("%f ", *(vet_media+i));
     }
-
 
 
     return 0;
@@ -347,11 +345,22 @@ double calcula_dist_eucl(float *vetor1, float *vetor2, int tam){
 // Parâmetro: ponteiro para matriz de features
 // Retorno: ponteiro para vetor da média
 
-int *media_vet_feat(){
+float *media_vet_feat(float *vet_feat, int num_img){
     // Declarações:
-    int *p_media_feat;
+    float *p_media_feat;
+    int i, aux;
     // Instruções:
+    p_media_feat=(float *)calloc(TAM_VET_FEAT,sizeof(float));
 
+    for(i=0;i<num_img;i++){
+      for(aux=0;aux<TAM_VET_FEAT; aux++){
+        *(p_media_feat+aux)+= *(vet_feat+i*TAM_VET_FEAT+aux);
+      }
+    }
+
+    for(i=0;i<TAM_VET_FEAT;i++){
+      *(p_media_feat+i)/=num_img;
+    }
 
     return p_media_feat;
 }
@@ -452,6 +461,10 @@ void calcula_vet_feat(char asf_gram, int num_img, float* vet_feat){
     return;
 }
 
+// Objetivo: Gerar números aleatórios
+// Parâmetro: byte pra zerar números usados ou não
+// Retorno:  número aleatório
+
 int gera_num_alea(char zera){
     // Declarações:
     int num_alea, i;
@@ -473,6 +486,10 @@ int gera_num_alea(char zera){
       return num_alea+1;
     }
 }
+
+// Objetivo: Decidir a partir de vetor de features, se o vetor testado é grama ou asfalto
+// Parâmetro: vetores de features de teste, de treinamento da grama, e de treinamento de asfalto
+// Retorno:  byte se for grama (0), ou asfalto (1)
 
 char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalto){
     // Declarações:
