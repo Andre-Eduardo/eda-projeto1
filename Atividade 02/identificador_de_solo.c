@@ -15,7 +15,7 @@
 #define TAM_VET_FEAT 516
 #define DIM_GLCM 256   // dimensao da matriz  gerada pelo glcm
 #define TAM_VT_GLCM 24 // tamanho do vetor de ocorrencia glcm
-#define TAM_GLCM 4
+#define TAM_GLCM 24
 #define TAM_ILBD 512
 
 //ILBD
@@ -40,6 +40,8 @@ int *le_imagem(char asf_gram, int num_img);
 void calcula_vet_feat(char asf_gram, int num_img, float *vet_feat);
 int gera_num_alea(char zera);
 char grama_ou_asfalto(float *vet_feat_teste,float *feat_grama,float *feat_asfalto);
+void verifica_aloc_int(int *aloc);
+void verifica_aloc_float(float *aloc);
 
 int main(){
     // Declarações:
@@ -57,67 +59,72 @@ int main(){
 
     // Instruções:
 
-    vet_feat_grama=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-    vet_feat_asfalto=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-    vet_feat_grama_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-    vet_feat_asfalto_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+  //   vet_feat_grama=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+  //   vet_feat_asfalto=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+  //   vet_feat_grama_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+  //   vet_feat_asfalto_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
+  //
+  //   for(i=0; i<(NUM_IMG/2); i++){
+  //     calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
+  //   }
+  //   for(i=0; i<(NUM_IMG/2); i++){
+  //     calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
+  //   }
+  //
+  //   gera_num_alea(1);
+  //   for(i=0; i<(NUM_IMG/2); i++){
+  //     calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
+  //   }
+  //   for(i=0; i<(NUM_IMG/2); i++){
+  //     calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
+  //   }
+  //   gera_num_alea(1);
+  //
+  //   media_vet_feat_grama = media_vet_feat(vet_feat_grama, (NUM_IMG/2));
+  //   media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto, (NUM_IMG/2));
+  //
+  // free(vet_feat_grama);
+  // free(vet_feat_asfalto);
+  //
+  //   for(i=0; i<(NUM_IMG/2); i++){
+  //     teste=grama_ou_asfalto(vet_feat_asfalto_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
+  //     if(teste){
+  //       acertos++;
+  //     }else{
+  //       falsa_acei++;
+  //     }
+  //   }
+  //   else
+  //   {
+  //     falsa_acei++;
+  //   }
+  // }
+  //
+  //   for(i=0; i<(NUM_IMG/2); i++){
+  //     teste=grama_ou_asfalto(vet_feat_grama_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
+  //     if(!teste){
+  //       acertos++;
+  //     }else{
+  //       falsa_rej++;
+  //     }
+  //   }
+  //   else
+  //   {
+  //     falsa_rej++;
+  //   }
+  // }
+  //
+  // lista_resultado(acertos, falsa_rej, falsa_acei);
+  //
+  // free(vet_feat_grama_teste);
+  // free(vet_feat_asfalto_teste);
+  // free(media_vet_feat_asfalto);
+  // free(media_vet_feat_grama);
 
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
-    }
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
-    }
-
-    gera_num_alea(1);
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
-    }
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
-    }
-    gera_num_alea(1);
-
-    media_vet_feat_grama = media_vet_feat(vet_feat_grama, (NUM_IMG/2));
-    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto, (NUM_IMG/2));
-
-  free(vet_feat_grama);
-  free(vet_feat_asfalto);
-
-    for(i=0; i<(NUM_IMG/2); i++){
-      teste=grama_ou_asfalto(vet_feat_asfalto_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
-      if(teste){
-        acertos++;
-      }else{
-        falsa_acei++;
-      }
-    }
-    else
-    {
-      falsa_acei++;
-    }
+  int *oi = glcm(le_imagem(0, 1));
+  for(int i=0; i<TAM_GLCM; i++){
+    printf("%d\n", *(oi+i));
   }
-
-    for(i=0; i<(NUM_IMG/2); i++){
-      teste=grama_ou_asfalto(vet_feat_grama_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
-      if(!teste){
-        acertos++;
-      }else{
-        falsa_rej++;
-      }
-    }
-    else
-    {
-      falsa_rej++;
-    }
-  }
-
-  lista_resultado(acertos, falsa_rej, falsa_acei);
-
-    free(vet_feat_grama_teste);
-    free(vet_feat_asfalto_teste);
-    free(media_vet_feat_asfalto);
-    free(media_vet_feat_grama);
 
   return 0;
 }
@@ -248,26 +255,27 @@ int *glcm(int *imagem)
 {
   // Declarações:
   float vet_glcm[TAM_VT_GLCM];
-  int ***mats_glcm
+  int ***mats_glcm;
+  int i, j, n;
       // Instruções:
-      mats_glcm = (int ***)calloc(8 * sizeof(int **));
+      mats_glcm = (int ***)calloc(8, sizeof(int **));
   verifica_aloc_int(mats_glcm);
 
-  for (int i = 0; i < 8; i++)
+  for (i = 0; i < 8; i++)
   {
-    mats_glcm[i] = (int **)calloc(DIM_GLCM * sizeof(int *));
+    mats_glcm[i] = (int **)calloc(DIM_GLCM, sizeof(int *));
     verifica_aloc_int(mats_glcm[i]);
   }
 
-  for (int j = 0; j < DIM_GLCM; j++)
+  for (j = 0; j < DIM_GLCM; j++)
   {
-    mats_glcm[i][j] = (int *)calloc(DIM_GLCM * sizeof(int));
+    mats_glcm[i][j] = (int *)calloc(DIM_GLCM, sizeof(int));
     verifica_aloc_int(mats_glcm[i][j]);
   }
 
-  for (int i = 1; i < TAMANHO_IMG - 1; i++)
+  for (i = 1; i < TAMANHO_IMG - 1; i++)
   {
-    for (int j = 1; j < TAMANHO_IMG - 1; j++)
+    for (j = 1; j < TAMANHO_IMG - 1; j++)
     {
       mats_glcm[0][image[i][j]][image[i + 1][j + 1]]++;
       mats_glcm[1][image[i][j]][image[i + 1][j]]++;
@@ -279,7 +287,7 @@ int *glcm(int *imagem)
       mats_glcm[7][image[i][j]][image[i - 1][j - 1]]++;
     }
   }
-  for (int n = 0; n < 8; n++)
+  for (n = 0; n < 8; n++)
   {
     vet_glcm[n]=contraste(mats_glcm[n]);
     vet_glcm[n+8]=energia(mats_glcm[n]);
@@ -320,18 +328,18 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: contraste da matriz
 
-int *contraste(int *m_glcm)
+int contraste(int *m_glcm)
 {
   // Declarações:
   int n_contraste;
-
+  int i, j;
   // Instruções:
 
-  for (int i = 0; n < DIM_GLCM; i++)
+  for (i = 0; i < DIM_GLCM; i++)
   {
-    for (int j = 0; j < DIM_GLCM; j++)
+    for (j = 0; j < DIM_GLCM; j++)
     {
-      n_contraste+= m_glcm[i][j]*pow((i-j),2));
+      n_contraste+= m_glcm[i][j]*pow((i-j),2);
     }
   }
 
@@ -346,12 +354,13 @@ int energia(int *m_glcm)
 {
   // Declarações:
   int n_energia;
+  int i, j;
   // Instruções:
-  for (int i = 0; n < DIM_GLCM; i++)
+  for (i = 0; i < DIM_GLCM; i++)
   {
-    for (int j = 0; j < DIM_GLCM; j++)
+    for (j = 0; j < DIM_GLCM; j++)
     {
-      n_energia += pow((m_glcm[i][j]),2));
+      n_energia += pow((m_glcm[i][j]),2);
     }
   }
   return n_energia;
@@ -364,11 +373,12 @@ int homogeneidade(int *m_glcm)
 {
   // Declarações:
   int n_homogeneidade;
+  int i, j;
   // Instruções:
 
-  for (int i = 0; n < DIM_GLCM; i++)
+  for (i = 0; i < DIM_GLCM; i++)
   {
-    for (int j = 0; j < DIM_GLCM; j++)
+    for (j = 0; j < DIM_GLCM; j++)
     {
       n_homogeneidade += m_glcm[i][j]/(1 + pow((i-j),2));
     }
@@ -625,13 +635,15 @@ void verifica_aloc_float(float *aloc)
 {
   if (aloc == NULL)
   {
-    print("alocaçao falhou!");
+    printf("alocaçao falhou!");
+    exit(1);
   }
 }
 void verifica_aloc_int(int *aloc)
 {
   if (aloc == NULL)
   {
-    print("alocaçao falhou!");
+    printf("alocaçao falhou!");
+    exit(1);
   }
 }
