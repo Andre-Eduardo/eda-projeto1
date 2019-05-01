@@ -278,14 +278,14 @@ int *glcm(int *imagem)
   {
     for (j = 1; j < TAMANHO_IMG - 1; j++)
     {
-      mats_glcm[0][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)+(j + 1))]++;
-      mats_glcm[1][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)+(j))]++;
-      mats_glcm[2][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)+(j - 1))]++;
-      mats_glcm[3][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)+(j + 1))]++;
-      mats_glcm[4][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)+(j - 1))]++;
-      mats_glcm[5][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)+(j + 1))]++;
-      mats_glcm[6][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)+(j))]++;
-      mats_glcm[7][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)+(j - 1))]++;
+      mats_glcm[0][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)*TAMANHO_IMG+(j + 1))]++;
+      mats_glcm[1][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)*TAMANHO_IMG+(j))]++;
+      mats_glcm[2][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i + 1)*TAMANHO_IMG+(j - 1))]++;
+      mats_glcm[3][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)*TAMANHO_IMG+(j + 1))]++;
+      mats_glcm[4][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i)*TAMANHO_IMG+(j - 1))]++;
+      mats_glcm[5][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)*TAMANHO_IMG+(j + 1))]++;
+      mats_glcm[6][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)*TAMANHO_IMG+(j))]++;
+      mats_glcm[7][*(imagem+i*TAMANHO_IMG+j)][*(imagem+(i - 1)*TAMANHO_IMG+(j - 1))]++;
     }
   }
   for (n = 0; n < 8; n++)
