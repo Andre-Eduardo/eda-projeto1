@@ -261,6 +261,7 @@ void inc_vetor(int *vetor_freq, int min_bin)
   int ***mats_glcm;
   int i, j, n;
   // Instruções:
+  vet = vet_glcm;
   mats_glcm = (int ***)calloc(8, sizeof(int **));
   
 
@@ -298,9 +299,9 @@ void inc_vetor(int *vetor_freq, int min_bin)
  
   for (n = 0; n < 8; n++)
   {
-    vet_glcm[n] = contraste(mats_glcm[n]);
-    vet_glcm[n + 8] = energia(mats_glcm[n]);
-    vet_glcm[n + 16] = homogeneidade(mats_glcm[n]);
+    *(vet+n) = contraste(mats_glcm[n]);
+    *(vet+n+8) = energia(mats_glcm[n]);
+    *(vet+n+16) = homogeneidade(mats_glcm[n]);
   }
   
   // liberando memoria
@@ -315,7 +316,7 @@ void inc_vetor(int *vetor_freq, int min_bin)
   free(mats_glcm);
 
   //obs.1:matriz glcm é 256x256
-  vet = vet_glcm;
+  
 
   return vet;
 }
