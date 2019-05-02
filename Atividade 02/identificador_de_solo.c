@@ -26,11 +26,11 @@ int desloca_bin(int binario);
 int min_bin(int binario);
 void inc_vetor(int *vetor_freq, int min_bin);
 //GLCM
-int *glcm(int *imagem);
+ double *glcm(int *imagem);
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
-int contraste(int **m_glcm);
-int energia(int **m_glcm);
-int homogeneidade(int **m_glcm);
+ double contraste(int **m_glcm);
+ double energia(int **m_glcm);
+ double homogeneidade(int **m_glcm);
 //Outras funções
 void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(float *vetor1, float *vetor2, int tam);
@@ -121,10 +121,10 @@ int main()
   // free(media_vet_feat_asfalto);
   // free(media_vet_feat_grama);
 
-  int *oi = glcm(le_imagem(0, 1));
+   double *oi = glcm(le_imagem(0, 1));
   for (int i = 0; i < TAM_GLCM; i++)
   {
-    printf("%d\n", *(oi + i));
+    printf("%lf\n", *(oi + i));
   }
 
   return 0;
@@ -252,12 +252,12 @@ void inc_vetor(int *vetor_freq, int min_bin)
 // Retorno:  vetor de com 24 posições(8 posições para homogeneidade,
 //           8 para contraste, e 8 para energia da matriz GLCM)
 
-int *glcm(int *imagem)
+ double *glcm(int *imagem)
 {
   
   // Declarações:
-  int vet_glcm[TAM_VT_GLCM];
-  int *vet;
+  double vet_glcm[TAM_VT_GLCM];
+  double *vet;
   int ***mats_glcm;
   int i, j, n;
   // Instruções:
@@ -339,10 +339,10 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: contraste da matriz
 
-int contraste(int **m_glcm)
+  double contraste(int **m_glcm)
 {
   // Declarações:
-  int n_contraste;
+   double n_contraste;
   int i, j;
   // Instruções:
 
@@ -353,18 +353,18 @@ int contraste(int **m_glcm)
       n_contraste += m_glcm[i][j] * pow((i - j), 2);
     }
   }
-
+  //printf("%.2lf\n",n_contraste);
   return n_contraste;
 }
 
 // Objetivo: Calcula energia
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: energia da matriz
-
-int energia(int **m_glcm)
+ 
+ double energia(int **m_glcm)
 {
   // Declarações:
-  int n_energia;
+   double n_energia;
   int i, j;
   // Instruções:
   for (i = 0; i < DIM_GLCM; i++)
@@ -380,10 +380,10 @@ int energia(int **m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: homogeneidade da matriz
 
-int homogeneidade(int **m_glcm)
+ double homogeneidade(int **m_glcm)
 {
   // Declarações:
-  int n_homogeneidade;
+   double n_homogeneidade;
   int i, j;
   // Instruções:
 
@@ -565,7 +565,7 @@ void calcula_vet_feat(char asf_gram, int num_img, float *vet_feat)
   // Declarações:
   int *imagem;
   int *vet_ilbd;
-  int *vet_glcm;
+   double *vet_glcm;
   int i;
 
   // Instruções:
