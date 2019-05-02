@@ -166,7 +166,6 @@ int *ilbp(int *imagem)
 // Objetivo: Calcula média da vizinhança
 // Parâmetro: ponteiro com posição da matriz da imagem
 // Retorno: valor da média
-
 int calcula_media_viz(int *posicao)
 {
   // Declarações:
@@ -180,16 +179,12 @@ int calcula_media_viz(int *posicao)
 
   media = soma / 9;
 
-  //obs: aqui tu pega uma posição da imagem, e calcula a média entre
-  //     os 8 elementos vizinhos e o próprio elemento que foi recebido
-
   return media;
 }
 
-// Objetivo: Cria matriz binária
-// Parâmetro: posição da imagem, média da vizinhança
-// Retorno: matriz binária
-
+// Objetivo: Cria matriz da vizinhança
+// Parâmetro: posição da imagem
+// Retorno: matriz da vizinhança
 int *cria_matriz_viz(int *posicao_imagem)
 {
   // Declarações:
@@ -218,6 +213,9 @@ int *cria_matriz_viz(int *posicao_imagem)
   return matriz;
 }
 
+// Objetivo: Calcula matriz da vizinhança binária
+// Parâmetro: posição da imagem
+// Retorno: matriz da binária
 void cria_matriz_bin(int *matrizViz, int media)
 {
   // Declarações:
@@ -239,10 +237,9 @@ void cria_matriz_bin(int *matrizViz, int media)
 
 }
 
-// Objetivo: Transformar matriz em um número binário
+// Objetivo: Transformar matriz binária em número decimal
 // Parâmetro: matriz binária
-// Retorno: número binário de 9 bits
-
+// Retorno: número decimal
 int calcula_decimal(int *p_matriz_bin)
 {
   // Declarações:
@@ -254,17 +251,12 @@ int calcula_decimal(int *p_matriz_bin)
     decimal += pow(2, (8 - i)) * (*(p_matriz_bin + i));
   }
 
-  //obs.: deve-se pegar a matriz binária, e formar com os 0's e 1's
-  //      um único número binário. A direção que se escolhe para
-  //      colocar os bits não importa, contanto que seja mantida.
-
   return decimal;
 }
 
 // Objetivo: Desloca número binário
 // Parâmetro: número binário
 // Retorno: número binário deslocado
-
 void desloca_bin(int *binario)
 {
   // Declarações:
@@ -281,15 +273,11 @@ void desloca_bin(int *binario)
   {
     *(binario + i) = *(&aux[0][0] + i);
   }
-  //obs.: O deslocamento aqui acontece de um lado a outro colocando
-  //      o último bit na primeira posição e deslocando os bits
-  //      restantes (que dá pra fazer multiplicando por "2")
 }
 
 // Objetivo: Encontra o arranjo binário com valor mínimo
 // Parâmetro: número binário
 // Retorno:  valor mínimo
-
 int min_bin(int *binario)
 {
   // Declarações:
@@ -309,17 +297,12 @@ int min_bin(int *binario)
     desloca_bin(binario);
   }
 
-  //obs.: aqui deve-se deslocar o número binário até conseguir todos
-  //      os deslocamentos possíveis, e retornar o deslocamento com
-  //      menor valor.
-
   return minimo;
 }
 
 // Objetivo: Incrementa o vetor de frequências
 // Parâmetro: ponteiro com vetor de frequências, binário mínimo
-// Retorno:
-
+// Retorno: vetor incrementado
 void incrementa_vetor(int *vetor_freq, int min_bin)
 {
   // Instruções:
@@ -334,10 +317,8 @@ void incrementa_vetor(int *vetor_freq, int min_bin)
 // Parâmetro: matriz da imagem
 // Retorno:  vetor de com 24 posições(8 posições para homogeneidade,
 //           8 para contraste, e 8 para energia da matriz GLCM)
-
 double *glcm(int *imagem)
 {
-
   // Declarações:
   double *vet;
   double ***mats_glcm;
@@ -411,8 +392,7 @@ double *glcm(int *imagem)
 }
 // Objetivo: Incrementa a matriz GLCM
 // Parâmetro: posição da imagem, posição vizinha, ponteiro para a GLCM
-// Retorno:
-
+// Retorno: matriz incrementada
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 {
   // Declarações:
@@ -427,7 +407,6 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Objetivo: Calcula contraste
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: contraste da matriz
-
 double contraste(double **m_glcm)
 {
   // Declarações:
@@ -449,7 +428,6 @@ double contraste(double **m_glcm)
 // Objetivo: Calcula energia
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: energia da matriz
-
 double energia(double **m_glcm)
 {
   // Declarações:
@@ -468,7 +446,6 @@ double energia(double **m_glcm)
 // Objetivo: Calcula homogeneidade
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: homogeneidade da matriz
-
 double homogeneidade(double **m_glcm)
 {
   // Declarações:
@@ -491,7 +468,6 @@ double homogeneidade(double **m_glcm)
 // Objetivo: Normalizar vetor de features
 // Parâmetro: ponteiro para o vetor
 // Retorno: vetor normalizado
-
 void normaliza_vet(double *vetor, int tam)
 {
   // Declarações:
@@ -525,7 +501,6 @@ void normaliza_vet(double *vetor, int tam)
 // Objetivo: Calcular a distância euclidiana entre 2 vetores de features
 // Parâmetro: ponteiro para vetor 1, e vetor 2
 // Retorno: distância euclidianda
-
 double calcula_dist_eucl(double *vetor1, double *vetor2, int tam)
 {
   // Declarações:
@@ -544,9 +519,8 @@ double calcula_dist_eucl(double *vetor1, double *vetor2, int tam)
 }
 
 // Objetivo: tirar média dos vetores de features usados no treinamento
-// Parâmetro: ponteiro para matriz de features
+// Parâmetro: ponteiro para matriz de features, número de imagens
 // Retorno: ponteiro para vetor da média
-
 double *media_vet_feat(double *vet_feat, int num_img)
 {
   // Declarações:
@@ -575,7 +549,6 @@ double *media_vet_feat(double *vet_feat, int num_img)
 // Parâmetro: Número de acertos, número de falsas aceitações, número
 //            de falsas rejeições
 // Retorno:
-
 void lista_resultado(int acertos, int falsa_rej, int falsa_acei)
 {
   // Declarações:
@@ -644,7 +617,6 @@ int *le_imagem(char asf_gram, int num_img)
 // Objetivo: Calcular vetor de features
 // Parâmetro: byte se for asfalto(0) ou grama(1), numero da imagem a ser lida, e ponteiro para vetor de features
 // Retorno:  vetor de features calculado
-
 void calcula_vet_feat(char asf_gram, int num_img, double *vet_feat)
 {
   // Declarações:
@@ -680,7 +652,6 @@ void calcula_vet_feat(char asf_gram, int num_img, double *vet_feat)
 // Objetivo: Gerar números aleatórios
 // Parâmetro: byte pra zerar números usados ou não
 // Retorno:  número aleatório
-
 int gera_num_alea(char zera)
 {
   // Declarações:
@@ -713,7 +684,6 @@ int gera_num_alea(char zera)
 // Objetivo: Decidir a partir de vetor de features, se o vetor testado é grama ou asfalto
 // Parâmetro: vetores de features de teste, de treinamento da grama, e de treinamento de asfalto
 // Retorno:  byte se for grama (0), ou asfalto (1)
-
 char grama_ou_asfalto(double *vet_feat_teste, double *feat_grama, double *feat_asfalto)
 {
   // Declarações:
@@ -731,16 +701,14 @@ char grama_ou_asfalto(double *vet_feat_teste, double *feat_grama, double *feat_a
     return 1;
   }
 }
+
+// Objetivo: Verificar se a alocação falhou(para float)
+// Parâmetro: ponteiro alocado
+// Retorno:
 void verifica_aloc_float(float *aloc)
 {
-  if (aloc == NULL)
-  {
-    printf("alocaçao falhou!");
-    exit(1);
-  }
-}
-void verifica_aloc_int(int *aloc)
-{
+  // Declarações:
+  // Instruções:
   if (aloc == NULL)
   {
     printf("alocaçao falhou!");
@@ -748,8 +716,27 @@ void verifica_aloc_int(int *aloc)
   }
 }
 
+// Objetivo: Verificar se a alocação falhou(para int)
+// Parâmetro: ponteiro alocado
+// Retorno:
+void verifica_aloc_int(int *aloc)
+{
+  // Declarações:
+  // Instruções:
+  if (aloc == NULL)
+  {
+    printf("alocaçao falhou!");
+    exit(1);
+  }
+}
+
+// Objetivo: Verificar se a alocação falhou(double)
+// Parâmetro: ponteiro alocado
+// Retorno:
 void verifica_aloc_double(double *aloc)
 {
+  // Declarações:
+  // Instruções:
   if (aloc == NULL)
   {
     printf("alocaçao falhou!");
