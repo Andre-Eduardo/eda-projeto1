@@ -12,7 +12,7 @@
 
 #define TAMANHO_IMG 1025 * 1025
 #define LADO_IMG 1025
-#define NUM_IMG 50
+#define NUM_IMG 2
 #define TAM_VET_FEAT 516
 #define DIM_GLCM 256   // dimensao da matriz  gerada pelo glcm
 #define TAM_VT_GLCM 24 // tamanho do vetor de ocorrencia glcm
@@ -20,18 +20,19 @@
 #define TAM_ILBD 512
 
 //ILBD
-int* ilbp(int *imagem);
+int *ilbp(int *imagem);
 int calcula_media_viz(int *posicao);
 int *cria_matriz_viz(int *posicao_imagem);
-void *cria_matriz_bin(int *matrizViz, int media);
+void cria_matriz_bin(int *matrizViz, int media);
 void desloca_bin(int *binario);
 int min_bin(int *binario);
 void incrementa_vetor(int *vetor_freq, int min_bin);
 //GLCM
- double *glcm(int *imagem);
+double *glcm(int *imagem);
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
- double contraste(double **m_glcm);
- double homogeneidade(double **m_glcm);
+double energia(double **m_glcm);
+double contraste(double **m_glcm);
+double homogeneidade(double **m_glcm);
 //Outras funções
 void normaliza_vet(double *vetor, int tam);
 double calcula_dist_eucl(double *vetor1, double *vetor2, int tam);
@@ -49,65 +50,77 @@ int main()
 {
   // Declarações:
   int *imagem;
-  float *vet_feat_grama;
-  float *vet_feat_asfalto;
-  float *vet_feat_grama_teste;
-  float *vet_feat_asfalto_teste;
-  float *media_vet_feat_grama;
-  float *media_vet_feat_asfalto;
+  double *vet_feat_grama;
+  double *vet_feat_asfalto;
+  double *vet_feat_grama_teste;
+  double *vet_feat_asfalto_teste;
+  double *media_vet_feat_grama;
+  double *media_vet_feat_asfalto;
   int i;
   char teste;
   int acertos = 0, falsa_rej = 0, falsa_acei = 0;
-  
+
   // Instruções:
 
-    vet_feat_grama=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-    vet_feat_asfalto=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-    vet_feat_grama_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-    vet_feat_asfalto_teste=(float*)malloc((NUM_IMG/2)*TAM_VET_FEAT*sizeof(float));
-  
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama+i*TAM_VET_FEAT);
-    }
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(1 , gera_num_alea(0), vet_feat_grama_teste+i*TAM_VET_FEAT);
-    }
-  
-    gera_num_alea(1);
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto+i*TAM_VET_FEAT);
-    }
-    for(i=0; i<(NUM_IMG/2); i++){
-      calcula_vet_feat(0 , gera_num_alea(0), vet_feat_asfalto_teste+i*TAM_VET_FEAT);
-    }
-    gera_num_alea(1);
-  
-    media_vet_feat_grama = media_vet_feat(vet_feat_grama, (NUM_IMG/2));
-    media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto, (NUM_IMG/2));
-  
+  vet_feat_grama = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
+  vet_feat_asfalto = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
+  vet_feat_grama_teste = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
+  vet_feat_asfalto_teste = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
+
+  for (i = 0; i < (NUM_IMG / 2); i++)
+  {
+    calcula_vet_feat(1, gera_num_alea(0), vet_feat_grama + i * TAM_VET_FEAT);
+  }
+  for (i = 0; i < (NUM_IMG / 2); i++)
+  {
+    calcula_vet_feat(1, gera_num_alea(0), vet_feat_grama_teste + i * TAM_VET_FEAT);
+  }
+
+  gera_num_alea(1);
+  for (i = 0; i < (NUM_IMG / 2); i++)
+  {
+    calcula_vet_feat(0, gera_num_alea(0), vet_feat_asfalto + i * TAM_VET_FEAT);
+  }
+  for (i = 0; i < (NUM_IMG / 2); i++)
+  {
+    calcula_vet_feat(0, gera_num_alea(0), vet_feat_asfalto_teste + i * TAM_VET_FEAT);
+  }
+  gera_num_alea(1);
+
+  media_vet_feat_grama = media_vet_feat(vet_feat_grama, (NUM_IMG / 2));
+  media_vet_feat_asfalto = media_vet_feat(vet_feat_asfalto, (NUM_IMG / 2));
+
   free(vet_feat_grama);
   free(vet_feat_asfalto);
-  
-    for(i=0; i<(NUM_IMG/2); i++){
-      teste=grama_ou_asfalto(vet_feat_asfalto_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
-      if(teste){
-        acertos++;
-      }else{
-        falsa_acei++;
-      }
+
+  for (i = 0; i < (NUM_IMG / 2); i++)
+  {
+    teste = grama_ou_asfalto(vet_feat_asfalto_teste + i * TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
+    if (teste)
+    {
+      acertos++;
     }
-  
-    for(i=0; i<(NUM_IMG/2); i++){
-      teste=grama_ou_asfalto(vet_feat_grama_teste+i*TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
-      if(!teste){
-        acertos++;
-      }else{
-        falsa_rej++;
-      }
+    else
+    {
+      falsa_acei++;
     }
-  
+  }
+
+  for (i = 0; i < (NUM_IMG / 2); i++)
+  {
+    teste = grama_ou_asfalto(vet_feat_grama_teste + i * TAM_VET_FEAT, media_vet_feat_grama, media_vet_feat_asfalto);
+    if (!teste)
+    {
+      acertos++;
+    }
+    else
+    {
+      falsa_rej++;
+    }
+  }
+
   lista_resultado(acertos, falsa_rej, falsa_acei);
-  
+
   free(vet_feat_grama_teste);
   free(vet_feat_asfalto_teste);
   free(media_vet_feat_asfalto);
@@ -121,43 +134,45 @@ int main()
 // Objetivo: Função principal para calcular o vetor de frequências do ILBP
 // Parâmetro: matriz em tons de cinza de uma imagems
 // Retorno: vetor de frequências
-int* ilbp(int *imagem){
-    // Declarações:
-    int *matrizViz, mediaViz = 0; 
-    int minimo;
-    int *vetor_frequencias;
-    vetor_frequencias = (int *) calloc(512, sizeof(int));
-    
-    // Instruções:
+int *ilbp(int *imagem)
+{
+  // Declarações:
+  int *matrizViz, mediaViz = 0;
+  int minimo;
+  int *vetor_frequencias;
+  vetor_frequencias = (int *)calloc(512, sizeof(int));
 
-    for(int i = LADO_IMG + 1; i < TAMANHO_IMG-LADO_IMG-1; i++){
-        matrizViz = cria_matriz_viz(imagem + i);
-        mediaViz = calcula_media_viz(matrizViz);
-        cria_matriz_bin(matrizViz, mediaViz);
-        minimo = min_bin(matrizViz);
-        incrementa_vetor(vetor_frequencias, minimo);        
-    }       
-    
-    
+  // Instruções:
 
+  for (int i = LADO_IMG + 1; i < TAMANHO_IMG - LADO_IMG - 1; i++)
+  {
+    matrizViz = cria_matriz_viz(imagem + i);
+    mediaViz = calcula_media_viz(matrizViz);
+    cria_matriz_bin(matrizViz, mediaViz);
+    minimo = min_bin(matrizViz);
+    incrementa_vetor(vetor_frequencias, minimo);
+    free(matrizViz);
+  }
 
-    return vetor_frequencias; // vetor de 512 posições com as frequências
+  return vetor_frequencias; // vetor de 512 posições com as frequências
 }
 
 // Objetivo: Calcula média da vizinhança
 // Parâmetro: ponteiro com posição da matriz da imagem
 // Retorno: valor da média
 
-int calcula_media_viz(int *posicao){
-    // Declarações:
-    int soma=0;
-    int media;
-    // Instruções:
-    for(int i = 0; i < 9; i++){
-        soma += posicao[i];        
-    }
-    
-    media = soma / 9;
+int calcula_media_viz(int *posicao)
+{
+  // Declarações:
+  int soma = 0;
+  int media;
+  // Instruções:
+  for (int i = 0; i < 9; i++)
+  {
+    soma += posicao[i];
+  }
+
+  media = soma / 9;
 
   //obs: aqui tu pega uma posição da imagem, e calcula a média entre
   //     os 8 elementos vizinhos e o próprio elemento que foi recebido
@@ -169,122 +184,140 @@ int calcula_media_viz(int *posicao){
 // Parâmetro: posição da imagem, média da vizinhança
 // Retorno: matriz binária
 
-int *cria_matriz_viz(int *posicao_imagem){
-    // Declarações:
-    int *matriz;
-    int i;
+int *cria_matriz_viz(int *posicao_imagem)
+{
+  // Declarações:
+  int *matriz;
+  int i;
 
-    matriz = (int*) malloc(3*3 * sizeof(int));
-    
-    // Instruções:
+  matriz = (int *)malloc(3 * 3 * sizeof(int));
 
-    for(i=0;i<3;i++){
-        *(matriz+i)=*(posicao_imagem-LADO_IMG+(i-1));
-    }
+  // Instruções:
 
-    for(i=0;i<3;i++){
-        *(matriz+3+i)=*(posicao_imagem+(i-1));
-    }
+  for (i = 0; i < 3; i++)
+  {
+    *(matriz + i) = *(posicao_imagem - LADO_IMG + (i - 1));
+  }
 
-    for(i=0;i<3;i++){
-        *(matriz+6+i)=*(posicao_imagem+LADO_IMG+(i-1));
-    }
-    
-    return matriz;
+  for (i = 0; i < 3; i++)
+  {
+    *(matriz + 3 + i) = *(posicao_imagem + (i - 1));
+  }
+
+  for (i = 0; i < 3; i++)
+  {
+    *(matriz + 6 + i) = *(posicao_imagem + LADO_IMG + (i - 1));
+  }
+
+  return matriz;
 }
 
-void *cria_matriz_bin(int *matrizViz, int media){
-    // Declarações:
-    int i;
-    
-    // Instruções:
+void cria_matriz_bin(int *matrizViz, int media)
+{
+  // Declarações:
+  int i;
 
-    for(i=0; i<9; i++){
-       if(*(matrizViz+i)<media){
-           *(matrizViz+i)=0;
-       }else{
-           *(matrizViz+i)=1;
-       }
+  // Instruções:
+
+  for (i = 0; i < 9; i++)
+  {
+    if (*(matrizViz + i) < media)
+    {
+      *(matrizViz + i) = 0;
     }
+    else
+    {
+      *(matrizViz + i) = 1;
+    }
+  }
+  
 }
 
 // Objetivo: Transformar matriz em um número binário
 // Parâmetro: matriz binária
 // Retorno: número binário de 9 bits
 
-int calcula_decimal(int *p_matriz_bin){
-    // Declarações:   
-    int binario, decimal=0;
-    
-    // Instruções:
-    for(int i = 0; i < 9; ++i){
-        decimal += pow(2, (8-i))*(*(p_matriz_bin+i));
-    }
+int calcula_decimal(int *p_matriz_bin)
+{
+  // Declarações:
+  int binario, decimal = 0;
+
+  // Instruções:
+  for (int i = 0; i < 9; ++i)
+  {
+    decimal += pow(2, (8 - i)) * (*(p_matriz_bin + i));
+  }
 
   //obs.: deve-se pegar a matriz binária, e formar com os 0's e 1's
   //      um único número binário. A direção que se escolhe para
   //      colocar os bits não importa, contanto que seja mantida.
 
-    return decimal;
+  return decimal;
 }
 
 // Objetivo: Desloca número binário
 // Parâmetro: número binário
 // Retorno: número binário deslocado
 
-void desloca_bin(int *binario){
-    // Declarações:
-    int aux[3][3];
-    // Instruções:
+void desloca_bin(int *binario)
+{
+  // Declarações:
+  int aux[3][3];
+  // Instruções:
 
-    for(int i = 0; i < 8; i++){
-        *(&aux[0][0]+i) = *(binario + (i+1));
-    }
-    aux[2][2]=*(binario);
+  for (int i = 0; i < 8; i++)
+  {
+    *(&aux[0][0] + i) = *(binario + (i + 1));
+  }
+  aux[2][2] = *(binario);
 
-    for(int i = 0; i < 9; i++){
-        *(binario + i) = *(&aux[0][0]+i) ;
-    }
-    //obs.: O deslocamento aqui acontece de um lado a outro colocando
-    //      o último bit na primeira posição e deslocando os bits
-    //      restantes (que dá pra fazer multiplicando por "2")
+  for (int i = 0; i < 9; i++)
+  {
+    *(binario + i) = *(&aux[0][0] + i);
+  }
+  //obs.: O deslocamento aqui acontece de um lado a outro colocando
+  //      o último bit na primeira posição e deslocando os bits
+  //      restantes (que dá pra fazer multiplicando por "2")
 }
 
 // Objetivo: Encontra o arranjo binário com valor mínimo
 // Parâmetro: número binário
 // Retorno:  valor mínimo
 
-int min_bin(int *binario){
-    // Declarações:
-    int minimo = calcula_decimal(binario);
-    int aux = 0;
+int min_bin(int *binario)
+{
+  // Declarações:
+  int minimo = calcula_decimal(binario);
+  int aux = 0;
 
-    // Instruções:
-    for(int i = 0; i <= 9; i++){
-       aux = calcula_decimal(binario);
-       
-       if(minimo > aux){
-           minimo = aux;
-       }
+  // Instruções:
+  for (int i = 0; i <= 9; i++)
+  {
+    aux = calcula_decimal(binario);
 
-       desloca_bin(binario);
+    if (minimo > aux)
+    {
+      minimo = aux;
     }
-    
+
+    desloca_bin(binario);
+  }
 
   //obs.: aqui deve-se deslocar o número binário até conseguir todos
   //      os deslocamentos possíveis, e retornar o deslocamento com
   //      menor valor.
 
-    return minimo;
+  return minimo;
 }
 
 // Objetivo: Incrementa o vetor de frequências
 // Parâmetro: ponteiro com vetor de frequências, binário mínimo
 // Retorno:
 
-void incrementa_vetor(int *vetor_freq, int min_bin){
-    // Instruções:
-    (*(vetor_freq+min_bin))++;
+void incrementa_vetor(int *vetor_freq, int min_bin)
+{
+  // Instruções:
+  (*(vetor_freq + min_bin))++;
 
   return;
 }
@@ -296,61 +329,65 @@ void incrementa_vetor(int *vetor_freq, int min_bin){
 // Retorno:  vetor de com 24 posições(8 posições para homogeneidade,
 //           8 para contraste, e 8 para energia da matriz GLCM)
 
- double *glcm(int *imagem)
+double *glcm(int *imagem)
 {
-  
+
   // Declarações:
   double *vet;
   double ***mats_glcm;
   int i, j, n;
   // Instruções:
   vet = (double *)calloc(TAM_GLCM, sizeof(double));
-  if (vet == NULL){printf("deu ruim");}
+  if (vet == NULL)
+  {
+    printf("deu ruim");
+  }
 
   mats_glcm = (double ***)calloc(8, sizeof(double **));
-  if (mats_glcm == NULL){printf("deu ruim");}
+  if (mats_glcm == NULL)
+  {
+    printf("deu ruim");
+  }
 
   for (i = 0; i < 8; i++)
   {
     mats_glcm[i] = (double **)calloc(DIM_GLCM, sizeof(double *));
-    if (mats_glcm[i] == NULL){printf("deu ruim");}
+    if (mats_glcm[i] == NULL)
+    {
+      printf("deu ruim");
+    }
 
     for (j = 0; j < DIM_GLCM; j++)
     {
       mats_glcm[i][j] = (double *)calloc(DIM_GLCM, sizeof(double));
       verifica_aloc_double(mats_glcm[i][j]);
-      
-      }
+    }
   }
- 
-  
-  
+
   for (i = 1; i < LADO_IMG - 1; i++)
   {
     for (j = 1; j < LADO_IMG - 1; j++)
     {
-      
-      
-      mats_glcm[0][*(imagem+i*LADO_IMG+j)][*(imagem+(i + 1)*LADO_IMG+j + 1)]++;
-      mats_glcm[1][*(imagem+i*LADO_IMG+j)][*(imagem+(i + 1)*LADO_IMG+j)]++;
-      mats_glcm[2][*(imagem+i*LADO_IMG+j)][*(imagem+(i + 1)*LADO_IMG+j - 1)]++;
-      mats_glcm[3][*(imagem+i*LADO_IMG+j)][*(imagem+(i)*LADO_IMG+j + 1)]++;
-      mats_glcm[4][*(imagem+i*LADO_IMG+j)][*(imagem+(i)*LADO_IMG+j - 1)]++;
-      mats_glcm[5][*(imagem+i*LADO_IMG+j)][*(imagem+(i - 1)*LADO_IMG+j + 1)]++;
-      mats_glcm[6][*(imagem+i*LADO_IMG+j)][*(imagem+(i - 1)*LADO_IMG+j)]++;
-      mats_glcm[7][*(imagem+i*LADO_IMG+j)][*(imagem+(i - 1)*LADO_IMG+j - 1)]++;
-      
+
+      mats_glcm[0][*(imagem + i * LADO_IMG + j)][*(imagem + (i + 1) * LADO_IMG + j + 1)]++;
+      mats_glcm[1][*(imagem + i * LADO_IMG + j)][*(imagem + (i + 1) * LADO_IMG + j)]++;
+      mats_glcm[2][*(imagem + i * LADO_IMG + j)][*(imagem + (i + 1) * LADO_IMG + j - 1)]++;
+      mats_glcm[3][*(imagem + i * LADO_IMG + j)][*(imagem + (i)*LADO_IMG + j + 1)]++;
+      mats_glcm[4][*(imagem + i * LADO_IMG + j)][*(imagem + (i)*LADO_IMG + j - 1)]++;
+      mats_glcm[5][*(imagem + i * LADO_IMG + j)][*(imagem + (i - 1) * LADO_IMG + j + 1)]++;
+      mats_glcm[6][*(imagem + i * LADO_IMG + j)][*(imagem + (i - 1) * LADO_IMG + j)]++;
+      mats_glcm[7][*(imagem + i * LADO_IMG + j)][*(imagem + (i - 1) * LADO_IMG + j - 1)]++;
     }
   }
- 
+
   for (n = 0; n < 8; n++)
   {
-    *(vet+n) = contraste(mats_glcm[n]);
+    *(vet + n) = contraste(mats_glcm[n]);
     //printf(" fora %lf\n",*(vet+n));
-    *(vet+n+8) = energia(mats_glcm[n]);
-    *(vet+n+16) = homogeneidade(mats_glcm[n]);
+    *(vet + n + 8) = energia(mats_glcm[n]);
+    *(vet + n + 16) = homogeneidade(mats_glcm[n]);
   }
-  
+
   // liberando memoria
   for (i = 0; i < 8; i++)
   {
@@ -364,7 +401,6 @@ void incrementa_vetor(int *vetor_freq, int min_bin){
 
   //obs.1:matriz glcm é 256x256
 
-  
   return vet;
 }
 // Objetivo: Incrementa a matriz GLCM
@@ -386,10 +422,10 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: contraste da matriz
 
-  double contraste(double **m_glcm)
+double contraste(double **m_glcm)
 {
   // Declarações:
-   double n_contraste =0;
+  double n_contraste = 0;
   int i, j;
   // Instruções:
 
@@ -407,11 +443,11 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Objetivo: Calcula energia
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: energia da matriz
- 
- double energia(double **m_glcm)
+
+double energia(double **m_glcm)
 {
   // Declarações:
-   double n_energia =0;
+  double n_energia = 0;
   int i, j;
   // Instruções:
   for (i = 0; i < DIM_GLCM; i++)
@@ -427,10 +463,10 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: homogeneidade da matriz
 
- double homogeneidade(double **m_glcm)
+double homogeneidade(double **m_glcm)
 {
   // Declarações:
-   double n_homogeneidade = 0;
+  double n_homogeneidade = 0;
   int i, j;
   // Instruções:
 
@@ -611,18 +647,18 @@ void calcula_vet_feat(char asf_gram, int num_img, double *vet_feat)
 {
   // Declarações:
   int *imagem;
-  int *vet_ilbd;
+  int *vet_ilbp;
   double *vet_glcm;
   int i;
 
   // Instruções:
   imagem = le_imagem(asf_gram, num_img);
-  vet_ilbd = ilbd(imagem);
+  vet_ilbp = ilbp(imagem);
   vet_glcm = glcm(imagem);
 
   for (i = 0; i < TAM_ILBD; i++)
   {
-    *(vet_feat + i) = (double)(*(vet_ilbd + i));
+    *(vet_feat + i) = (double)(*(vet_ilbp + i));
   }
 
   for (i = 0; i < 4; i++)
@@ -632,7 +668,7 @@ void calcula_vet_feat(char asf_gram, int num_img, double *vet_feat)
 
   normaliza_vet(vet_feat, TAM_VET_FEAT);
 
-  free(vet_ilbd);
+  free(vet_ilbp);
   free(vet_glcm);
   free(imagem);
 
