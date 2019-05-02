@@ -8,14 +8,16 @@
 #include <unistd.h>
 #include <math.h>
 
-#define TAMANHO_IMG 1025*1025
+#define TAMANHO_IMG 9
+#define LADO_IMG 3
 
-int* ilbd(int *imagem);
+int* ilbp(int *imagem);
 int calcula_media_viz(int *posicao);
-int *cria_matriz_bin(int posicao_imagem, int media);
-int desloca_bin(int binario);
-int min_bin(int binario);
-void inc_vetor(int *vetor_freq, int min_bin);
+int *cria_matriz_viz(int *posicao_imagem);
+void *cria_matriz_bin(int *matrizViz, int media);
+void desloca_bin(int *binario);
+int min_bin(int *binario);
+void incrementa_vetor(int *vetor_freq, int min_bin);
 int *glcm(int *imagem);
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
 int contraste(int *m_glcm);
@@ -26,29 +28,46 @@ double calcula_dist_eucl(int *vetor1, int *vetor2, int tam);
 int *media_vet_feat();
 void lista_resultado(int acertos, int falsa_rej, int falsa_acei);
 int *le_imagem();
+int calcula_decimal(int *);
+
+///////////////////////////// MAIN ////////////////////////////////////////////////////////////
 
 int main(){
     // Declarações:
-    int *oi;
+    int oi[9]={1, 1, 1, 2, 2, 2, 3, 3, 3};
+    int *mat;
+    int *vet_freq;
     // Instruções:
 
-    oi = le_imagem();
-
-    printf("%d %d %d\n%d %d %d\n %d", *oi, *(oi +1), *(oi +2), *(oi +1025), *(oi +1026), *(oi +1027),*(oi+TAMANHO_IMG-1));
-
+    vet_freq=ilbp(oi);
+    printf("%d", *(vet_freq+63));
     return 0;
 }
 
-/////////////////////////////////CÓDIGO ILBD/////////////////////////////
+/////////////////////////////////CÓDIGO ILBP/////////////////////////////
 
 // Objetivo: Função principal para calcular o vetor de frequências do ILBP
 // Parâmetro: matriz em tons de cinza de uma imagems
 // Retorno: vetor de frequências
-
-int* ilbd(int *imagem){
+int* ilbp(int *imagem){
     // Declarações:
+    int *matrizViz, mediaViz = 0; 
+    int minimo;
     int *vetor_frequencias;
+    vetor_frequencias = (int *) calloc(512, sizeof(int));
+    
     // Instruções:
+
+    for(int i = LADO_IMG + 1; i < TAMANHO_IMG-LADO_IMG-1; i++){
+        matrizViz = cria_matriz_viz(imagem + i);
+        mediaViz = calcula_media_viz(matrizViz);
+        cria_matriz_bin(matrizViz, mediaViz);
+        minimo = min_bin(matrizViz);
+        incrementa_vetor(vetor_frequencias, minimo);        
+    }       
+    
+    
+
 
     return vetor_frequencias; // vetor de 512 posições com as frequências
 }
@@ -59,8 +78,14 @@ int* ilbd(int *imagem){
 
 int calcula_media_viz(int *posicao){
     // Declarações:
+    int soma=0;
     int media;
     // Instruções:
+    for(int i = 0; i < 9; i++){
+        soma += posicao[i];        
+    }
+    
+    media = soma / 9;
 
     //obs: aqui tu pega uma posição da imagem, e calcula a média entre
     //     os 8 elementos vizinhos e o próprio elemento que foi recebido
@@ -72,76 +97,121 @@ int calcula_media_viz(int *posicao){
 // Parâmetro: posição da imagem, média da vizinhança
 // Retorno: matriz binária
 
-int *cria_matriz_bin(int posicao_imagem, int media){
+int *cria_matriz_viz(int *posicao_imagem){
     // Declarações:
-    int *p_matriz_bin;
+    int *matriz;
+    int i;
+
+    matriz = (int*) malloc(3*3 * sizeof(int));
+    
     // Instruções:
 
-    //obs.: aqui temos que pegar cada elemento da vizinhança e
-    //      comparar com a média, se o resultado for >= media, então
-    //      o elemento na nova matriz será 1, e se for menor será 0
-    //      ou seja criaremos uma matriz de 9 elementos com 0's e 1's
+    for(i=0;i<3;i++){
+        *(matriz+i)=*(posicao_imagem-LADO_IMG+(i-1));
+    }
 
-    return p_matriz_bin;
+    for(i=0;i<3;i++){
+        *(matriz+3+i)=*(posicao_imagem+(i-1));
+    }
+
+    for(i=0;i<3;i++){
+        *(matriz+6+i)=*(posicao_imagem+LADO_IMG+(i-1));
+    }
+    
+    return matriz;
+}
+
+void *cria_matriz_bin(int *matrizViz, int media){
+    // Declarações:
+    int i;
+    
+    // Instruções:
+
+    for(i=0; i<9; i++){
+       if(*(matrizViz+i)<media){
+           *(matrizViz+i)=0;
+       }else{
+           *(matrizViz+i)=1;
+       }
+    }
 }
 
 // Objetivo: Transformar matriz em um número binário
 // Parâmetro: matriz binária
 // Retorno: número binário de 9 bits
 
-int calcula_bin(int *p_matriz_bin){
-    // Declarações:
-    int binario;
+int calcula_decimal(int *p_matriz_bin){
+    // Declarações:   
+    int binario, decimal=0;
+    
     // Instruções:
+    for(int i = 0; i < 9; ++i){
+        decimal += pow(2, (8-i))*(*(p_matriz_bin+i));
+    }
 
     //obs.: deve-se pegar a matriz binária, e formar com os 0's e 1's
     //      um único número binário. A direção que se escolhe para
     //      colocar os bits não importa, contanto que seja mantida.
 
-    return binario;
+    return decimal;
 }
 
 // Objetivo: Desloca número binário
 // Parâmetro: número binário
 // Retorno: número binário deslocado
 
-int desloca_bin(int binario){
+void desloca_bin(int *binario){
     // Declarações:
-    int des_bin;
+    int aux[3][3];
     // Instruções:
 
+    for(int i = 0; i < 8; i++){
+        *(&aux[0][0]+i) = *(binario + (i+1));
+    }
+    aux[2][2]=*(binario);
+
+    for(int i = 0; i < 9; i++){
+        *(binario + i) = *(&aux[0][0]+i) ;
+    }
     //obs.: O deslocamento aqui acontece de um lado a outro colocando
     //      o último bit na primeira posição e deslocando os bits
     //      restantes (que dá pra fazer multiplicando por "2")
-
-    return des_bin;
 }
 
 // Objetivo: Encontra o arranjo binário com valor mínimo
 // Parâmetro: número binário
 // Retorno:  valor mínimo
 
-int min_bin(int binario){
+int min_bin(int *binario){
     // Declarações:
-    int min_binario;
+    int minimo = calcula_decimal(binario);
+    int aux = 0;
+
     // Instruções:
+    for(int i = 0; i <= 9; i++){
+       aux = calcula_decimal(binario);
+       
+       if(minimo > aux){
+           minimo = aux;
+       }
+
+       desloca_bin(binario);
+    }
+    
 
     //obs.: aqui deve-se deslocar o número binário até conseguir todos
     //      os deslocamentos possíveis, e retornar o deslocamento com
     //      menor valor.
 
-    return min_binario;
+    return minimo;
 }
 
 // Objetivo: Incrementa o vetor de frequências
 // Parâmetro: ponteiro com vetor de frequências, binário mínimo
 // Retorno:
 
-void inc_vetor(int *vetor_freq, int min_bin){
-    // Declarações:
-
+void incrementa_vetor(int *vetor_freq, int min_bin){
     // Instruções:
-
     (*(vetor_freq+min_bin))++;
 
     return;
@@ -158,8 +228,6 @@ int *glcm(int *imagem){
     // Declarações:
     int *vet_glcm;
     // Instruções:
-
-    //obs.1:matriz glcm é 256x256
 
     return vet_glcm;
 }
@@ -244,7 +312,6 @@ void normaliza_vet(float *vetor, int tam){
 		*(vetor+i)= (*(vetor+i)-minimo)/(maximo-minimo);
 	}
 
-    return;
 }
 
 // Objetivo: Calcular a distância euclidiana entre 2 vetores de features
