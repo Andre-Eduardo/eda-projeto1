@@ -1,3 +1,9 @@
+/*
+Hércules Ismael de Abreu Santos - 16/0124450
+André Eduardo Souza de Oliveira - 16/0111978
+Hugo Aragão de Oliveira - 16/0124581
+*/
+
 // Síntese
 // Objetivo: Identificar solo para drone pousar através de imagens
 // Entrada: imagens de grama ou asfalto
@@ -12,7 +18,7 @@
 
 #define TAMANHO_IMG 1025 * 1025
 #define LADO_IMG 1025
-#define NUM_IMG 2
+#define NUM_IMG 50
 #define TAM_VET_FEAT 516
 #define DIM_GLCM 256   // dimensao da matriz  gerada pelo glcm
 #define TAM_VT_GLCM 24 // tamanho do vetor de ocorrencia glcm
@@ -230,7 +236,7 @@ void cria_matriz_bin(int *matrizViz, int media)
       *(matrizViz + i) = 1;
     }
   }
-  
+
 }
 
 // Objetivo: Transformar matriz em um número binário
@@ -581,10 +587,6 @@ void lista_resultado(int acertos, int falsa_rej, int falsa_acei)
   taxa_acer = 100 * ((float)acertos) / NUM_IMG;
   taxa_fals_rej = 100 * ((float)falsa_rej) / NUM_IMG;
   taxa_fals_acei = 100 * ((float)falsa_acei) / NUM_IMG;
-
-  printf("taxa de acerto: %2f\n", taxa_acer);
-  printf("taxa de falsa rejeição: %2f\n", taxa_fals_rej);
-  printf("taxa de falsa aceitação: %2f\n", taxa_fals_acei);
 
   printf("taxa de acerto: %.2f%%\n", taxa_acer);
   printf("taxa de falsa rejeição: %.2f%%\n", taxa_fals_rej);
