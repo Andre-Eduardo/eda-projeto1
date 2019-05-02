@@ -1,6 +1,6 @@
 
 
-				  Instruções para execução dos programas
+				  **Instruções para execução dos programas**
  
 
 #  Os programas devem ser compilados de preferência em um terminal linux
