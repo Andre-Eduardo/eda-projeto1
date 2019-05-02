@@ -28,9 +28,9 @@ void inc_vetor(int *vetor_freq, int min_bin);
 //GLCM
  double *glcm(int *imagem);
 void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm);
- double contraste(int **m_glcm);
- double energia(int **m_glcm);
- double homogeneidade(int **m_glcm);
+ double contraste(double **m_glcm);
+ double energia(double **m_glcm);
+ double homogeneidade(double **m_glcm);
 //Outras funções
 void normaliza_vet(float *vetor, int tam);
 double calcula_dist_eucl(float *vetor1, float *vetor2, int tam);
@@ -42,6 +42,7 @@ int gera_num_alea(char zera);
 char grama_ou_asfalto(float *vet_feat_teste, float *feat_grama, float *feat_asfalto);
 void verifica_aloc_int(int *aloc);
 void verifica_aloc_float(float *aloc);
+void verifica_aloc_double(double *aloc);
 
 int main()
 {
@@ -121,10 +122,10 @@ int main()
   // free(media_vet_feat_asfalto);
   // free(media_vet_feat_grama);
 
-   double *oi = glcm(le_imagem(0, 1));
-  for (int i = 0; i < TAM_GLCM; i++)
+  double *oi = glcm(le_imagem(0, 1));
+  for ( i = 0; i < 24; i++)
   {
-    printf("%lf\n", *(oi + i));
+   // printf("%lf\n", *(oi + i));
   }
 
   return 0;
@@ -135,7 +136,6 @@ int main()
 // Objetivo: Função principal para calcular o vetor de frequências do ILBP
 // Parâmetro: matriz em tons de cinza de uma imagems
 // Retorno: vetor de frequências
-
 int *ilbd(int *imagem)
 {
   // Declarações:
@@ -256,25 +256,27 @@ void inc_vetor(int *vetor_freq, int min_bin)
 {
   
   // Declarações:
-  double vet_glcm[TAM_VT_GLCM];
   double *vet;
-  int ***mats_glcm;
+  double ***mats_glcm;
   int i, j, n;
   // Instruções:
-  vet = vet_glcm;
-  mats_glcm = (int ***)calloc(8, sizeof(int **));
-  
+  vet = (double *)calloc(TAM_GLCM, sizeof(double));
+  if (vet == NULL){printf("deu ruim");}
+
+  mats_glcm = (double ***)calloc(8, sizeof(double **));
+  if (mats_glcm == NULL){printf("deu ruim");}
 
   for (i = 0; i < 8; i++)
   {
-    mats_glcm[i] = (int **)calloc(DIM_GLCM, sizeof(int *));
-    
+    mats_glcm[i] = (double **)calloc(DIM_GLCM, sizeof(double *));
+    if (mats_glcm[i] == NULL){printf("deu ruim");}
 
     for (j = 0; j < DIM_GLCM; j++)
     {
-      mats_glcm[i][j] = (int *)calloc(DIM_GLCM, sizeof(int));
-      verifica_aloc_int(mats_glcm[i][j]);
-    }
+      mats_glcm[i][j] = (double *)calloc(DIM_GLCM, sizeof(double));
+      verifica_aloc_double(mats_glcm[i][j]);
+      
+      }
   }
  
   
@@ -300,6 +302,7 @@ void inc_vetor(int *vetor_freq, int min_bin)
   for (n = 0; n < 8; n++)
   {
     *(vet+n) = contraste(mats_glcm[n]);
+    //printf(" fora %lf\n",*(vet+n));
     *(vet+n+8) = energia(mats_glcm[n]);
     *(vet+n+16) = homogeneidade(mats_glcm[n]);
   }
@@ -316,11 +319,10 @@ void inc_vetor(int *vetor_freq, int min_bin)
   free(mats_glcm);
 
   //obs.1:matriz glcm é 256x256
-  
 
+  
   return vet;
 }
-
 // Objetivo: Incrementa a matriz GLCM
 // Parâmetro: posição da imagem, posição vizinha, ponteiro para a GLCM
 // Retorno:
@@ -340,10 +342,10 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: contraste da matriz
 
-  double contraste(int **m_glcm)
+  double contraste(double **m_glcm)
 {
   // Declarações:
-   double n_contraste;
+   double n_contraste =0;
   int i, j;
   // Instruções:
 
@@ -354,7 +356,7 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
       n_contraste += m_glcm[i][j] * pow((i - j), 2);
     }
   }
-  //printf("%.2lf\n",n_contraste);
+  //printf("dentro = %.2lf\n",n_contraste);
   return n_contraste;
 }
 
@@ -362,10 +364,10 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: energia da matriz
  
- double energia(int **m_glcm)
+ double energia(double **m_glcm)
 {
   // Declarações:
-   double n_energia;
+   double n_energia =0;
   int i, j;
   // Instruções:
   for (i = 0; i < DIM_GLCM; i++)
@@ -381,10 +383,10 @@ void inc_glcm(int *posicao_imagem, int *vizinho, int *m_glcm)
 // Parâmetro: ponteiro para matriz glcm
 // Retorno: homogeneidade da matriz
 
- double homogeneidade(int **m_glcm)
+ double homogeneidade(double **m_glcm)
 {
   // Declarações:
-   double n_homogeneidade;
+   double n_homogeneidade = 0;
   int i, j;
   // Instruções:
 
@@ -655,6 +657,15 @@ void verifica_aloc_float(float *aloc)
   }
 }
 void verifica_aloc_int(int *aloc)
+{
+  if (aloc == NULL)
+  {
+    printf("alocaçao falhou!");
+    exit(1);
+  }
+}
+
+void verifica_aloc_double(double *aloc)
 {
   if (aloc == NULL)
   {
