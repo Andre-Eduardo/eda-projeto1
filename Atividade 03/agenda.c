@@ -7,36 +7,94 @@
 #include <ctype.h>
 #include "listaContatos.h"
 
+void limpabuffer(void);
+void imprimeMenu();
+char validaOpcao(char opcao);
+char validaSN(char opcao);
+void sair();
+
 int main(){
-    contato *lista;
-    elemento hugo[3];
+  int sent =1;
+  char opcao;
 
-    strcpy(hugo[0].nome, "Hugo");
-    strcpy(hugo[0].telefone, "99999-8888");
-    strcpy(hugo[0].endereco, "Gama-DF");
-    hugo[0].cep=72426070;
-    strcpy(hugo[0].nascimento, "30/02/1994");
+    while(sent){
+      imprimeMenu();
+      opcao=validaOpcao(opcao);
 
-    strcpy(hugo[1].nome, "Marcelo");
-    strcpy(hugo[1].telefone, "77777-8888");
-    strcpy(hugo[1].endereco, "New York-DF");
-    hugo[1].cep=72426070;
-    strcpy(hugo[1].nascimento, "40/02/1994");
-
-    strcpy(hugo[2].nome, "Tesla");
-    strcpy(hugo[2].telefone, "99998-8888");
-    strcpy(hugo[2].endereco, "Gama-DF");
-    hugo[2].cep=72426070;
-    strcpy(hugo[2].nascimento, "30/02/1978");
-
-    lista= criaListaVazia();
-    lista=insereOrdenado(lista, hugo[0]);
-    lista=insereOrdenado(lista, hugo[1]);
-    lista=insereOrdenado(lista, hugo[2]);
-    lista=insereOrdenado(lista, hugo[2]);
-    lista=insereOrdenado(lista, hugo[2]);
-    printLista(lista);
-    lista=liberaLista(lista);
+      switch(opcao){
+        case '1':
+          // novoRegistro();
+          break;
+        case '2':
+          //removeRegistro();
+          break;
+        case '3':
+          //visualizaRegistro();
+          break;
+        case '4':
+          //visualizaTodos();
+          break;
+        case '5':
+          sair();
+          break;
+        default:
+          fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
+          exit(-1);
+      }
+    }
 
     return 0;
+}
+
+void limpabuffer(void) // Funçao utilitária para limpar o buffer do teclado
+{
+char c;
+while ((c = getchar()) != '\n' && c != EOF);
+}
+
+void imprimeMenu(){
+  system("clear");
+  puts("1. Inserir novo registro");
+  puts("2. Remover registros que contenham certa string no nome");
+  puts("3. Visualizar registros que contenham certa string no nome");
+  puts("4. Visualizar todos os registros em ordem alfabética de acordo com o nome");
+  puts("5. Sair");
+  puts("\n\n\n\nEscolha uma opção para continuar:");
+
+  return;
+}
+
+char validaOpcao(char opcao){
+  opcao=getchar();
+  limpabuffer();
+  while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' && opcao!='5'){
+    puts("\n\n\n\nOpção inválida!(digite um número entre 1 e 5)");
+    opcao=getchar();
+    limpabuffer();
+  }
+  return opcao;
+}
+
+void sair(){
+  char opcao;
+  system("clear");
+  puts("Tem certeza que deseja sair?(S/N)");
+  opcao= validaSN(opcao);
+
+  if(opcao=='S' || opcao=='s'){
+    exit(0);
+  }
+
+  return;
+}
+
+char validaSN(char opcao){
+  opcao=getchar();
+  limpabuffer();
+  while(opcao!='S' && opcao!='s' && opcao!='N' && opcao!='n'){
+    puts("\n\n\n\nOpção inválida!(digite s para sim, ou n para não)");
+    opcao=getchar();
+    limpabuffer();
+  }
+  return opcao;
 }
