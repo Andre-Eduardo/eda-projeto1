@@ -1,5 +1,7 @@
 // Síntese
-// Objetivo: Biblioteca com funções para o uso de uma lista de contatos
+// Objetivo: Manipular lista de contatos
+// Entrada: Comandos, e arquivo com lista de contatos
+// Saída: lista manipulada
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,45 +16,57 @@ char validaSN(char opcao);
 void sair();
 
 int main(){
+  //Declarações:
   int sent =1;
   char opcao;
+  //Instruções:
 
-    while(sent){
-      imprimeMenu();
-      opcao=validaOpcao(opcao);
+  while(sent){
+    imprimeMenu();
+    opcao=validaOpcao(opcao);
 
-      switch(opcao){
-        case '1':
-          // novoRegistro();
-          break;
-        case '2':
-          //removeRegistro();
-          break;
-        case '3':
-          //visualizaRegistro();
-          break;
-        case '4':
-          //visualizaTodos();
-          break;
-        case '5':
-          sair();
-          break;
-        default:
-          fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
-          exit(-1);
-      }
+    switch(opcao){
+      case '1':
+        // novoRegistro();
+        break;
+      case '2':
+        //removeRegistro();
+        break;
+      case '3':
+        //visualizaRegistro();
+        break;
+      case '4':
+        //visualizaTodos();
+        break;
+      case '5':
+        sair();
+        break;
+      default:
+        fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
+        exit(-1);
     }
+  }
 
-    return 0;
+  return 0;
 }
 
-void limpabuffer(void) // Funçao utilitária para limpar o buffer do teclado
-{
-char c;
-while ((c = getchar()) != '\n' && c != EOF);
+// Objetivo: Limpar buffer do teclado
+// Parâmetro:
+// Retorno:
+void limpabuffer(void){
+  //Declarações:
+  char c;
+  //Instruções:
+  while ((c = getchar()) != '\n' && c != EOF);
 }
 
+// Objetivo: Imprimir menu principal
+// Parâmetro:
+// Retorno:
 void imprimeMenu(){
+  //Declarações:
+  
+  //Instruções:
   system("clear");
   puts("1. Inserir novo registro");
   puts("2. Remover registros que contenham certa string no nome");
@@ -64,7 +78,13 @@ void imprimeMenu(){
   return;
 }
 
+// Objetivo: Verificar se a opção escolhida consta no menu
+// Parâmetro: opção
+// Retorno: opção válida
 char validaOpcao(char opcao){
+  //Declarações:
+
+  //Instruções:
   opcao=getchar();
   limpabuffer();
   while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' && opcao!='5'){
@@ -75,8 +95,13 @@ char validaOpcao(char opcao){
   return opcao;
 }
 
+// Objetivo: Fechar o programa
+// Parâmetro:
+// Retorno:
 void sair(){
+  //Declarações:
   char opcao;
+  //Instruções:
   system("clear");
   puts("Tem certeza que deseja sair?(S/N)");
   opcao= validaSN(opcao);
@@ -88,7 +113,13 @@ void sair(){
   return;
 }
 
+// Objetivo: Verificar se a opção escolhida é válida
+// Parâmetro: opção
+// Retorno: opção válida
 char validaSN(char opcao){
+  //Declarações:
+
+  //Instruções:
   opcao=getchar();
   limpabuffer();
   while(opcao!='S' && opcao!='s' && opcao!='N' && opcao!='n'){
