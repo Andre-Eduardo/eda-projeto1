@@ -7,17 +7,22 @@
 // Objetivo: Cria lista vazia
 // Parâmetro:
 // Retorno: ponteiro nulo
-contato *criaListaVazia()
-{
-    return NULL;
+contato *criaListaVazia(){
+  //Declarações:
+
+  //Instruções:
+
+  return NULL;
 }
 
 // Objetivo: Adiciona um contato ao final da lista
 // Parâmetro: lista, dados do contato a ser adicionado
 // Retorno: lista
 contato *appendContato(contato *lista, elemento dados){
+  //Declarações:
     contato *novoContato;
     contato *elem;
+    //Instruções:
 
     novoContato = (contato *)malloc(sizeof(contato));
     if(novoContato==NULL){
@@ -46,9 +51,11 @@ contato *appendContato(contato *lista, elemento dados){
 // Parâmetro: lista, dados do contato a ser adicionado, posição para adicioná-lo
 // Retorno: lista
 contato *insereContato(contato *lista, elemento dados, int pos){
+  //Declarações:
   contato *novoContato;
   contato *elem, *fimLista;
   int i;
+  //Instruções:
 
   novoContato = (contato *)malloc(sizeof(contato));
   if(novoContato==NULL){
@@ -99,8 +106,10 @@ contato *insereContato(contato *lista, elemento dados, int pos){
 // Parâmetro: lista, dados do contato a ser adicionado
 // Retorno: lista
 contato *insereOrdenado(contato *lista, elemento dados){
+  //Declarações:
   contato *elem;
   int i=0;
+  //Instruções:
 
   if(lista==NULL){
     return appendContato(lista, dados);
@@ -124,8 +133,10 @@ contato *insereOrdenado(contato *lista, elemento dados){
 // Parâmetro: lista, posição a ser deletada
 // Retorno: lista
 contato *deletaElemento(contato *lista, int pos){
+  //Declarações:
   contato *elem, *ante, *prox;
   int i;
+  //Instruções:
 
   if(lista==NULL){
     fprintf(stderr,"Um erro ocorreu ao tentar deletar um contato...\n\n\nLista não inicializada!!!\n");
@@ -170,10 +181,12 @@ contato *deletaElemento(contato *lista, int pos){
 // Parâmetro: lista
 // Retorno:
 void printLista(contato *lista){
+  //Declarações:
   contato *contatoAtual;
+  //Instruções:
 
   if(lista==NULL){
-    printf("Não há contatos para mostrar porque a lista não foi inicializada...\n");
+    fprintf(stderr, "Não há contatos para mostrar porque a lista não foi inicializada...\n");
     return;
   }
 
@@ -192,7 +205,9 @@ void printLista(contato *lista){
 // Parâmetro: lista
 // Retorno: ponteiro nulo
 contato *liberaLista(contato *lista){
+  //Declarações:
   contato *aux, *aux2;
+  //Instruções:
 
   for(aux=lista;aux!=NULL;aux=aux2){
     aux2=aux->prox;
@@ -206,8 +221,10 @@ contato *liberaLista(contato *lista){
 // Parâmetro: lista
 // Retorno: número de elementos da lista
 int tamanhoLista(contato *lista){
+  //Declarações:
   contato *elem;
   int i;
+  //Instruções:
 
   for(i=0, elem=lista; elem!=NULL; elem=elem->prox, i++);
 
@@ -218,8 +235,10 @@ int tamanhoLista(contato *lista){
 // Parâmetro: lista, posição do elemento a ser printado
 // Retorno:
 void printElemento(contato *lista, int pos){
+  //Declarações:
   contato *contatoAtual;
   int i;
+  //Instruções:
 
   if(pos<0){
     fprintf(stderr,"Um erro ocorreu ao tentar mostrar o contato...\n\n\nPosição inválida!!!\n");
@@ -227,7 +246,7 @@ void printElemento(contato *lista, int pos){
   }
 
   if(lista==NULL){
-    printf("Não há contatos para mostrar porque a lista não foi inicializada...\n");
+    fprintf(stderr, "Não há contatos para mostrar porque a lista não foi inicializada...\n");
     return;
   }
 
@@ -236,7 +255,7 @@ void printElemento(contato *lista, int pos){
   }
 
   if(contatoAtual==NULL){
-    printf("Este contato não pode ser mostrado pois ele não foi inicializado...\n");
+    fprintf(stderr, "Este contato não pode ser mostrado pois ele não foi inicializado...\n");
     return;
   }
 
@@ -253,8 +272,10 @@ void printElemento(contato *lista, int pos){
 // Parâmetro: 2 strings
 // Retorno: 0 se forem iguais, -1 se a string1 for primeira na ordem, e 1 se a string2 for primeira na ordem
 int compString(char *string1,char *string2){
+  //Declarações:
   int i=0, fim=0, result=0;
   char charA,charB;
+  //Instruções:
 
   while(*(string1+i)!='\0' && *(string2+i)!='\0' && fim==0){
     charA=tolower(*(string1+i));
@@ -277,4 +298,34 @@ int compString(char *string1,char *string2){
   }
 
   return result;
+}
+
+// Objetivo: Acessar um elemento da lista
+// Parâmetro: lista, posição a ser acessada
+// Retorno: ponteiro para o elemento da lista
+contato *acessaElemento(contato *lista, int pos){
+  //Declarações:
+  int i;
+  contato *contatoAtual;
+  //Instruções:
+  if(pos<0){
+    fprintf(stderr,"Um erro ocorreu ao tentar acessar o contato...\n\n\nPosição inválida!!!\n");
+    return NULL;
+  }
+
+  if(lista==NULL){
+    fprintf(stderr,"Não há contatos para acessar porque a lista não foi inicializada...\n");
+    return NULL;
+  }
+
+  for(i=0, contatoAtual=lista; i<pos && contatoAtual!=NULL;i++){
+    contatoAtual=contatoAtual->prox;
+  }
+
+  if(contatoAtual==NULL){
+    fprintf(stderr, "Este contato não pode ser mostrado pois ele não foi inicializado...\n");
+    return NULL;
+  }
+
+  return contatoAtual;
 }

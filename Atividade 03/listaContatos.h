@@ -31,6 +31,7 @@ contato *insereContato(contato *lista, elemento dados, int pos);
 contato *insereOrdenado(contato *lista, elemento dados);
 contato *deletaElemento(contato *lista, int pos);
 contato *liberaLista(contato *lista);
+contato *acessaElemento(contato *lista, int pos);
 int tamanhoLista(contato *lista);
 void printLista(contato *lista);
 void printElemento(contato *lista, int pos);
