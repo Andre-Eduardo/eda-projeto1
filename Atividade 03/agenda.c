@@ -13,14 +13,15 @@ void limpabuffer(void);
 void imprimeMenu();
 char validaOpcao(char opcao);
 char validaSN(char opcao);
+void visualizaRegistro(contato *lista);
 void sair();
 
 int main(){
   //Declarações:
   int sent =1;
   char opcao;
+  contato *lista;
   //Instruções:
-
   while(sent){
     imprimeMenu();
     opcao=validaOpcao(opcao);
@@ -33,7 +34,7 @@ int main(){
         //removeRegistro();
         break;
       case '3':
-        //visualizaRegistro();
+        visualizaRegistro(lista);
         break;
       case '4':
         //visualizaTodos();
@@ -65,7 +66,7 @@ void limpabuffer(void){
 // Retorno:
 void imprimeMenu(){
   //Declarações:
-  
+
   //Instruções:
   system("clear");
   puts("1. Inserir novo registro");
@@ -128,4 +129,18 @@ char validaSN(char opcao){
     limpabuffer();
   }
   return opcao;
+}
+
+void visualizaRegistro(contato *lista){
+  //Declarações:
+
+  //Instruções:
+  system("clear");
+  printLista(lista);
+  puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
+
+  getchar();
+  limpabuffer();
+
+  return;
 }
