@@ -36,5 +36,6 @@ int tamanhoLista(contato *lista);
 void printLista(contato *lista);
 void printElemento(contato *lista, int pos);
 int compString(char *string1,char *string2);
+void ler_arq(contato *lista);
 
 #endif
