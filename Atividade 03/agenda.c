@@ -13,7 +13,9 @@ void limpabuffer(void);
 void imprimeMenu();
 char validaOpcao(char opcao);
 char validaSN(char opcao);
+void visualizaTodos(contato *lista);
 void visualizaRegistro(contato *lista);
+void removeRegistro(contato *lista);
 void sair();
 
 int main(){
@@ -22,6 +24,32 @@ int main(){
   char opcao;
   contato *lista;
   //Instruções:
+  contato *elem;
+  elemento hugo[3];
+
+  strcpy(hugo[0].nome, "Hugo");
+  strcpy(hugo[0].telefone, "99999-8888");
+  strcpy(hugo[0].endereco, "Gama-DF");
+  hugo[0].cep=72426070;
+  strcpy(hugo[0].nascimento, "30/02/1994");
+
+  strcpy(hugo[1].nome, "Marcelo");
+  strcpy(hugo[1].telefone, "77777-8888");
+  strcpy(hugo[1].endereco, "New York-DF");
+  hugo[1].cep=72426070;
+  strcpy(hugo[1].nascimento, "40/02/1994");
+
+  strcpy(hugo[2].nome, "Tesla");
+  strcpy(hugo[2].telefone, "99998-8888");
+  strcpy(hugo[2].endereco, "Gama-DF");
+  hugo[2].cep=72426070;
+  strcpy(hugo[2].nascimento, "30/02/1978");
+
+  lista=criaListaVazia();
+  lista=appendContato(lista, hugo[0]);
+  lista=appendContato(lista, hugo[1]);
+  lista=appendContato(lista, hugo[2]);
+
   while(sent){
     imprimeMenu();
     opcao=validaOpcao(opcao);
@@ -31,13 +59,13 @@ int main(){
         // novoRegistro();
         break;
       case '2':
-        //removeRegistro();
+        removeRegistro(lista);
         break;
       case '3':
         visualizaRegistro(lista);
         break;
       case '4':
-        //visualizaTodos();
+        visualizaTodos(lista);
         break;
       case '5':
         sair();
@@ -47,6 +75,8 @@ int main(){
         exit(-1);
     }
   }
+
+
 
   return 0;
 }
@@ -131,13 +161,84 @@ char validaSN(char opcao){
   return opcao;
 }
 
-void visualizaRegistro(contato *lista){
+// Objetivo: Visualizar todos os contatos cadastrados
+// Parâmetro: lista
+// Retorno:
+void visualizaTodos(contato *lista){
   //Declarações:
 
   //Instruções:
   system("clear");
   printLista(lista);
   puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
+
+  getchar();
+  limpabuffer();
+
+  return;
+}
+
+// Objetivo: Visualizar todos os contatos com determinada string
+// Parâmetro: lista
+// Retorno:
+void visualizaRegistro(contato *lista){
+  //Declarações:
+  char palavra[100];
+  contato *contatoAtual;
+  //Instruções:
+  system("clear");
+
+  puts("Digite o nome a ser buscado:");
+  fgets(palavra, 100, stdin);
+  palavra[strlen(palavra)-1]='\0';
+
+  contatoAtual=lista;
+  contatoAtual=procuraElemento(contatoAtual, palavra);
+  if(contatoAtual==NULL){
+    printf("Não foi encontrado nenhum contato com o nome %s\n", palavra);
+    getchar();
+    limpabuffer();
+    return;
+  }
+  while(contatoAtual!=NULL){
+    printElemento(contatoAtual, 0);
+    contatoAtual=procuraElemento(contatoAtual->prox, palavra);
+  }
+
+  puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
+
+  getchar();
+  limpabuffer();
+
+  return;
+}
+// Objetivo: Reomove todos os contatos com determinada string
+// Parâmetro: lista
+// Retorno:
+void removeRegistro(contato *lista){
+  //Declarações:
+  char palavra[100];
+  contato *contatoAtual;
+  //Instruções:
+  system("clear");
+
+  puts("Digite o nome do registro a ser deletado:");
+  fgets(palavra, 100, stdin);
+  palavra[strlen(palavra)-1]='\0';
+
+  contatoAtual=procuraElemento(lista, palavra);
+  if(contatoAtual==NULL){
+    printf("Não foi encontrado nenhum contato com o nome %s\n", palavra);
+    getchar();
+    limpabuffer();
+    return;
+  }
+  while(contatoAtual!=NULL){
+    contatoAtual=deletaElemento(contatoAtual, 0);
+    contatoAtual=procuraElemento(contatoAtual, palavra);
+  }
+
+  puts("\n\n\n\nRegistros excluídos com sucesso!!!\nAperte qualquer coisa para continuar...\n");
 
   getchar();
   limpabuffer();

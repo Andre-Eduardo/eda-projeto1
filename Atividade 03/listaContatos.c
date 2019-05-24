@@ -3,11 +3,11 @@
 
 #include "listaContatos.h"
 
+
 // Objetivo: Cria lista vazia
 // Parâmetro:
 // Retorno: ponteiro nulo
-contato *criaListaVazia()
-{
+contato *criaListaVazia(){
   //Declarações:
 
   //Instruções:
@@ -18,47 +18,39 @@ contato *criaListaVazia()
 // Objetivo: Adiciona um contato ao final da lista
 // Parâmetro: lista, dados do contato a ser adicionado
 // Retorno: lista
-contato *appendContato(contato *lista, elemento dados)
-{
+contato *appendContato(contato *lista, elemento dados){
   //Declarações:
-  contato *novoContato;
-  contato *elem;
-  //Instruções:
+    contato *novoContato;
+    contato *elem;
+    //Instruções:
 
-  novoContato = (contato *)malloc(sizeof(contato));
-  if (novoContato == NULL)
-  {
-    fprintf(stderr, "Erro ao alocar novo contato\n");
-    return NULL;
-  }
-
-  if (lista != NULL)
-  {
-    for (elem = lista; elem->prox != NULL; elem = elem->prox)
-    {
+    novoContato = (contato *)malloc(sizeof(contato));
+    if(novoContato==NULL){
+        fprintf(stderr,"Erro ao alocar novo contato\n");
+        return NULL;
     }
 
-    novoContato->dados = dados;
-    elem->prox = novoContato;
-    novoContato->ante = elem;
-    novoContato->prox = NULL;
-  }
-  else
-  {
-    novoContato->dados = dados;
-    novoContato->ante = NULL;
-    novoContato->prox = NULL;
-    lista = novoContato;
-  }
+    if(lista!=NULL){
+      for(elem=lista; elem->prox!=NULL;elem=elem->prox){}
 
-  return lista;
+      novoContato->dados=dados;
+      elem->prox=novoContato;
+      novoContato->ante=elem;
+      novoContato->prox=NULL;
+    }else{
+      novoContato->dados=dados;
+      novoContato->ante=NULL;
+      novoContato->prox=NULL;
+      lista=novoContato;
+    }
+
+    return lista;
 }
 
 // Objetivo: Inserir um contato em uma posição da lista
 // Parâmetro: lista, dados do contato a ser adicionado, posição para adicioná-lo
 // Retorno: lista
-contato *insereContato(contato *lista, elemento dados, int pos)
-{
+contato *insereContato(contato *lista, elemento dados, int pos){
   //Declarações:
   contato *novoContato;
   contato *elem, *fimLista;
@@ -66,59 +58,46 @@ contato *insereContato(contato *lista, elemento dados, int pos)
   //Instruções:
 
   novoContato = (contato *)malloc(sizeof(contato));
-  if (novoContato == NULL)
-  {
-    fprintf(stderr, "Erro ao alocar novo contato\n");
+  if(novoContato==NULL){
+    fprintf(stderr,"Erro ao alocar novo contato\n");
     return NULL;
   }
-  if (pos < 0)
-  {
-    fprintf(stderr, "Um erro ocorreu ao tentar inserir um novo contato...\n\n\nPosição inválida!!!\n");
+  if(pos<0){
+    fprintf(stderr,"Um erro ocorreu ao tentar inserir um novo contato...\n\n\nPosição inválida!!!\n");
     return NULL;
   }
 
-  if (lista != NULL)
-  {
-    for (i = 0, elem = lista; i < pos && elem != NULL; i++)
-    {
-      if (elem->prox == NULL)
-      {
-        fimLista = elem;
+  if(lista!=NULL){
+    for(i=0,elem=lista;i<pos && elem!=NULL;i++){
+      if(elem->prox==NULL){
+        fimLista=elem;
       }
-      elem = elem->prox;
+      elem=elem->prox;
     }
 
-    if (elem != NULL)
-    {
-      novoContato->dados = dados;
-      novoContato->prox = elem;
-      novoContato->ante = elem->ante;
-      elem->ante = novoContato;
-      elem = novoContato->ante;
-      if (elem != NULL)
-      {
-        elem->prox = novoContato;
+    if(elem!=NULL){
+      novoContato->dados=dados;
+      novoContato->prox=elem;
+      novoContato->ante=elem->ante;
+      elem->ante=novoContato;
+      elem=novoContato->ante;
+      if(elem!=NULL){
+        elem->prox=novoContato;
       }
+    }else{
+      novoContato->dados=dados;
+      novoContato->prox=NULL;
+      novoContato->ante=fimLista;
+      fimLista->prox=novoContato;
     }
-    else
-    {
-      novoContato->dados = dados;
-      novoContato->prox = NULL;
-      novoContato->ante = fimLista;
-      fimLista->prox = novoContato;
-    }
-  }
-  else
-  {
-    novoContato->dados = dados;
-    novoContato->ante = NULL;
-    novoContato->prox = NULL;
-    lista = novoContato;
+  }else{
+    novoContato->dados=dados;
+    novoContato->ante=NULL;
+    novoContato->prox=NULL;
+    lista=novoContato;
   }
 
-  for (; lista->ante != NULL; lista = lista->ante)
-  {
-  }
+  for(;lista->ante!=NULL;lista=lista->ante){}
 
   return lista;
 }
@@ -126,28 +105,24 @@ contato *insereContato(contato *lista, elemento dados, int pos)
 // Objetivo: Inserir elemento na lista em ordem alfabética
 // Parâmetro: lista, dados do contato a ser adicionado
 // Retorno: lista
-contato *insereOrdenado(contato *lista, elemento dados)
-{
+contato *insereOrdenado(contato *lista, elemento dados){
   //Declarações:
   contato *elem;
-  int i = 0;
+  int i=0;
   //Instruções:
 
-  if (lista == NULL)
-  {
+  if(lista==NULL){
     return appendContato(lista, dados);
   }
 
-  elem = lista;
+  elem=lista;
 
-  while (elem != NULL)
-  {
-    if (compString(dados.nome, elem->dados.nome) < 0)
-    {
+  while(elem!=NULL){
+    if(compString(dados.nome, elem->dados.nome)<0){
       return insereContato(lista, dados, i);
     }
 
-    elem = elem->prox;
+    elem=elem->prox;
     i++;
   }
 
@@ -157,55 +132,45 @@ contato *insereOrdenado(contato *lista, elemento dados)
 // Objetivo: Deletar contato da lista
 // Parâmetro: lista, posição a ser deletada
 // Retorno: lista
-contato *deletaElemento(contato *lista, int pos)
-{
+contato *deletaElemento(contato *lista, int pos){
   //Declarações:
   contato *elem, *ante, *prox;
   int i;
   //Instruções:
 
-  if (lista == NULL)
-  {
-    fprintf(stderr, "Um erro ocorreu ao tentar deletar um contato...\n\n\nLista não inicializada!!!\n");
+  if(lista==NULL){
+    fprintf(stderr,"Um erro ocorreu ao tentar deletar um contato...\n\n\nLista não inicializada!!!\n");
     return NULL;
   }
-  if (pos < 0)
-  {
-    fprintf(stderr, "Um erro ocorreu ao tentar deletar um contato...\n\n\nPosição inválida!!!\n");
-    return NULL;
-  }
-
-  for (i = 0, elem = lista; i < pos && elem != NULL; i++)
-  {
-    elem = elem->prox;
-  }
-
-  if (i != pos || elem == NULL)
-  {
-    fprintf(stderr, "Um erro ocorreu ao tentar deletar um contato...\n\n\nPosição inválida!!!\n");
+  if(pos<0){
+    fprintf(stderr,"Um erro ocorreu ao tentar deletar um contato...\n\n\nPosição inválida!!!\n");
     return NULL;
   }
 
-  prox = elem->prox;
-  ante = elem->ante;
-
-  if (ante != NULL)
-  {
-    ante->prox = elem->prox;
+  for(i=0,elem=lista;i<pos && elem!=NULL; i++){
+    elem=elem->prox;
   }
 
-  if (prox != NULL)
-  {
-    prox->ante = elem->ante;
+  if(i!=pos || elem==NULL){
+    fprintf(stderr,"Um erro ocorreu ao tentar deletar um contato...\n\n\nPosição inválida!!!\n");
+    return NULL;
   }
 
-  if (ante != NULL)
-  {
+  prox=elem->prox;
+  ante=elem->ante;
+
+  if(ante!=NULL){
+    ante->prox=elem->prox;
+  }
+
+  if(prox!=NULL){
+    prox->ante=elem->ante;
+  }
+
+  if(ante!=NULL){
     free(elem);
-  }
-  else
-  {
-    lista = elem->prox;
+  }else{
+    lista=elem->prox;
     free(elem);
   }
 
@@ -215,25 +180,22 @@ contato *deletaElemento(contato *lista, int pos)
 // Objetivo: Imprime os elementos da lista na tela
 // Parâmetro: lista
 // Retorno:
-void printLista(contato *lista)
-{
+void printLista(contato *lista){
   //Declarações:
   contato *contatoAtual;
   //Instruções:
 
-  if (lista == NULL)
-  {
+  if(lista==NULL){
     fprintf(stderr, "Não há contatos para mostrar porque a lista não foi inicializada...\n");
     return;
   }
 
-  for (contatoAtual = lista; contatoAtual != NULL; contatoAtual = contatoAtual->prox)
-  {
-    printf("Nome:%s\n", contatoAtual->dados.nome);
-    printf("Telefone:%s\n", contatoAtual->dados.telefone);
-    printf("Endereço:%s\n", contatoAtual->dados.endereco);
-    printf("CEP:%d\n", contatoAtual->dados.cep);
-    printf("Nascimento:%s\n\n", contatoAtual->dados.nascimento);
+  for(contatoAtual=lista; contatoAtual!=NULL;contatoAtual=contatoAtual->prox){
+    printf("Nome:%s\n",contatoAtual->dados.nome);
+    printf("Telefone:%s\n",contatoAtual->dados.telefone);
+    printf("Endereço:%s\n",contatoAtual->dados.endereco);
+    printf("CEP:%d\n",contatoAtual->dados.cep);
+    printf("Nascimento:%s\n\n",contatoAtual->dados.nascimento);
   }
 
   return;
@@ -242,15 +204,13 @@ void printLista(contato *lista)
 // Objetivo: Apagar a lista
 // Parâmetro: lista
 // Retorno: ponteiro nulo
-contato *liberaLista(contato *lista)
-{
+contato *liberaLista(contato *lista){
   //Declarações:
   contato *aux, *aux2;
   //Instruções:
 
-  for (aux = lista; aux != NULL; aux = aux2)
-  {
-    aux2 = aux->prox;
+  for(aux=lista;aux!=NULL;aux=aux2){
+    aux2=aux->prox;
     free(aux);
   }
 
@@ -260,15 +220,13 @@ contato *liberaLista(contato *lista)
 // Objetivo: Calcula a quantidade de elementos na lista
 // Parâmetro: lista
 // Retorno: número de elementos da lista
-int tamanhoLista(contato *lista)
-{
+int tamanhoLista(contato *lista){
   //Declarações:
   contato *elem;
   int i;
   //Instruções:
 
-  for (i = 0, elem = lista; elem != NULL; elem = elem->prox, i++)
-    ;
+  for(i=0, elem=lista; elem!=NULL; elem=elem->prox, i++);
 
   return i;
 }
@@ -276,41 +234,36 @@ int tamanhoLista(contato *lista)
 // Objetivo: Imprimir um elemento da lista na tela
 // Parâmetro: lista, posição do elemento a ser printado
 // Retorno:
-void printElemento(contato *lista, int pos)
-{
+void printElemento(contato *lista, int pos){
   //Declarações:
   contato *contatoAtual;
   int i;
   //Instruções:
 
-  if (pos < 0)
-  {
-    fprintf(stderr, "Um erro ocorreu ao tentar mostrar o contato...\n\n\nPosição inválida!!!\n");
+  if(pos<0){
+    fprintf(stderr,"Um erro ocorreu ao tentar mostrar o contato...\n\n\nPosição inválida!!!\n");
     return;
   }
 
-  if (lista == NULL)
-  {
+  if(lista==NULL){
     fprintf(stderr, "Não há contatos para mostrar porque a lista não foi inicializada...\n");
     return;
   }
 
-  for (i = 0, contatoAtual = lista; i < pos && contatoAtual != NULL; i++)
-  {
-    contatoAtual = contatoAtual->prox;
+  for(i=0, contatoAtual=lista; i<pos && contatoAtual!=NULL;i++){
+    contatoAtual=contatoAtual->prox;
   }
 
-  if (contatoAtual == NULL)
-  {
+  if(contatoAtual==NULL){
     fprintf(stderr, "Este contato não pode ser mostrado pois ele não foi inicializado...\n");
     return;
   }
 
-  printf("Nome:%s\n", contatoAtual->dados.nome);
-  printf("Telefone:%s\n", contatoAtual->dados.telefone);
-  printf("Endereço:%s\n", contatoAtual->dados.endereco);
-  printf("CEP:%d\n", contatoAtual->dados.cep);
-  printf("Nascimento:%s\n\n", contatoAtual->dados.nascimento);
+  printf("Nome:%s\n",contatoAtual->dados.nome);
+  printf("Telefone:%s\n",contatoAtual->dados.telefone);
+  printf("Endereço:%s\n",contatoAtual->dados.endereco);
+  printf("CEP:%d\n",contatoAtual->dados.cep);
+  printf("Nascimento:%s\n\n",contatoAtual->dados.nascimento);
 
   return;
 }
@@ -318,40 +271,30 @@ void printElemento(contato *lista, int pos)
 // Objetivo: Compara 2 strings, para decidir a ordem alfabética delas
 // Parâmetro: 2 strings
 // Retorno: 0 se forem iguais, -1 se a string1 for primeira na ordem, e 1 se a string2 for primeira na ordem
-int compString(char *string1, char *string2)
-{
+int compString(char *string1,char *string2){
   //Declarações:
-  int i = 0, fim = 0, result = 0;
-  char charA, charB;
+  int i=0, fim=0, result=0;
+  char charA,charB;
   //Instruções:
 
-  while (*(string1 + i) != '\0' && *(string2 + i) != '\0' && fim == 0)
-  {
-    charA = tolower(*(string1 + i));
-    charB = tolower(*(string2 + i));
-    if (charA == charB)
-    {
+  while(*(string1+i)!='\0' && *(string2+i)!='\0' && fim==0){
+    charA=tolower(*(string1+i));
+    charB=tolower(*(string2+i));
+    if(charA==charB){
       i++;
-    }
-    else if (charA > charB)
-    {
-      fim = 1;
-      result = 1;
-    }
-    else
-    {
-      fim = 1;
-      result = -1;
+    }else if(charA>charB){
+      fim=1;
+      result=1;
+    }else{
+      fim=1;
+      result=-1;
     }
   }
 
-  if (*(string1 + i) == '\0' && *(string2 + i) != '\0')
-  {
-    result = -1;
-  }
-  else if (*(string2 + i) == '\0' && *(string1 + i) != '\0')
-  {
-    result = 1;
+  if(*(string1+i)=='\0' && *(string2+i)!='\0'){
+    result=-1;
+  }else if(*(string2+i)=='\0' && *(string1+i)!='\0'){
+    result=1;
   }
 
   return result;
@@ -360,31 +303,26 @@ int compString(char *string1, char *string2)
 // Objetivo: Acessar um elemento da lista
 // Parâmetro: lista, posição a ser acessada
 // Retorno: ponteiro para o elemento da lista
-contato *acessaElemento(contato *lista, int pos)
-{
+contato *acessaElemento(contato *lista, int pos){
   //Declarações:
   int i;
   contato *contatoAtual;
   //Instruções:
-  if (pos < 0)
-  {
-    fprintf(stderr, "Um erro ocorreu ao tentar acessar o contato...\n\n\nPosição inválida!!!\n");
+  if(pos<0){
+    fprintf(stderr,"Um erro ocorreu ao tentar acessar o contato...\n\n\nPosição inválida!!!\n");
     return NULL;
   }
 
-  if (lista == NULL)
-  {
-    fprintf(stderr, "Não há contatos para acessar porque a lista não foi inicializada...\n");
+  if(lista==NULL){
+    fprintf(stderr,"Não há contatos para acessar porque a lista não foi inicializada...\n");
     return NULL;
   }
 
-  for (i = 0, contatoAtual = lista; i < pos && contatoAtual != NULL; i++)
-  {
-    contatoAtual = contatoAtual->prox;
+  for(i=0, contatoAtual=lista; i<pos && contatoAtual!=NULL;i++){
+    contatoAtual=contatoAtual->prox;
   }
 
-  if (contatoAtual == NULL)
-  {
+  if(contatoAtual==NULL){
     fprintf(stderr, "Este contato não pode ser mostrado pois ele não foi inicializado...\n");
     return NULL;
   }
@@ -437,4 +375,55 @@ contato* ler_arq(contato *lista)
 
   fclose(arq);
   return lista;
+}
+
+
+// Objetivo: Procura elemento na lista com determinada string no nome
+// Parâmetro: lista, string a se procurar
+// Retorno: ponteiro para o primeiro elemento da lista com a determinada string
+contato *procuraElemento(contato *lista, char *palavra){
+  //Declarações:
+  contato *contatoAtual;
+  //Instruções:
+
+  for(contatoAtual=lista; contatoAtual!=NULL && ocorrenciaString(contatoAtual->dados.nome, palavra)==0;){
+     contatoAtual=contatoAtual->prox;
+  }
+
+  if(contatoAtual==NULL){
+    return NULL;
+  }
+
+  return contatoAtual;
+}
+
+// Objetivo: Procura um texto dentro de outro texto
+// Parâmetro: texto para se procurar, texto a ser procurado
+// Retorno: Número de ocorrências do texto
+int ocorrenciaString(char *texto, char *palavra){
+  //Declarações:
+  int i, aux, sent=1;
+  int ocorrencias=0;
+  //Instruções:
+  for(i=0; *(texto+i)!='\0'; i++){
+    if(tolower(*(texto+i))==tolower(*(palavra))){
+      sent=0;
+      ocorrencias++;
+      for(aux=0;sent==0; aux++){
+        if( *(palavra+aux)=='\0' ){
+          sent=1;
+        }else if(*(texto+i+aux)=='\0'){
+          sent=1;
+          ocorrencias--;
+        }else{
+          if(tolower(*(texto+i+aux))!=tolower(*(palavra+aux))){
+            sent=1;
+            ocorrencias--;
+          }
+        }
+      }
+    }
+  }
+
+  return ocorrencias;
 }
