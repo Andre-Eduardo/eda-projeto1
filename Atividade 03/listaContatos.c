@@ -395,41 +395,46 @@ contato *acessaElemento(contato *lista, int pos)
 // Objetivo: buscar dados do arquivo
 // Parâmetro: ponteiro para uma lista,
 // Retorno: lista com valores obtidos do arquivo
-void ler_arq(contato *lista)
+contato* ler_arq(contato *lista)
 {
   int quantidade = 0;
   FILE *arq;
-  char string[100];
-  char *separador;
+  char string[103];
+
   elemento dados;
-  arq = fopen("contato.txt", "rt");
+  arq = fopen("contato.txt", "r");
   while (!feof(arq))
   {
-    separador = fgets(string, 2, arq);
-    if ((*separador == '$'))
+    fgets(string, 103, arq);
+    
+    if ((string[0] == '$'))
     {
       quantidade += 1;
     }
   }
-  fclose(arq);
-  arq = fopen("contato.txt", "rt");
+
+ 
+  fseek(arq, 0, SEEK_SET);
   if (arq == NULL)
   {
     printf("Problemas na leitura do arquivo\n");
-    return;
+    return NULL;
   }
 
-  for (size_t i = 0; i < quantidade; i++)
+  for (size_t i = 0; i < quantidade- 1; i++)
   {
-    // Lê uma linha (inclusive com o '\n')
-     sprintf( dados.nome, "%s",fgets(string, 100, arq));
+    
+    //Lê uma linha (inclusive com o '\n')
+    sprintf( dados.nome, "%s",fgets(string, 100, arq));
      sprintf( dados.telefone, "%s",fgets(string, 12, arq));
      sprintf( dados.endereco, "%s",fgets(string, 102, arq));
      dados.cep = atoi(fgets(string, 100, arq));
      sprintf( dados.nascimento, "%s",fgets(string, 12, arq));
-    separador = fgets(string, 2, arq);
-    appendContato(lista, dados);
+    fgets(string, 2, arq);
+   lista = insereOrdenado(lista, dados);
+    
   }
 
   fclose(arq);
+  return lista;
 }
