@@ -427,3 +427,31 @@ int ocorrenciaString(char *texto, char *palavra){
 
   return ocorrencias;
 }
+
+// Objetivo: salva elementos no arquivo
+// Parâmetro: lista
+// Retorno:
+void salva_arq(contato *lista){
+  //Declarações:
+  contato *contatoAtual;
+  //Instruções:
+
+    FILE *arq;
+    arq = fopen ("teste.txt", "w");
+    if (arq == NULL) {
+       printf ("Houve um erro ao abrir o arquivo.\n");
+       return ;
+    }
+
+  for(contatoAtual=lista; contatoAtual!=NULL;contatoAtual=contatoAtual->prox){
+    fprintf(arq, "%s\n", contatoAtual->dados.nome);
+    fprintf(arq, "%s\n", contatoAtual->dados.telefone);
+    fprintf(arq, "%s\n", contatoAtual->dados.endereco);
+    fprintf(arq, "%d\n", contatoAtual->dados.cep);
+    fprintf(arq, "%s\n", contatoAtual->dados.nascimento);
+    fprintf(arq, "$\n");
+    
+  }
+fclose (arq);
+  return;
+}

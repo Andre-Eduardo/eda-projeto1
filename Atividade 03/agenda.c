@@ -50,6 +50,8 @@ int main(){
   lista=appendContato(lista, hugo[1]);
   lista=appendContato(lista, hugo[2]);
 
+  salva_arq(lista);
+
   while(sent){
     imprimeMenu();
     opcao=validaOpcao(opcao);

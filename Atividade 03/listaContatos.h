@@ -39,5 +39,6 @@ void printElemento(contato *lista, int pos);
 int compString(char *string1,char *string2);
 contato* ler_arq(contato *lista);
 int ocorrenciaString(char *texto, char *palavra);
+void salva_arq(contato *lista);
 
 #endif
