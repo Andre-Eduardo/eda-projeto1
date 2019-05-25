@@ -15,6 +15,10 @@ char validaOpcao(char opcao);
 char validaSN(char opcao);
 void visualizaRegistro(contato *lista);
 void novoRegistro();
+void verificaNome();
+void verificaCep();
+void verificaTelefone();
+void verificaNascimento();
 void sair();
 
 int main(){
@@ -146,26 +150,113 @@ char validaSN(char opcao){
 //  return;
 //}
 
+void visualizaRegistro(contato *lista){
+  //Declarações:
+
+  //Instruções:
+  system("clear");
+  printLista(lista);
+  puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
+
+  getchar();
+  limpabuffer();
+
+  return;
+}
+
+//objetivo: adicionar um novo registro de contato
 void novoRegistro(){
   elemento dado;
 
+  
   puts("Digite o nome: ");
   fgets(dado.nome, 100, stdin);
+  limpabuffer();
   
   puts("Digite o telefone: ");
   fgets(dado.telefone, 10, stdin);
+  limpabuffer();
   
   puts("Digite o endereco: ");
   fgets(dado.endereco, 100, stdin);
-  //puts("Digite o cep: ");
-  //scanf("%d", dado.cep);
+  limpabuffer();
+  
+  puts("Digite o cep: ");
+  scanf("%d", &dado.cep);
+  limpabuffer();
+  
+  
   puts("Digite a data de nascimento: ");
   fgets(dado.nascimento, 10, stdin);
+  limpabuffer();
 
   printf("Nome:%s\n", dado.nome);
   printf("Telefone:%s\n",dado.telefone);
   printf("Endereço:%s\n",dado.endereco);
-  //printf("CEP:%\n",dado.cep);
-  printf("Nascimento:%s\n\n",dado.nascimento);
+  printf("CEP:%d\n", dado.cep);
+  printf("Nascimento:%s\n", dado.nascimento);
 
+  getchar();
+  limpabuffer();
+
+  return;
+}
+
+//objetivo: verificar se o nome eh valido
+void verificaNome(){
+  elemento dado; 
+
+  for(int i = 0; dado.nome[i] != '\0'; i++){
+    if(dado.nome[i] < 'a' || dado.nome > 'z'){
+      break;
+    }
+  }
+  
+
+
+  return;
+}
+
+// objetivo: verificar se o telefone eh valido
+void verificaTelefone(){
+  elemento dado;
+  int tamanho;
+  tamanho = strlen(dado.telefone);
+  
+  if(tamanho > 11){
+    puts("Numero do telefone invalido!\n");
+  }
+
+  return;  
+}
+
+//objetivo: verificar se o cep eh valido
+void verificaCep(){
+  elemento dado;
+  int totalDigitos = 0;
+
+  while(dado.cep != 0){
+    totalDigitos = totalDigitos + 1;
+    dado.cep = dado.cep / 10;
+  }
+   
+  if(totalDigitos != 8){
+    puts("CEP invalido!\n");
+  }
+  
+  return;
+}
+
+//objtivo: verificar se a data de nascimento eh valida
+void verificaNascimento(){
+  elemento dado;
+
+  if(dado.nascimento > 2019){
+    puts("Data de nascimento invalida!\n");
+  }
+  else if(dado.nascimento < 1903){
+    puts("Data de nascimento invalida!\n")
+  }
+
+  return;
 }
