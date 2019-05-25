@@ -246,4 +246,8 @@ void removeRegistro(contato *lista){
   limpabuffer();
 
   return;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> cd6b74e8a0662c6f98611f6255d627f33e80bb95
