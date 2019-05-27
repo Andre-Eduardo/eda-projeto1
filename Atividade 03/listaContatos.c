@@ -150,6 +150,7 @@ contato *deletaElemento(contato *lista, int pos){
   for(i=0,elem=lista;i<pos && elem!=NULL; i++){
     elem=elem->prox;
   }
+  for(;lista->ante!=NULL;lista=lista->ante){}
 
   if(i!=pos || elem==NULL){
     fprintf(stderr,"Um erro ocorreu ao tentar deletar um contato...\n\n\nPosição inválida!!!\n");
@@ -341,36 +342,43 @@ contato* ler_arq(contato *lista)
 
   elemento dados;
   arq = fopen("contato.txt", "r");
-  while (!feof(arq))
-  {
-    fgets(string, 103, arq);
-    
-    if ((string[0] == '$'))
-    {
-      quantidade += 1;
-    }
-  }
 
- 
-  fseek(arq, 0, SEEK_SET);
   if (arq == NULL)
   {
     printf("Problemas na leitura do arquivo\n");
     return NULL;
   }
 
+  while (!feof(arq))
+  {
+    fgets(string, 103, arq);
+
+    if ((string[0] == '$'))
+    {
+      quantidade += 1;
+    }
+  }
+
+
+  fseek(arq, 0, SEEK_SET);
+
   for (size_t i = 0; i < quantidade- 1; i++)
   {
-    
+
     //Lê uma linha (inclusive com o '\n')
-    sprintf( dados.nome, "%s",fgets(string, 100, arq));
-     sprintf( dados.telefone, "%s",fgets(string, 12, arq));
-     sprintf( dados.endereco, "%s",fgets(string, 102, arq));
-     dados.cep = atoi(fgets(string, 100, arq));
-     sprintf( dados.nascimento, "%s",fgets(string, 12, arq));
-    fgets(string, 2, arq);
-   lista = insereOrdenado(lista, dados);
-    
+
+    fgets(dados.nome, 101, arq);
+    ftiraBarraN(dados.nome, arq);
+    fgets(dados.telefone, 11, arq);
+    ftiraBarraN(dados.telefone, arq);
+    fgets(dados.endereco, 101, arq);
+    ftiraBarraN(dados.endereco, arq);
+    dados.cep = atoi(fgets(string, 100, arq));
+    fgets(dados.nascimento, 11, arq);
+    ftiraBarraN(dados.nascimento, arq);
+    fgets(string, 4, arq);
+    lista = insereOrdenado(lista, dados);
+
   }
 
   fclose(arq);
@@ -388,10 +396,6 @@ contato *procuraElemento(contato *lista, char *palavra){
 
   for(contatoAtual=lista; contatoAtual!=NULL && ocorrenciaString(contatoAtual->dados.nome, palavra)==0;){
      contatoAtual=contatoAtual->prox;
-  }
-
-  if(contatoAtual==NULL){
-    return NULL;
   }
 
   return contatoAtual;
@@ -436,12 +440,12 @@ void salva_arq(contato *lista){
   contato *contatoAtual;
   //Instruções:
 
-    FILE *arq;
-    arq = fopen ("teste.txt", "w");
-    if (arq == NULL) {
-       printf ("Houve um erro ao abrir o arquivo.\n");
-       return ;
-    }
+  FILE *arq;
+  arq = fopen("contato.txt", "w");
+  if (arq == NULL) {
+     printf("Houve um erro ao abrir o arquivo.\n");
+     return ;
+  }
 
   for(contatoAtual=lista; contatoAtual!=NULL;contatoAtual=contatoAtual->prox){
     fprintf(arq, "%s\n", contatoAtual->dados.nome);
@@ -450,8 +454,40 @@ void salva_arq(contato *lista){
     fprintf(arq, "%d\n", contatoAtual->dados.cep);
     fprintf(arq, "%s\n", contatoAtual->dados.nascimento);
     fprintf(arq, "$\n");
-    
   }
-fclose (arq);
+  fclose(arq);
   return;
+}
+
+void ftiraBarraN(char *string, FILE *arq){
+  //Declarações:
+  char c;
+  //Instruções:
+  
+  if(string[strlen(string)-1]=='\n')
+    string[strlen(string)-1]='\0';
+  else{
+    while ((c = fgetc(arq)) != '\n' && c != EOF);
+  }
+
+  return;
+}
+
+void tiraBarraN(char *string){
+  if(string[strlen(string)-1]=='\n')
+    string[strlen(string)-1]='\0';
+  else
+    limpabuffer();
+
+  return;
+}
+
+// Objetivo: Limpar buffer do teclado
+// Parâmetro:
+// Retorno:
+void limpabuffer(void){
+  //Declarações:
+  char c;
+  //Instruções:
+  while ((c = getchar()) != '\n' && c != EOF);
 }

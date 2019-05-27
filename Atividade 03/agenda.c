@@ -15,20 +15,19 @@ Hugo Aragão de Oliveira - 16/0124581
 #include <ctype.h>
 #include "listaContatos.h"
 
-void limpabuffer(void);
 void imprimeMenu();
 char validaOpcao(char opcao);
 char validaSN(char opcao);
 void visualizaTodos(contato *lista);
 void visualizaRegistro(contato *lista);
-void removeRegistro(contato *lista);
+contato *removeRegistro(contato *lista);
 contato *novoRegistro(contato *lista);
 void verificaNome(char *);
 unsigned int verificaCep(unsigned int);
 void verificaTelefone(char *);
 void verificaNascimento(char *);
 void verificaEndereco(char *);
-void sair();
+void sair(contato *lista);
 
 int main(){
   //Declarações:
@@ -36,33 +35,8 @@ int main(){
   char opcao;
   contato *lista;
   //Instruções:
-  contato *elem;
-  elemento hugo[3];
+  lista=ler_arq(lista);
 
-  strcpy(hugo[0].nome, "Hugo");
-  strcpy(hugo[0].telefone, "99999-8888");
-  strcpy(hugo[0].endereco, "Gama-DF");
-  hugo[0].cep=72426070;
-  strcpy(hugo[0].nascimento, "30/02/1994");
-
-  strcpy(hugo[1].nome, "Marcelo");
-  strcpy(hugo[1].telefone, "77777-8888");
-  strcpy(hugo[1].endereco, "New York-DF");
-  hugo[1].cep=72426070;
-  strcpy(hugo[1].nascimento, "40/02/1994");
-
-  strcpy(hugo[2].nome, "Tesla");
-  strcpy(hugo[2].telefone, "99998-8888");
-  strcpy(hugo[2].endereco, "Gama-DF");
-  hugo[2].cep=72426070;
-  strcpy(hugo[2].nascimento, "30/02/1978");
-
-  lista=criaListaVazia();
-  lista=appendContato(lista, hugo[0]);
-  lista=appendContato(lista, hugo[1]);
-  lista=appendContato(lista, hugo[2]);
-
-  salva_arq(lista);
 
   while(sent){
     imprimeMenu();
@@ -70,10 +44,10 @@ int main(){
 
     switch(opcao){
       case '1':
-        novoRegistro(lista);
+        lista=novoRegistro(lista);
         break;
       case '2':
-        removeRegistro(lista);
+        lista=removeRegistro(lista);
         break;
       case '3':
         visualizaRegistro(lista);
@@ -82,7 +56,7 @@ int main(){
         visualizaTodos(lista);
         break;
       case '5':
-        sair();
+        sair(lista);
         break;
       default:
         fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
@@ -93,16 +67,6 @@ int main(){
 
 
   return 0;
-}
-
-// Objetivo: Limpar buffer do teclado
-// Parâmetro:
-// Retorno:
-void limpabuffer(void){
-  //Declarações:
-  char c;
-  //Instruções:
-  while ((c = getchar()) != '\n' && c != EOF);
 }
 
 // Objetivo: Imprimir menu principal
@@ -143,7 +107,7 @@ char validaOpcao(char opcao){
 // Objetivo: Fechar o programa
 // Parâmetro:
 // Retorno:
-void sair(){
+void sair(contato *lista){
   //Declarações:
   char opcao;
   //Instruções:
@@ -152,6 +116,7 @@ void sair(){
   opcao= validaSN(opcao);
 
   if(opcao=='S' || opcao=='s'){
+    salva_arq(lista);
     exit(0);
   }
 
@@ -186,7 +151,6 @@ void visualizaTodos(contato *lista){
   printLista(lista);
   puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
 
-  getchar();
   limpabuffer();
 
   return;
@@ -204,16 +168,17 @@ void visualizaRegistro(contato *lista){
 
   puts("Digite o nome a ser buscado:");
   fgets(palavra, 100, stdin);
-  palavra[strlen(palavra)-1]='\0';
+  tiraBarraN(palavra);
 
   contatoAtual=lista;
   contatoAtual=procuraElemento(contatoAtual, palavra);
   if(contatoAtual==NULL){
     printf("Não foi encontrado nenhum contato com o nome %s\n", palavra);
-    getchar();
     limpabuffer();
     return;
   }
+  system("clear");
+  printf("Resultado da pesquisa:\t'%s'\n\n", palavra);
   while(contatoAtual!=NULL){
     printElemento(contatoAtual, 0);
     contatoAtual=procuraElemento(contatoAtual->prox, palavra);
@@ -221,7 +186,6 @@ void visualizaRegistro(contato *lista){
 
   puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
 
-  getchar();
   limpabuffer();
 
   return;
@@ -229,7 +193,7 @@ void visualizaRegistro(contato *lista){
 // Objetivo: Reomove todos os contatos com determinada string
 // Parâmetro: lista
 // Retorno:
-void removeRegistro(contato *lista){
+contato *removeRegistro(contato *lista){
   //Declarações:
   char palavra[100];
   contato *contatoAtual;
@@ -238,60 +202,61 @@ void removeRegistro(contato *lista){
 
   puts("Digite o nome do registro a ser deletado:");
   fgets(palavra, 100, stdin);
-  palavra[strlen(palavra)-1]='\0';
+  tiraBarraN(palavra);
 
   contatoAtual=procuraElemento(lista, palavra);
   if(contatoAtual==NULL){
-    printf("Não foi encontrado nenhum contato com o nome %s\n", palavra);
-    getchar();
+    printf("\n\n\n\nNão foi encontrado nenhum contato com o nome %s\n", palavra);
     limpabuffer();
-    return;
+    return lista;
   }
+
   while(contatoAtual!=NULL){
     contatoAtual=deletaElemento(contatoAtual, 0);
+    lista=contatoAtual;
     contatoAtual=procuraElemento(contatoAtual, palavra);
   }
 
   puts("\n\n\n\nRegistros excluídos com sucesso!!!\nAperte qualquer coisa para continuar...\n");
 
-  getchar();
   limpabuffer();
 
-  return;
+  return lista;
 }
 
 //objetivo: adicionar um novo registro de contato
 contato *novoRegistro(contato *lista){
   elemento dado;
 
-  
+  system("clear");
   puts("Digite o nome: ");
   fgets(dado.nome, 100, stdin);
   verificaNome(dado.nome);
-  limpabuffer();
-  
+
+  system("clear");
   puts("Digite o telefone celular no formato (xxxxx-xxxx): ");
   fgets(dado.telefone, 11, stdin);
   verificaTelefone(dado.telefone);
-  limpabuffer();
-  
+
+  system("clear");
   puts("Digite o endereco: ");
   fgets(dado.endereco, 100, stdin);
   verificaEndereco(dado.endereco);
-  limpabuffer();
-  
+
+  system("clear");
   puts("Digite os 8 digitos do CEP: ");
   scanf("%u", &dado.cep);
   verificaCep(dado.cep);
-  limpabuffer();
-  
-  
+
+  system("clear");
   puts("Digite a data de nascimento: ");
   fgets(dado.nascimento, 11, stdin);
   verificaNascimento(dado.nascimento);
-  limpabuffer();
 
-  getchar();
+  lista=insereOrdenado(lista, dado);
+
+  system("clear");
+  puts("Aperte qualquer coisa para continuar...");
   limpabuffer();
 
   return lista;
@@ -300,6 +265,8 @@ contato *novoRegistro(contato *lista){
 //objetivo: verificar se o nome eh valido
 void verificaNome(char *nome){
   int sentinela;
+
+  tiraBarraN(nome);
 
   while(sentinela){
     sentinela = 0;
@@ -314,17 +281,16 @@ void verificaNome(char *nome){
     if(sentinela == 1){
       puts("Tente novamente, use apenas letras...");
       fgets(nome, 101, stdin);
-    }      
+      tiraBarraN(nome);
+    }
   }
-  
-
 }
 
 // objetivo: verificar se o telefone eh valido
 void verificaTelefone(char *telefone){
   int tamanho, sentinela = 1;
   tamanho = strlen(telefone);
-  telefone[strlen(telefone)-1]='\0';
+  tiraBarraN(telefone);
 
   while(sentinela){
     sentinela = 0;
@@ -342,8 +308,7 @@ void verificaTelefone(char *telefone){
     if(sentinela == 1){
       puts("Tente novamente, evite letras e use o formato (XXXXX-XXXX)!");
       fgets(telefone, 11, stdin);
-      limpabuffer();
-      telefone[strlen(telefone)-1] = '\0';
+      tiraBarraN(telefone);
     }
   }
 
@@ -352,7 +317,7 @@ void verificaTelefone(char *telefone){
 //objetivo: verificar se o cep eh valido
 unsigned int verificaCep(unsigned int cep){
   int totalDigitos = 0, sentinela;
-
+  limpabuffer();
   while(sentinela){
     sentinela=0;
     totalDigitos = 0;
@@ -360,22 +325,22 @@ unsigned int verificaCep(unsigned int cep){
       totalDigitos = totalDigitos + 1;
       cep = cep / 10;
     }
-    
+
     if(totalDigitos != 8){
       puts("CEP invalido! Tente novamente!");
       scanf("%u", &cep);
+      limpabuffer();
       sentinela=1;
     }
   }
-  
+
   return cep;
 }
 
 //objetivo: verificar se a data de nascimento eh valida
 void verificaNascimento(char *nascimento){
   int tamanho = strlen(nascimento), sentinela = 1;
-  if(nascimento[strlen(nascimento)-1]=='\n')
-    nascimento[strlen(nascimento)-1]='\0';
+  tiraBarraN(nascimento);
 
   while(sentinela){
     sentinela = 0;
@@ -383,28 +348,26 @@ void verificaNascimento(char *nascimento){
       if(nascimento[2] != '/' || nascimento[5] != '/'){
         puts("Data invalida, o formato deve ser (dd/mm/aaaa) contendo o caractere '/' !");
         fgets(nascimento, 11, stdin);
-        if(nascimento[strlen(nascimento)-1]=='\n')
-          nascimento[strlen(nascimento)-1]='\0';
+        tiraBarraN(nascimento);
         sentinela = 1;
       }
-    
+
     for(int i = 0; nascimento[i] != '\0'; i++){
       if(nascimento[i] >= 'a' && nascimento[i] <='z'){
         puts("A data de nascimento nao pode conter letras!");
         fgets(nascimento, 11, stdin);
-        if(nascimento[strlen(nascimento)-1]=='\n')
-          nascimento[strlen(nascimento)-1]='\0'; 
+        tiraBarraN(nascimento);
         sentinela = 1;
         break;
       }
     }
-  } 
+  }
 
 }
 
 void verificaEndereco(char *endereco){
   int tamanho, sentinela = 1;
-  endereco[strlen(endereco)-1]='\0';
+  tiraBarraN(endereco);
 
   while(sentinela){
     tamanho = strlen(endereco);
@@ -413,6 +376,7 @@ void verificaEndereco(char *endereco){
       puts("Digite um endereco!");
       sentinela = 1;
       fgets(endereco, 101, stdin);
+      tiraBarraN(endereco);
     }
-  }  
+  }
 }

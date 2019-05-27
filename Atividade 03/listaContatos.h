@@ -40,5 +40,8 @@ int compString(char *string1,char *string2);
 contato* ler_arq(contato *lista);
 int ocorrenciaString(char *texto, char *palavra);
 void salva_arq(contato *lista);
+void ftiraBarraN(char *string, FILE *arq);
+void tiraBarraN(char *string);
+void limpabuffer(void);
 
 #endif
