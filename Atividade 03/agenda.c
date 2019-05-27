@@ -1,3 +1,9 @@
+/*
+Hércules Ismael de Abreu Santos - 16/0124450
+André Eduardo Souza de Oliveira - 16/0111978
+Hugo Aragão de Oliveira - 16/0124581
+*/
+
 // Síntese
 // Objetivo: Manipular lista de contatos
 // Entrada: Comandos, e arquivo com lista de contatos
