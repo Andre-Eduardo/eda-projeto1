@@ -1,3 +1,9 @@
+/*
+Hércules Ismael de Abreu Santos - 16/0124450
+André Eduardo Souza de Oliveira - 16/0111978
+Hugo Aragão de Oliveira - 16/0124581
+*/
+
 // Síntese
 // Objetivo: Biblioteca com funções para o uso de uma lista de contatos
 
@@ -309,6 +315,7 @@ contato *acessaElemento(contato *lista, int pos){
   int i;
   contato *contatoAtual;
   //Instruções:
+
   if(pos<0){
     fprintf(stderr,"Um erro ocorreu ao tentar acessar o contato...\n\n\nPosição inválida!!!\n");
     return NULL;
@@ -334,13 +341,14 @@ contato *acessaElemento(contato *lista, int pos){
 // Objetivo: buscar dados do arquivo
 // Parâmetro: ponteiro para uma lista,
 // Retorno: lista com valores obtidos do arquivo
-contato* ler_arq(contato *lista)
-{
+contato* ler_arq(contato *lista){
+  //Declarações:
   int quantidade = 0;
   FILE *arq;
   char string[103];
-
   elemento dados;
+  //Instruções:
+
   arq = fopen("contato.txt", "r");
 
   if (arq == NULL)
@@ -459,11 +467,14 @@ void salva_arq(contato *lista){
   return;
 }
 
+// Objetivo: Retirar /n (newline) de uma string, se houver, caso contrário pular até a próxima linha do arquivo
+// Parâmetro: string a ser tratada, ponteiro para arquivo
+// Retorno:
 void ftiraBarraN(char *string, FILE *arq){
   //Declarações:
   char c;
   //Instruções:
-  
+
   if(string[strlen(string)-1]=='\n')
     string[strlen(string)-1]='\0';
   else{
@@ -473,7 +484,13 @@ void ftiraBarraN(char *string, FILE *arq){
   return;
 }
 
+// Objetivo: Retirar /n (newline) de uma string, se houver, caso contrário limpar buffer do teclado
+// Parâmetro: string a ser tratada
+// Retorno:
 void tiraBarraN(char *string){
+  //Declarações:
+
+  //Instruções:
   if(string[strlen(string)-1]=='\n')
     string[strlen(string)-1]='\0';
   else

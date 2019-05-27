@@ -1,3 +1,9 @@
+/*
+Hércules Ismael de Abreu Santos - 16/0124450
+André Eduardo Souza de Oliveira - 16/0111978
+Hugo Aragão de Oliveira - 16/0124581
+*/
+
 #ifndef _LISTACONTATOS_H_
 #define _LCD_H_
 

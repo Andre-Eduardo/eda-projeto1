@@ -224,9 +224,13 @@ contato *removeRegistro(contato *lista){
   return lista;
 }
 
-//objetivo: adicionar um novo registro de contato
+// Objetivo: adicionar um novo registro de contato
+// Parâmetro: lista
+// Retorno: lista
 contato *novoRegistro(contato *lista){
+  //Declarações:
   elemento dado;
+  //Instruções:
 
   system("clear");
   puts("Digite o nome: ");
@@ -262,9 +266,13 @@ contato *novoRegistro(contato *lista){
   return lista;
 }
 
-//objetivo: verificar se o nome eh valido
+// Objetivo: verificar se o nome eh valido
+// Parâmetro: string do nome
+// Retorno:
 void verificaNome(char *nome){
+  //Declarações:
   int sentinela;
+  //Instruções:
 
   tiraBarraN(nome);
 
@@ -286,20 +294,33 @@ void verificaNome(char *nome){
   }
 }
 
-// objetivo: verificar se o telefone eh valido
+// Objetivo: verificar se o telefone eh valido
+// Parâmetro: string do telefone
+// Retorno:
 void verificaTelefone(char *telefone){
+  //Declarações:
   int tamanho, sentinela = 1;
+  //Instruções:
+
   tamanho = strlen(telefone);
   tiraBarraN(telefone);
 
   while(sentinela){
     sentinela = 0;
-    if(tamanho < 10 || tamanho > 10){
+    if(tamanho < 10){
       puts("Numero do telefone invalido!");
       sentinela = 1;
     }
+
+
     for(int i = 0; telefone[i] != '\0'; i++){
-      if(!(telefone[i] >= '0' || telefone[i] <= '9' || telefone[i] != '-')){
+      if(i==5){
+        if(telefone[i]!='-'){
+          puts("O telefone deve conter o travessão '-' entre os números!");
+          sentinela = 1;
+          break;
+        }
+      }else if(!(telefone[i] >= '0' && telefone[i] <= '9')){
         puts("O telefone nao pode conter letras ou caracteres especiais!");
         sentinela = 1;
         break;
@@ -314,9 +335,14 @@ void verificaTelefone(char *telefone){
 
 }
 
-//objetivo: verificar se o cep eh valido
+// Objetivo: verificar se o cep eh valido
+// Parâmetro: número do cep
+// Retorno: número verificado de cep
 unsigned int verificaCep(unsigned int cep){
+  //Declarações:
   int totalDigitos = 0, sentinela;
+  //Instruções:
+
   limpabuffer();
   while(sentinela){
     sentinela=0;
@@ -337,9 +363,13 @@ unsigned int verificaCep(unsigned int cep){
   return cep;
 }
 
-//objetivo: verificar se a data de nascimento eh valida
+// Objetivo: verificar se a data de nascimento eh valida
+// Parâmetro: string da data de nascimento
+// Retorno:
 void verificaNascimento(char *nascimento){
+  //Declarações:
   int tamanho = strlen(nascimento), sentinela = 1;
+  //Instruções:
   tiraBarraN(nascimento);
 
   while(sentinela){
@@ -365,8 +395,14 @@ void verificaNascimento(char *nascimento){
 
 }
 
+// Objetivo: verificar se o endereço eh valido
+// Parâmetro: string do endereço
+// Retorno:
 void verificaEndereco(char *endereco){
+  //Declarações:
   int tamanho, sentinela = 1;
+  //Instruções:
+
   tiraBarraN(endereco);
 
   while(sentinela){
