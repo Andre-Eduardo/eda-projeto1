@@ -16,6 +16,12 @@ char validaSN(char opcao);
 void visualizaTodos(contato *lista);
 void visualizaRegistro(contato *lista);
 void removeRegistro(contato *lista);
+contato *novoRegistro(contato *lista);
+void verificaNome(char *);
+unsigned int verificaCep(unsigned int);
+void verificaTelefone(char *);
+void verificaNascimento(char *);
+void verificaEndereco(char *);
 void sair();
 
 int main(){
@@ -58,7 +64,7 @@ int main(){
 
     switch(opcao){
       case '1':
-        // novoRegistro();
+        novoRegistro(lista);
         break;
       case '2':
         removeRegistro(lista);
@@ -247,128 +253,160 @@ void removeRegistro(contato *lista){
 
   return;
 }
-// Objetivo: Verificar se a opção escolhida é válida
-// Parâmetro: opção
-// Retorno: opção válida
-char validaSN(char opcao){
-  //Declarações:
-
-  //Instruções:
-  opcao=getchar();
-  limpabuffer();
-  while(opcao!='S' && opcao!='s' && opcao!='N' && opcao!='n'){
-    puts("\n\n\n\nOpção inválida!(digite s para sim, ou n para não)");
-    opcao=getchar();
-    limpabuffer();
-  }
-  return opcao;
-}
-
-void visualizaRegistro(contato *lista){
-  //Declarações:
-
-  //Instruções:
-  system("clear");
-  printLista(lista);
-  puts("\n\n\n\nAperte qualquer coisa para continuar...\n");
-
-  getchar();
-  limpabuffer();
-
-  return;
-}
 
 //objetivo: adicionar um novo registro de contato
-void novoRegistro(){
+contato *novoRegistro(contato *lista){
   elemento dado;
 
   
   puts("Digite o nome: ");
   fgets(dado.nome, 100, stdin);
+  verificaNome(dado.nome);
   limpabuffer();
   
-  puts("Digite o telefone: ");
-  fgets(dado.telefone, 10, stdin);
+  puts("Digite o telefone celular no formato (xxxxx-xxxx): ");
+  fgets(dado.telefone, 11, stdin);
+  verificaTelefone(dado.telefone);
   limpabuffer();
   
   puts("Digite o endereco: ");
   fgets(dado.endereco, 100, stdin);
+  verificaEndereco(dado.endereco);
   limpabuffer();
   
-  puts("Digite o cep: ");
-  scanf("%d", &dado.cep);
+  puts("Digite os 8 digitos do CEP: ");
+  scanf("%u", &dado.cep);
+  verificaCep(dado.cep);
   limpabuffer();
   
   
   puts("Digite a data de nascimento: ");
-  fgets(dado.nascimento, 10, stdin);
+  fgets(dado.nascimento, 11, stdin);
+  verificaNascimento(dado.nascimento);
   limpabuffer();
-
-  printf("Nome:%s\n", dado.nome);
-  printf("Telefone:%s\n",dado.telefone);
-  printf("Endereço:%s\n",dado.endereco);
-  printf("CEP:%d\n", dado.cep);
-  printf("Nascimento:%s\n", dado.nascimento);
 
   getchar();
   limpabuffer();
 
-  return;
+  return lista;
 }
 
 //objetivo: verificar se o nome eh valido
-void verificaNome(){
-  elemento dado; 
+void verificaNome(char *nome){
+  int sentinela;
 
-  for(int i = 0; dado.nome[i] != '\0'; i++){
-    if(dado.nome[i] < 'a' || dado.nome > 'z'){
-      break;
+  while(sentinela){
+    sentinela = 0;
+
+    for(int i = 0; nome[i] != '\0'; i++){
+      if(nome[i] >= '0' && nome[i] <= '9'){
+        puts("Nome invalido!");
+        sentinela = 1;
+        break;
+      }
     }
+    if(sentinela == 1){
+      puts("Tente novamente, use apenas letras...");
+      fgets(nome, 101, stdin);
+    }      
   }
   
-  return;
+
 }
 
 // objetivo: verificar se o telefone eh valido
-void verificaTelefone(){
-  elemento dado;
-  int tamanho;
-  tamanho = strlen(dado.telefone);
-  
-  if(tamanho > 11){
-    puts("Numero do telefone invalido!\n");
+void verificaTelefone(char *telefone){
+  int tamanho, sentinela = 1;
+  tamanho = strlen(telefone);
+  telefone[strlen(telefone)-1]='\0';
+
+  while(sentinela){
+    sentinela = 0;
+    if(tamanho < 10 || tamanho > 10){
+      puts("Numero do telefone invalido!");
+      sentinela = 1;
+    }
+    for(int i = 0; telefone[i] != '\0'; i++){
+      if(!(telefone[i] >= '0' || telefone[i] <= '9' || telefone[i] != '-')){
+        puts("O telefone nao pode conter letras ou caracteres especiais!");
+        sentinela = 1;
+        break;
+      }
+    }
+    if(sentinela == 1){
+      puts("Tente novamente, evite letras e use o formato (XXXXX-XXXX)!");
+      fgets(telefone, 11, stdin);
+      limpabuffer();
+      telefone[strlen(telefone)-1] = '\0';
+    }
   }
 
-  return;  
 }
 
 //objetivo: verificar se o cep eh valido
-void verificaCep(){
-  elemento dado;
-  int totalDigitos = 0;
+unsigned int verificaCep(unsigned int cep){
+  int totalDigitos = 0, sentinela;
 
-  while(dado.cep != 0){
-    totalDigitos = totalDigitos + 1;
-    dado.cep = dado.cep / 10;
-  }
-   
-  if(totalDigitos != 8){
-    puts("CEP invalido!\n");
+  while(sentinela){
+    sentinela=0;
+    totalDigitos = 0;
+    while(cep != 0){
+      totalDigitos = totalDigitos + 1;
+      cep = cep / 10;
+    }
+    
+    if(totalDigitos != 8){
+      puts("CEP invalido! Tente novamente!");
+      scanf("%u", &cep);
+      sentinela=1;
+    }
   }
   
-  return;
+  return cep;
 }
 
-//objtivo: verificar se a data de nascimento eh valida
-void verificaNascimento(){
-  elemento dado;
+//objetivo: verificar se a data de nascimento eh valida
+void verificaNascimento(char *nascimento){
+  int tamanho = strlen(nascimento), sentinela = 1;
+  if(nascimento[strlen(nascimento)-1]=='\n')
+    nascimento[strlen(nascimento)-1]='\0';
 
-  if(dado.nascimento > 2019){
-    puts("Data de nascimento invalida!\n");
-  }
-  else if(dado.nascimento < 1903){
-    puts("Data de nascimento invalida!\n")
-  }
+  while(sentinela){
+    sentinela = 0;
 
-  return;
+      if(nascimento[2] != '/' || nascimento[5] != '/'){
+        puts("Data invalida, o formato deve ser (dd/mm/aaaa) contendo o caractere '/' !");
+        fgets(nascimento, 11, stdin);
+        if(nascimento[strlen(nascimento)-1]=='\n')
+          nascimento[strlen(nascimento)-1]='\0';
+        sentinela = 1;
+      }
+    
+    for(int i = 0; nascimento[i] != '\0'; i++){
+      if(nascimento[i] >= 'a' && nascimento[i] <='z'){
+        puts("A data de nascimento nao pode conter letras!");
+        fgets(nascimento, 11, stdin);
+        if(nascimento[strlen(nascimento)-1]=='\n')
+          nascimento[strlen(nascimento)-1]='\0'; 
+        sentinela = 1;
+        break;
+      }
+    }
+  } 
+
+}
+
+void verificaEndereco(char *endereco){
+  int tamanho, sentinela = 1;
+  endereco[strlen(endereco)-1]='\0';
+
+  while(sentinela){
+    tamanho = strlen(endereco);
+    sentinela = 0;
+    if(tamanho == 0){
+      puts("Digite um endereco!");
+      sentinela = 1;
+      fgets(endereco, 101, stdin);
+    }
+  }  
 }
