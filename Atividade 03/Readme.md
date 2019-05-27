@@ -10,7 +10,7 @@
 
 
 
-#				Instruções para execução do programa (previa)
+#				Instruções para execução do programa
 
 
 	*  O programa deve ser compilado de preferência em um terminal linux
