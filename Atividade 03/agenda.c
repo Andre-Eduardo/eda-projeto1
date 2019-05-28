@@ -302,8 +302,8 @@ void verificaTelefone(char *telefone){
   int tamanho, sentinela = 1;
   //Instruções:
 
-  tamanho = strlen(telefone);
   tiraBarraN(telefone);
+  tamanho = strlen(telefone);
 
   while(sentinela){
     sentinela = 0;
@@ -330,6 +330,7 @@ void verificaTelefone(char *telefone){
       puts("Tente novamente, evite letras e use o formato (XXXXX-XXXX)!");
       fgets(telefone, 11, stdin);
       tiraBarraN(telefone);
+      tamanho = strlen(telefone);
     }
   }
 
@@ -353,7 +354,7 @@ unsigned int verificaCep(unsigned int cep){
     }
 
     if(totalDigitos != 8){
-      puts("CEP invalido! Tente novamente!");
+      puts("CEP invalido! Tente novamente adicionando os 8 digitos!");
       scanf("%u", &cep);
       limpabuffer();
       sentinela=1;
