@@ -10,48 +10,35 @@ Hugo Aragão de Oliveira - 16/0124581
 // Saída: log dos acontecimentos do aeroporto
 
 #include <stdio.h>
-#include "lista.h"
+#include "pilha.h"
 
 int main(){
   //Declarações:
-  lista *oi;
-  lista *aux;
-  elemento ale;
+  pilha *oi;
+  pilha *aux;
+  elem ale;
+  elem porquera;
+  int i;
   //Instruções:
   ale.nome[0]='a';
   ale.nome[1]='\0';
 
-  oi=criaListaVazia();
-  oi= appendLista(oi, ale);
-  oi= appendLista(oi, ale);
-  oi= appendLista(oi, ale);
-  ale.nome[0]='b';
-  ale.nome[1]='\0';
-  oi=insereOrdenado(oi, ale);
-  ale.nome[0]='c';
-  ale.nome[1]='\0';
-  oi=insereOrdenado(oi, ale);
-  ale.nome[0]='b';
-  ale.nome[1]='a';
-  ale.nome[2]='c';
+  oi=criaPilhaVazia();
+  oi=push(oi, ale);
+  oi=push(oi, ale);
+  oi=push(oi, ale);
+  ale.nome[0]='a';
+  ale.nome[1]='b';
+  ale.nome[2]='a';
   ale.nome[3]='\0';
-  oi=insereOrdenado(oi, ale);
-  ale.nome[0]='o';
-  ale.nome[1]='a';
-  ale.nome[2]='c';
-  ale.nome[3]='\0';
-  oi=insereLista(oi, ale, 2);
-  oi= deletaElemento(oi,0);
-  printLista(oi);
+  oi=push(oi, ale);
+  printf("%d\n", tamanhoPilha(oi));
+  for(i=0; i<5;i++){
+    porquera=pop(&oi);
+    printf("%s\n", porquera.nome);
+  }
 
-  aux= acessaElemento(oi, 2);
-  printf("\n\n\n\n\n%s", aux->dados.nome);
-  aux= procuraElemento(oi, "ac");
-  printf("\n\n\n\n\n%s", aux->dados.nome);
-  printf("\nTamanho da lista: %d", tamanhoLista(oi));
-
-
-  oi=liberaLista(oi);
+  oi=liberaPilha(oi);
 
   return 0;
 }
