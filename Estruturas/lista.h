@@ -28,20 +28,20 @@ typedef struct lista{
 } lista;
 
 lista *criaListaVazia();
-lista *appendLista(lista *lista, elemento dados);
-lista *insereLista(lista *lista, elemento dados, int pos);
-lista *insereOrdenado(lista *lista, elemento dados);
-lista *deletaElemento(lista *lista, int pos);
-lista *liberaLista(lista *lista);
-lista *acessaElemento(lista *lista, int pos);
-lista *procuraElemento(lista *lista, char *palavra);
-int tamanhoLista(lista *lista);
-void printLista(lista *lista);
-void printElemento(lista *lista, int pos);
-int compString(char *string1,char *string2);
-int ocorrenciaString(char *texto, char *palavra);
-void ftiraBarraN(char *string, FILE *arq);
-void tiraBarraN(char *string);
+lista *appendLista(lista *, elemento );
+lista *insereLista(lista *, elemento , int );
+lista *insereOrdenado(lista *, elemento );
+lista *deletaElemento(lista *, int );
+lista *liberaLista(lista *);
+lista *acessaElemento(lista *, int );
+lista *procuraElemento(lista *, char *);
+int tamanhoLista(lista *);
+void printLista(lista *);
+void printElemento(lista *, int );
+int compString(char *,char *);
+int ocorrenciaString(char *, char *);
+void ftiraBarraN(char *, FILE *);
+void tiraBarraN(char *);
 void limpabuffer(void);
 
 #endif

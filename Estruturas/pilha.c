@@ -21,9 +21,9 @@ pilha *criaPilhaVazia(){
   return NULL;
 }
 
-// Objetivo: Adiciona um contato ao final da lista
-// Parâmetro: lista, dados do contato a ser adicionado
-// Retorno: lista
+// Objetivo: Adiciona um contato ao final da pilha
+// Parâmetro: pilha, dados a serem adicionados
+// Retorno: pilha
 pilha *push(pilha *stack, elem dados){
   //Declarações:
     pilha *novoElem;
@@ -47,6 +47,7 @@ pilha *push(pilha *stack, elem dados){
 elem pop(pilha **stack){
   //Declarações:
   elem resultado;
+  pilha *aux;
   //Instruções:
   resultado.nome[0]='\0';
 
@@ -56,7 +57,9 @@ elem pop(pilha **stack){
   }
 
   resultado=(*stack)->dados;
+  aux=*stack;
   *stack=(*stack)->ante;
+  free(aux);
 
 
   return resultado;

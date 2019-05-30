@@ -10,35 +10,50 @@ Hugo Aragão de Oliveira - 16/0124581
 // Saída: log dos acontecimentos do aeroporto
 
 #include <stdio.h>
-#include "pilha.h"
+#include "fila.h"
 
 int main(){
   //Declarações:
-  pilha *oi;
-  pilha *aux;
-  elem ale;
-  elem porquera;
+  fila oi;
+  data ale;
+  list_enc bagaca;
   int i;
   //Instruções:
   ale.nome[0]='a';
   ale.nome[1]='\0';
 
-  oi=criaPilhaVazia();
-  oi=push(oi, ale);
-  oi=push(oi, ale);
-  oi=push(oi, ale);
+  oi=criaFilaVazia();
+  oi=pushF(oi, ale);
+  oi=pushF(oi, ale);
+  oi=pushF(oi, ale);
   ale.nome[0]='a';
   ale.nome[1]='b';
   ale.nome[2]='a';
   ale.nome[3]='\0';
-  oi=push(oi, ale);
-  printf("%d\n", tamanhoPilha(oi));
-  for(i=0; i<5;i++){
-    porquera=pop(&oi);
-    printf("%s\n", porquera.nome);
-  }
+  oi=pushF(oi, ale);
+  bagaca=*(oi.fim);
+  printf("%s\n", bagaca.dados.nome);
+  bagaca=*(oi.ini);
+  printf("%s\n", bagaca.dados.nome);
+  bagaca=*(bagaca.prox);
+  printf("%s\n", bagaca.dados.nome);
+  bagaca=*(bagaca.prox);
+  printf("%s\n", bagaca.dados.nome);
+  bagaca=*(bagaca.prox);
+  printf("%s\n", bagaca.dados.nome);
+  printf("%d\n", tamanhoFila(oi));
+  ale=popF(&oi);
+  printf("%s\n", ale.nome);
+  ale=popF(&oi);
+  printf("%s\n", ale.nome);
+  ale=popF(&oi);
+  printf("%s\n", ale.nome);
+  ale=popF(&oi);
+  printf("%s\n", ale.nome);
+  printf("%p\n", oi.fim);
 
-  oi=liberaPilha(oi);
+
+  oi=liberaFila(oi);
 
   return 0;
 }

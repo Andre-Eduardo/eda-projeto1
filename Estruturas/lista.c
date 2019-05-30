@@ -22,7 +22,7 @@ lista *criaListaVazia(){
 }
 
 // Objetivo: Adiciona um contato ao final da lista
-// Parâmetro: lista, dados do contato a ser adicionado
+// Parâmetro: lista, dados a serem adicionados
 // Retorno: lista
 lista *appendLista(lista *l, elemento dados){
   //Declarações:
