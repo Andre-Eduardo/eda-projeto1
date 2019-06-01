@@ -17,8 +17,9 @@ Hugo Aragão de Oliveira - 16/0124581
 
 typedef struct data{
     //Coloque os dados da lista aqui
-    char nome[101];
-
+    char codigo[7];
+    char sentido;
+    int combustivel;
 } data;
 
 typedef struct list_enc{
