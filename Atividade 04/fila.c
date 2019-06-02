@@ -150,6 +150,11 @@ fila verificaComb(fila queue){
   int i, sent=1;
   int avioesScomb; // qtd de avioes sem combustivel
   //Instruções:
+  if(queue.ini==NULL||queue.fim==NULL){
+    fprintf(stderr,"Não há elementos para deletar porque a fila não foi inicializada...\n");
+    return (fila){NULL, NULL};
+  }
+
   while(sent){
     for(element=queue.ini, avioesScomb=0; element->prox!=NULL && element->dados.combustivel==0; element=element->prox){
       avioesScomb++;
