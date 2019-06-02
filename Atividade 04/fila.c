@@ -113,6 +113,7 @@ fila delElem(fila queue, int pos){
   //Declarações:
   list_enc *element;
   list_enc *ante;
+  list_enc *aux;
   int i;
   //Instruções:
   if(pos<0){
@@ -136,6 +137,9 @@ fila delElem(fila queue, int pos){
 
   free(element);
 
+  for(aux=queue.ini; aux->prox!=NULL; aux=aux->prox);
+  queue.fim=aux;
+
   return queue;
 }
 
@@ -151,7 +155,7 @@ fila verificaComb(fila queue){
   int avioesScomb; // qtd de avioes sem combustivel
   //Instruções:
   if(queue.ini==NULL||queue.fim==NULL){
-    fprintf(stderr,"Não há elementos para deletar porque a fila não foi inicializada...\n");
+    fprintf(stderr,"Não há elementos para verificar porque a fila não foi inicializada...\n");
     return (fila){NULL, NULL};
   }
 
@@ -184,6 +188,32 @@ fila verificaComb(fila queue){
   }
   for(aux=queue.ini; aux->prox!=NULL; aux=aux->prox);
   queue.fim=aux;
+
+  return queue;
+}
+
+// Objetivo: Verificar se há aviões com combustível negativo e excluí-los da fila
+// Parâmetro: fila
+// Retorno: fila sem aeronaves caídas
+fila verificaQueda(fila queue){
+  //Declarações:
+  list_enc *element;
+  int i, sent=1;
+  //Instruções:
+  if(queue.ini==NULL||queue.fim==NULL){
+    fprintf(stderr,"Não há elementos para verificar porque a fila não foi inicializada...\n");
+    return (fila){NULL, NULL};
+  }
+  while(sent){
+    for(element=queue.ini, i=0; element->prox!=NULL && element->dados.combustivel!=-1; element=element->prox, i++);
+    if(element->prox==NULL && element->dados.combustivel!=-1){
+      sent=0;
+    }else{
+      queue= delElem(queue, i);
+      puts("ALERTA CRÍTICO, AERONAVE IRÁ CAIR");
+    }
+  }
+
 
   return queue;
 }

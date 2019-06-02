@@ -38,6 +38,7 @@ fila delElem(fila, int);
 fila pushF(fila, data);
 data popF(fila*);
 fila verificaComb(fila);
+fila verificaQueda(fila queue);
 int tamanhoFila(fila);
 
 #endif
