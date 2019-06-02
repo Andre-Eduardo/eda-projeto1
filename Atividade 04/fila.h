@@ -33,9 +33,11 @@ typedef struct fila{
 } fila;
 
 fila criaFilaVazia();
-fila pushF(fila, data);
 fila liberaFila(fila);
+fila delElem(fila, int);
+fila pushF(fila, data);
 data popF(fila*);
+fila verificaComb(fila);
 int tamanhoFila(fila);
 
 #endif

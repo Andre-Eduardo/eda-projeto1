@@ -62,7 +62,7 @@ data popF(fila* queue){
 
   if(queue->ini==NULL){
     fprintf(stderr,"Não há elementos para acessar porque a fila não foi inicializada...\n");
-    return (data){""};
+    return (data){"", 0, 0};
   }
 
   resultado=queue->ini->dados;
@@ -104,4 +104,81 @@ int tamanhoFila(fila queue){
   for(i=0, element=queue.ini; element!=NULL; element=element->prox, i++);
 
   return i;
+}
+
+// Objetivo: Deletar elemento na fila
+// Parâmetro: fila
+// Retorno: fila com elemento deletado
+fila delElem(fila queue, int pos){
+  //Declarações:
+  list_enc *element;
+  list_enc *ante;
+  int i;
+  //Instruções:
+  if(pos<0){
+    fprintf(stderr,"Um erro ocorreu ao tentar deletar um elemento na lista...\n\n\nPosição inválida!!!\n");
+    return (fila){NULL, NULL};
+  }
+
+  if(queue.ini==NULL||queue.fim==NULL){
+    fprintf(stderr,"Não há elementos para deletar porque a fila não foi inicializada...\n");
+    return (fila){NULL, NULL};
+  }
+
+  if(pos==0){
+    element=queue.ini;
+    queue.ini=element->prox;
+  }else{
+    for(i=0, ante=queue.ini; i<pos-1; ante=ante->prox, i++);
+    element=ante->prox;
+    ante->prox=element->prox;
+  }
+
+  free(element);
+
+  return queue;
+}
+
+// Objetivo: Verificar se há aviões com combustível igual a zero, e colocá-los no começo da fila
+// Parâmetro: fila
+// Retorno: fila organizada
+fila verificaComb(fila queue){
+  //Declarações:
+  list_enc *element;
+  list_enc *ante;
+  list_enc *aux;
+  int i, sent=1;
+  int avioesScomb; // qtd de avioes sem combustivel
+  //Instruções:
+  while(sent){
+    for(element=queue.ini, avioesScomb=0; element->prox!=NULL && element->dados.combustivel==0; element=element->prox){
+      avioesScomb++;
+    }
+    if(element==queue.fim){
+      sent=0;
+    }else{
+      for(element=queue.ini, i=0; element->prox!=NULL && i<avioesScomb; element=element->prox, i++);
+      for(; element->prox!=NULL && element->dados.combustivel!=0; element=element->prox){
+        ante=element;
+      }
+      if(!(element->prox==NULL && element->dados.combustivel!=0)){
+        ante->prox=element->prox;
+        for(aux=queue.ini, i=0; aux->prox!=NULL && i<avioesScomb; aux=aux->prox, i++);
+        if(aux==queue.ini){
+          element->prox=aux;
+          queue.ini=element;
+        }else{
+          element->prox=aux;
+          for(aux=queue.ini, i=0; aux->prox!=NULL && i<avioesScomb-1; aux=aux->prox, i++);
+          aux->prox=element;
+        }
+      }else{
+        sent=0;
+      }
+    }
+  }
+  for(aux=queue.ini; aux->prox!=NULL; aux=aux->prox);
+  queue.fim=aux;
+
+  return queue;
 }
