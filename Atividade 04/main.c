@@ -17,9 +17,9 @@ Hugo Aragão de Oliveira - 16/0124581
 #define MAX_AVI 64 // maximo de avioes
 #define MIM_AVI 20 // mminimo de avioes
 
-void inic_alatorio(int *NVoos, int *NAproximacoes, int *NDecolagens);
-fila inic_lista(int *comb, int NAproximacoes, int NDecolagens, fila aviao, char *cod_Voos);
-int* inic_combustivel(int NDecolagens, int* comb);
+int inic_aletorio(int NVoos, int *NAproximacoes, int *NDecolagens);
+fila inic_lista( int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos, int *NVoos);
+int* inic_combustivel(int NAproximacoes, int* comb);
 int main()
 {
   //Declarações:
@@ -38,11 +38,13 @@ int main()
   int NAproximacoes; // numero de avioes querendo pousar (10 32)
   int NDecolagens;   // avioes querendo decolar (10 a 32)
   fila oi;
+  fila aviao;
   data ale;
   list_enc bagaca;
   int i;
+  
   //Instruções:
-
+  aviao = inic_lista( &NAproximacoes,  &NDecolagens,  aviao,  *cod_Voos, &NVoos);
   // ale.nome[0] = 'a';
   // ale.nome[1] = '\0';
 
@@ -77,48 +79,63 @@ int main()
   // printf("%p\n", oi.fim);
 
   // oi = liberaFila(oi);
-  inic_alatorio(&NVoos, &NAproximacoes, &NDecolagens);
+  
   printf("total =%d\n", NVoos);
   printf("aprox =%d\n", NAproximacoes);
   printf("decola =%d\n", NDecolagens);
+  printf(" tamanho %d \n",tamanhoFila(aviao));
   return 0;
 }
-void inic_alatorio(int *NVoos, int *NAproximacoes, int *NDecolagens)
+
+
+// Objetivo: inicializar numero de voos e decolagens
+// Entrada: numero de voos ,decolagens e total
+// Saída: total
+int inic_aletorio(int NVoos, int *NAproximacoes, int *NDecolagens)
 {
   srand(time(NULL));
 
-  *NAproximacoes = (rand() % 32) + 10;
-  *NDecolagens = (rand() % (62 - *NAproximacoes)) + 10;
-  *NVoos = *NAproximacoes + *NDecolagens;
+  *NAproximacoes = (rand() % 23)+ 10;
+  *NDecolagens = (rand() % 23)+ 10;
+  return NVoos = *NAproximacoes + *NDecolagens;
 }
-int* inic_combustivel(int NDecolagens, int* comb)
+
+// Objetivo: iniciliza valores de combustivel
+// Entrada:numero de decolagens e combustivel
+// Saída: combustivel
+int* inic_combustivel(int NAproximacoes, int *comb)
 {
   
-  for (int i = 0; i <= NDecolagens; i++)
+  for (int i = 0; i < NAproximacoes; i++)
   {
-    comb[i] = rand() % 12;
+    comb[i] = rand() % 13;
   }
   return comb;
 }
-
-fila inic_lista(int *comb, int NAproximacoes, int NDecolagens, fila aviao, char *cod_Voos)
+// Objetivo: inicializa fila com os valores de voo
+// Entrada: numero de aproximaçoes , decolagens , fila , code de voos e total de voos 
+// Saída: fila;
+fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos, int *NVoos)
 {
-
+ int comb[32];
+  *NVoos = inic_aletorio(*NVoos,  NAproximacoes,  NDecolagens);
+  inic_combustivel(*NAproximacoes, comb );
   data d;
   int i, al_cod;
-  for (i = 0; i <= NAproximacoes; i++)
+  for (i = 0; i < *NAproximacoes; i++)
   {
 
-    d.codigo = *(cod_Voos+i);
+    strcpy(d.codigo, (cod_Voos+i));
     d.sentido = 'A';
     d.combustivel = comb[i];
-    pushF(aviao, d);
+    
+    aviao = pushF(aviao, d);
   }
-  for (i = 0; i <= NDecolagens; i++)
+  for (i = 0; i < *NDecolagens; i++)
   {
-    d.codigo = (cod_Voos +i + NAproximacoes);
+    strcpy(d.codigo, (cod_Voos+ i + *NAproximacoes));
     d.sentido = 'D';
-    pushF(aviao, d);
+    aviao = pushF(aviao, d);
   }
   return aviao;
 }
