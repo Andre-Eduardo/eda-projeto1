@@ -40,5 +40,7 @@ data popF(fila*);
 fila verificaComb(fila);
 fila verificaQueda(fila queue);
 int tamanhoFila(fila);
+void printaInicio();
+void printaStatus();
 
 #endif

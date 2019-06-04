@@ -9,8 +9,8 @@ Hugo Aragão de Oliveira - 16/0124581
 // Entrada:
 // Saída: log dos acontecimentos do aeroporto
 
-#include <stdio.h>
 #include "fila.h"
+#include <stdio.h>
 #include <math.h>
 #include <time.h>
 #define UNI_TIME 5 // unidade de tempo 1 uma unidade = 5 mim
@@ -79,6 +79,9 @@ int main()
   // printf("%p\n", oi.fim);
 
   // oi = liberaFila(oi);
+
+  //printaInicio();
+  //printaStatus();
   
   printf("total =%d\n", NVoos);
   printf("aprox =%d\n", NAproximacoes);
