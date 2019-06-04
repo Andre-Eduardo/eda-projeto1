@@ -146,13 +146,14 @@ fila delElem(fila queue, int pos){
 // Objetivo: Verificar se há aviões com combustível igual a zero, e colocá-los no começo da fila
 // Parâmetro: fila
 // Retorno: fila organizada
-fila verificaComb(fila queue){
+fila verificaComb(fila queue,  int *S_combustivel){
   //Declarações:
   list_enc *element;
   list_enc *ante;
   list_enc *aux;
   int i, sent=1;
   int avioesScomb; // qtd de avioes sem combustivel
+  
   //Instruções:
   if(queue.ini==NULL||queue.fim==NULL){
     fprintf(stderr,"Não há elementos para verificar porque a fila não foi inicializada...\n");
@@ -162,6 +163,7 @@ fila verificaComb(fila queue){
   while(sent){
     for(element=queue.ini, avioesScomb=0; element->prox!=NULL && element->dados.combustivel==0; element=element->prox){
       avioesScomb++;
+      *S_combustivel = avioesScomb;
     }
     if(element==queue.fim){
       sent=0;
@@ -188,7 +190,7 @@ fila verificaComb(fila queue){
   }
   for(aux=queue.ini; aux->prox!=NULL; aux=aux->prox);
   queue.fim=aux;
-
+  
   return queue;
 }
 

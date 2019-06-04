@@ -37,7 +37,7 @@ fila liberaFila(fila);
 fila delElem(fila, int);
 fila pushF(fila, data);
 data popF(fila*);
-fila verificaComb(fila);
+fila verificaComb(fila queue ,int *S_combustivel);
 fila verificaQueda(fila queue);
 int tamanhoFila(fila);
 
