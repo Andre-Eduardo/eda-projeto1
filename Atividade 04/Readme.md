@@ -15,5 +15,5 @@
 
 	*  O programa deve ser compilado de preferência em um terminal linux
 	*  Para compilar digite -> make
-	*  Para executar digite -> ./agenda
+	*  Para executar digite -> ./main
 	*  Para excluir arquivos de compilação -> make clean

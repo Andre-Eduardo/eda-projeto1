@@ -219,3 +219,28 @@ fila verificaQueda(fila queue){
 
   return queue;
 }
+
+//Objetivo: Printar informacoes iniciais
+void printaInicio(int NVoos, int NAproximacoes, int Ndecolagens, int hora, int min){
+
+      puts("----------------------------------------------------------------");
+      puts("“Aeroporto Internacional Santos Dumont inventou o aviao”");
+      printf("Hora Inicial: %d:%d\n", hora, min);             //recebe hora
+      puts("Fila de Pedidos: ");                    // ???
+      printf("NVoos: %d\n", NVoos);                 //revebe NVoos
+      printf("Naproximacoes: %d\n", NAproximacoes); //recebe Naproximacoes
+      printf("NDecolagens: %d\n", Ndecolagens);      //recebe NDecolagens
+      puts("----------------------------------------------------------------");
+}
+
+//Objetivo: Printar lista de status de cada aeronave
+void printaStatus(char *Status, char *Codigo, int hora, int min, char NPista){
+     
+
+      puts("Listagem de eventos:");                               //recebe lista de eventos
+      puts("");                                                   // pula linha
+      printf("Codigo do voo: %s\n", Codigo);                      // recebe string do codigo voo
+      printf("Status: %s\n", Status);                               //["aeronave decolou" ou "aeronave pousou"]
+      printf("Horario do inicio do procedimento: %d:%d\n", hora, min); //recebe hora do movimento da aeronave
+      printf("Numero da pista: %d\n", NPista);                    //recebe numero da pista do procedimento
+}
