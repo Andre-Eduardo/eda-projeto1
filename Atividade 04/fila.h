@@ -40,7 +40,7 @@ data popF(fila*);
 fila verificaComb(fila queue ,int *S_combustivel);
 fila verificaQueda(fila queue);
 int tamanhoFila(fila);
-void printaInicio(int NVoos, int NAproximacoes, int Ndecolagens,int hora, int min);
+void printaInicio(int NVoos, int NAproximacoes, int Ndecolagens,int hora, int min, fila avioes);
 void printaStatus(char *Status, char *Codigo, int hora, int min, char NPista);
 
 #endif

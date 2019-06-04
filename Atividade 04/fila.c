@@ -221,23 +221,34 @@ fila verificaQueda(fila queue){
 }
 
 //Objetivo: Printar informacoes iniciais
-void printaInicio(int NVoos, int NAproximacoes, int Ndecolagens, int hora, int min){
+void printaInicio(int NVoos, int NAproximacoes, int Ndecolagens, int hora, int min, fila avioes){
+      list_enc *elem;
 
       puts("----------------------------------------------------------------");
       puts("“Aeroporto Internacional Santos Dumont inventou o aviao”");
       printf("Hora Inicial: %d:%d\n", hora, min);             //recebe hora
-      puts("Fila de Pedidos: ");                    // ???
-      printf("NVoos: %d\n", NVoos);                 //revebe NVoos
+      printf("Fila de Pedidos:");                              // ???
+      for (elem=avioes.ini; elem!=NULL; elem=elem->prox){
+        printf("%s, ", elem->dados.codigo);
+        printf("%c, ", elem->dados.sentido);
+        if(elem->dados.sentido == 'D'){
+          printf("Tanque cheio\n");
+        }
+        else
+        printf("%d, \n", elem->dados.combustivel);
+      }
+      
+      printf("NVoos: %d\n", NVoos);                 //recebe NVoos
       printf("Naproximacoes: %d\n", NAproximacoes); //recebe Naproximacoes
       printf("NDecolagens: %d\n", Ndecolagens);      //recebe NDecolagens
       puts("----------------------------------------------------------------");
+      puts("Listagem de eventos: ");                               
 }
 
 //Objetivo: Printar lista de status de cada aeronave
 void printaStatus(char *Status, char *Codigo, int hora, int min, char NPista){
      
 
-      puts("Listagem de eventos:");                               //recebe lista de eventos
       puts("");                                                   // pula linha
       printf("Codigo do voo: %s\n", Codigo);                      // recebe string do codigo voo
       printf("Status: %s\n", Status);                               //["aeronave decolou" ou "aeronave pousou"]

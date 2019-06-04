@@ -52,7 +52,7 @@ int main()
 
   //Instruções:
   avioes = inic_lista(&NAproximacoes, &NDecolagens, avioes, *cod_Voos, &NVoos);
-  printaInicio(NVoos, NAproximacoes, NDecolagens, horas, minutos);
+  printaInicio(NVoos, NAproximacoes, NDecolagens, horas, minutos, avioes);
   while (avioes.ini->prox != NULL)
   {
     // if (pista[0] == 0 || pista[1] == 0 || pista[2] == 0)
