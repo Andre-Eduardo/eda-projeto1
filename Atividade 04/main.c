@@ -43,7 +43,7 @@ int main()
   int NVoos;         // numero de voos (20 ate 64) NVoos = NAproximaçoes + NDecolagens
   int NAproximacoes; // numero de avioes querendo pousar (10 32)
   int NDecolagens;   // avioes querendo decolar (10 a 32)
-  int horas = 6, minutos = 0;
+  int horas = 12, minutos = 0;
   int comb_critico = 0;
   int pista[] = {0, 0, 0};
 
@@ -56,15 +56,10 @@ int main()
   printaInicio(NVoos, NAproximacoes, NDecolagens, horas, minutos);
   while (avioes.ini->prox != NULL)
   {
-    // if (pista[0] == 0 || pista[1] == 0 || pista[2] == 0)
-    // {
-    //   avioes = verificaComb(avioes, &comb_critico);
-    // }
     avioes = verificaComb(avioes, &comb_critico);
 
     //01
     avioes = pouso(avioes, &pista[0], horas, minutos, 1);
-
     avioes = decolagem(avioes, &pista[0], horas, minutos, 1);
     //02
     avioes = pouso(avioes, &pista[1], horas, minutos, 2);
@@ -80,18 +75,18 @@ int main()
       avioes = decolagem(avioes, &pista[2], horas, minutos, 3);
     }
     passaTempo(&horas, &minutos, pista);
-    printf("tamanho fila =%d\n", tamanhoFila(avioes));
     contagem_tempo++;
 
-    if (contagem_tempo == 10)
-    { // a cada 10 unidade de tempo o aviao decrementa combustivel
+    if (contagem_tempo == 10 && avioes.ini!= NULL)
+    { 
+      // a cada 10 unidade de tempo o aviao decrementa combustivel
       avioes = consome_combustivel(avioes);
       contagem_tempo = 0;
     }
     avioes = verificaQueda(avioes);
   }
 
-  liberaFila(avioes);
+  //liberaFila(avioes);
   return 0;
 }
 
@@ -138,8 +133,6 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
     strcpy(d.codigo, (cod_Voos[vetor_al[i]]));
     d.sentido = 'A';
     d.combustivel = comb[i];
-
-    printf("combustivel%d = %d \n", i, comb[i]);
     aviao = pushF(aviao, d);
   }
   for (i = 0; i < *NDecolagens; i++)
@@ -154,7 +147,7 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
 fila pouso(fila aviao, int *liberado, int hora, int min, int pista)
 {
   char status[] = "Aproximacao";
-  if (aviao.ini == NULL)
+  if (aviao.ini->prox == NULL)
   {
     return aviao;
   }
@@ -182,7 +175,7 @@ fila pouso(fila aviao, int *liberado, int hora, int min, int pista)
 fila decolagem(fila aviao, int *liberado, int hora, int min, int pista)
 {
   char status[] = "Decolagem";
-  if (aviao.ini == NULL)
+  if (aviao.ini->prox == NULL)
   {
     return aviao;
   }
@@ -241,7 +234,6 @@ fila consome_combustivel(fila aviao)
   {
     if (prov->dados.sentido == 'A')
     {
-      printf(" cobustivel \n");
       prov->dados.combustivel -= 1;
       
     }
