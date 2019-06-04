@@ -24,7 +24,8 @@ fila consome_combustivel(fila aviao);
 void passaTempo(int *hora, int *minutos, int *pista);
 fila decolagem(fila aviao, int *liberado, int hora, int min, int pista);
 fila pouso(fila aviao, int *liberado, int hora, int min, int pista);
-void vet_aleatorio(int tamanho,int *vetor);
+void vet_aleatorio(int tamanho, int *vetor);
+void ordena_vetor(int *vetor, int qtd);
 int main()
 {
   //Declarações:
@@ -126,10 +127,11 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
   int comb[32];
   *NVoos = inic_aletorio(*NVoos, NAproximacoes, NDecolagens);
   inic_combustivel(*NAproximacoes, comb);
+  ordena_vetor(comb, *NAproximacoes);
   data d;
   int i, al_cod;
   int vetor_al[64];
-  vet_aleatorio(*NAproximacoes+*NDecolagens,vetor_al);
+  vet_aleatorio(*NAproximacoes + *NDecolagens, vetor_al);
   for (i = 0; i < *NAproximacoes; i++)
   {
 
@@ -242,26 +244,40 @@ fila consome_combustivel(fila aviao)
   }
   return aviao;
 }
-void vet_aleatorio(int tamanho,int *vetor){
-  
-  int i,j,aux=0;
-  for ( i = 0; i < tamanho; i++)
+void vet_aleatorio(int tamanho, int *vetor)
+{
+
+  int i, j, aux = 0;
+  for (i = 0; i < tamanho; i++)
   {
-   do
-   {
-     vetor[i] = rand()%MAX_AVI;
-  
-     aux =0;
-     for ( j = 0; (j < i) && (aux == 0); j++)
-     {
-       if(vetor[i]==vetor[j])
-       aux+=1;
-     }
-     
-   } while (aux == 1);
-   
+    do
+    {
+      vetor[i] = rand() % MAX_AVI;
+
+      aux = 0;
+      for (j = 0; (j < i) && (aux == 0); j++)
+      {
+        if (vetor[i] == vetor[j])
+          aux += 1;
+      }
+
+    } while (aux == 1);
   }
-  
-   
+}
+// funçao que ordena um vetor
+void ordena_vetor(int *vetor, int qtd)
+{ int aux;
+  for (int i = 0; i <qtd ; i++)
+  {
+    for (int j = 0; j < qtd; j++)
+    {
+      if (vetor[i] < vetor[j])
+      {
+
+        aux = vetor[i];
+        vetor[i] = vetor[j];
+        vetor[j] = aux;
+      }
+    }
   }
-  
+}
