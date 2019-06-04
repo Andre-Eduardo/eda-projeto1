@@ -24,7 +24,7 @@ fila consome_combustivel(fila aviao);
 void passaTempo(int *hora, int *minutos, int *pista);
 fila decolagem(fila aviao, int *liberado, int hora, int min, int pista);
 fila pouso(fila aviao, int *liberado, int hora, int min, int pista);
-
+void vet_aleatorio(int tamanho,int *vetor);
 int main()
 {
   //Declarações:
@@ -128,10 +128,12 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
   inic_combustivel(*NAproximacoes, comb);
   data d;
   int i, al_cod;
+  int vetor_al[64];
+  vet_aleatorio(*NAproximacoes+*NDecolagens,vetor_al);
   for (i = 0; i < *NAproximacoes; i++)
   {
 
-    strcpy(d.codigo, (cod_Voos[i]));
+    strcpy(d.codigo, (cod_Voos[vetor_al[i]]));
     d.sentido = 'A';
     d.combustivel = comb[i];
 
@@ -140,7 +142,7 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
   }
   for (i = 0; i < *NDecolagens; i++)
   {
-    strcpy(d.codigo, (cod_Voos[i + *NAproximacoes]));
+    strcpy(d.codigo, (cod_Voos[vetor_al[i + *NAproximacoes]]));
     d.sentido = 'D';
     aviao = pushF(aviao, d);
   }
@@ -240,3 +242,26 @@ fila consome_combustivel(fila aviao)
   }
   return aviao;
 }
+void vet_aleatorio(int tamanho,int *vetor){
+  
+  int i,j,aux=0;
+  for ( i = 0; i < tamanho; i++)
+  {
+   do
+   {
+     vetor[i] = rand()%MAX_AVI;
+  
+     aux =0;
+     for ( j = 0; (j < i) && (aux == 0); j++)
+     {
+       if(vetor[i]==vetor[j])
+       aux+=1;
+     }
+     
+   } while (aux == 1);
+   
+  }
+  
+   
+  }
+  
