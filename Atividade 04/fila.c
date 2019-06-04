@@ -202,6 +202,9 @@ fila verificaQueda(fila queue){
   list_enc *element;
   int i, sent=1;
   //Instruções:
+  if (queue.ini == NULL){
+    return queue;
+  }
   if(queue.ini==NULL||queue.fim==NULL){
     fprintf(stderr,"Não há elementos para verificar porque a fila não foi inicializada...\n");
     return (fila){NULL, NULL};

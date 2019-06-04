@@ -24,7 +24,8 @@ fila consome_combustivel(fila aviao);
 void passaTempo(int *hora, int *minutos, int *pista);
 fila decolagem(fila aviao, int *liberado, int hora, int min, int pista);
 fila pouso(fila aviao, int *liberado, int hora, int min, int pista);
-
+void vet_aleatorio(int tamanho, int *vetor);
+void ordena_vetor(int *vetor, int qtd);
 int main()
 {
   //Declarações:
@@ -42,7 +43,7 @@ int main()
   int NVoos;         // numero de voos (20 ate 64) NVoos = NAproximaçoes + NDecolagens
   int NAproximacoes; // numero de avioes querendo pousar (10 32)
   int NDecolagens;   // avioes querendo decolar (10 a 32)
-  int horas = 6, minutos = 0;
+  int horas = 12, minutos = 0;
   int comb_critico = 0;
   int pista[] = {0, 0, 0};
 
@@ -55,15 +56,10 @@ int main()
   printaInicio(NVoos, NAproximacoes, NDecolagens, horas, minutos, avioes);
   while (avioes.ini->prox != NULL)
   {
-    // if (pista[0] == 0 || pista[1] == 0 || pista[2] == 0)
-    // {
-    //   avioes = verificaComb(avioes, &comb_critico);
-    // }
     avioes = verificaComb(avioes, &comb_critico);
 
     //01
     avioes = pouso(avioes, &pista[0], horas, minutos, 1);
-
     avioes = decolagem(avioes, &pista[0], horas, minutos, 1);
     //02
     avioes = pouso(avioes, &pista[1], horas, minutos, 2);
@@ -79,18 +75,18 @@ int main()
       avioes = decolagem(avioes, &pista[2], horas, minutos, 3);
     }
     passaTempo(&horas, &minutos, pista);
-    printf("tamanho fila =%d\n", tamanhoFila(avioes));
     contagem_tempo++;
 
-    if (contagem_tempo == 10)
-    { // a cada 10 unidade de tempo o aviao decrementa combustivel
+    if (contagem_tempo == 10 && avioes.ini!= NULL)
+    { 
+      // a cada 10 unidade de tempo o aviao decrementa combustivel
       avioes = consome_combustivel(avioes);
       contagem_tempo = 0;
     }
     avioes = verificaQueda(avioes);
   }
 
-  liberaFila(avioes);
+  //liberaFila(avioes);
   return 0;
 }
 
@@ -126,21 +122,22 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
   int comb[32];
   *NVoos = inic_aletorio(*NVoos, NAproximacoes, NDecolagens);
   inic_combustivel(*NAproximacoes, comb);
+  ordena_vetor(comb, *NAproximacoes);
   data d;
   int i, al_cod;
+  int vetor_al[64];
+  vet_aleatorio(*NAproximacoes + *NDecolagens, vetor_al);
   for (i = 0; i < *NAproximacoes; i++)
   {
 
-    strcpy(d.codigo, (cod_Voos[i]));
+    strcpy(d.codigo, (cod_Voos[vetor_al[i]]));
     d.sentido = 'A';
     d.combustivel = comb[i];
-
-    printf("combustivel%d = %d \n", i, comb[i]);
     aviao = pushF(aviao, d);
   }
   for (i = 0; i < *NDecolagens; i++)
   {
-    strcpy(d.codigo, (cod_Voos[i + *NAproximacoes]));
+    strcpy(d.codigo, (cod_Voos[vetor_al[i + *NAproximacoes]]));
     d.sentido = 'D';
     aviao = pushF(aviao, d);
   }
@@ -150,7 +147,7 @@ fila inic_lista(int *NAproximacoes, int *NDecolagens, fila aviao, char *cod_Voos
 fila pouso(fila aviao, int *liberado, int hora, int min, int pista)
 {
   char status[] = "Aproximacao";
-  if (aviao.ini == NULL)
+  if (aviao.ini->prox == NULL)
   {
     return aviao;
   }
@@ -178,7 +175,7 @@ fila pouso(fila aviao, int *liberado, int hora, int min, int pista)
 fila decolagem(fila aviao, int *liberado, int hora, int min, int pista)
 {
   char status[] = "Decolagem";
-  if (aviao.ini == NULL)
+  if (aviao.ini->prox == NULL)
   {
     return aviao;
   }
@@ -235,8 +232,50 @@ fila consome_combustivel(fila aviao)
 
   while (prov != NULL)
   {
-    prov->dados.combustivel -= 1;
+    if (prov->dados.sentido == 'A')
+    {
+      prov->dados.combustivel -= 1;
+      
+    }
     prov = prov->prox;
   }
   return aviao;
+}
+void vet_aleatorio(int tamanho, int *vetor)
+{
+
+  int i, j, aux = 0;
+  for (i = 0; i < tamanho; i++)
+  {
+    do
+    {
+      vetor[i] = rand() % MAX_AVI;
+
+      aux = 0;
+      for (j = 0; (j < i) && (aux == 0); j++)
+      {
+        if (vetor[i] == vetor[j])
+          aux += 1;
+      }
+
+    } while (aux == 1);
+  }
+}
+// funçao que ordena um vetor
+void ordena_vetor(int *vetor, int qtd)
+{
+  int aux;
+  for (int i = 0; i < qtd; i++)
+  {
+    for (int j = 0; j < qtd; j++)
+    {
+      if (vetor[i] < vetor[j])
+      {
+
+        aux = vetor[i];
+        vetor[i] = vetor[j];
+        vetor[j] = aux;
+      }
+    }
+  }
 }
