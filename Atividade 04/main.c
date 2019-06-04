@@ -87,7 +87,7 @@ int main()
   printf("aprox =%d\n", NAproximacoes);
   printf("decola =%d\n", NDecolagens);
   printf(" tamanho %d \n",tamanhoFila(aviao));
-  return 0;
+  return 0; 
 }
 
 
