@@ -239,7 +239,12 @@ fila consome_combustivel(fila aviao)
 
   while (prov != NULL)
   {
-    prov->dados.combustivel -= 1;
+    if (prov->dados.sentido == 'A')
+    {
+      printf(" cobustivel \n");
+      prov->dados.combustivel -= 1;
+      
+    }
     prov = prov->prox;
   }
   return aviao;
@@ -266,8 +271,9 @@ void vet_aleatorio(int tamanho, int *vetor)
 }
 // funçao que ordena um vetor
 void ordena_vetor(int *vetor, int qtd)
-{ int aux;
-  for (int i = 0; i <qtd ; i++)
+{
+  int aux;
+  for (int i = 0; i < qtd; i++)
   {
     for (int j = 0; j < qtd; j++)
     {
