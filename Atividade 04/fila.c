@@ -230,7 +230,7 @@ void printaInicio(int NVoos, int NAproximacoes, int Ndecolagens, int hora, int m
       puts("----------------------------------------------------------------");
       puts("“Aeroporto Internacional Santos Dumont inventou o aviao”");
       printf("Hora Inicial: %d:%d\n", hora, min);             //recebe hora
-      printf("Fila de Pedidos:");                              // ???
+      printf("Fila de Pedidos:\n");                              // ???
       for (elem=avioes.ini; elem!=NULL; elem=elem->prox){
         printf("%s, ", elem->dados.codigo);
         printf("%c, ", elem->dados.sentido);
