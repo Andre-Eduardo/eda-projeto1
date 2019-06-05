@@ -14,7 +14,5 @@ int main(){
     getchar();
     imprimeMenu();
 
-
-
     return 0;
 }

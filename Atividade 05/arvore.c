@@ -9,17 +9,17 @@ Hugo Aragão de Oliveira - 16/0124581
 void imprimeMenu(){
   system("clear");
   puts("Selecione a ferramenta desejada digitando o No correpondente...");
-  puts("1. Load Tree From File");
-  puts("2. Show Tree");
+  puts("1. Load Tree From File");   //Hugo
+  puts("2. Show Tree");             //Hugo
   puts("3. Is Full");
   puts("4. Search Value");
   puts("5. Get Height");
   puts("6. Remove Value");
-  puts("7. Print In Order");
+  puts("7. Print In Order");        //Hugo
   puts("8. Print Pre-Order");
   puts("9. Print Post-Order");
   puts("10. Balance Tree");
-  puts("11. Sair");
+  puts("11. Sair");                 //Hercules
 
   return;
 }
