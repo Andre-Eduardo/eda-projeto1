@@ -7,89 +7,89 @@ Hugo Aragão de Oliveira - 16/0124581
 #include "arvore.h"
 
 //Objetivo: mostrar menu na tela
-// void imprimeMenu(){
-//   system("clear");
-//   puts("Selecione a ferramenta desejada digitando o No correpondente...");
-//   puts("1. Load Tree From File");   //Hugo
-//   puts("2. Show Tree");             //Hugo
-//   puts("3. Is Full");
-//   puts("4. Search Value");
-//   puts("5. Get Height");
-//   puts("6. Remove Value");          //Hércules
-//   puts("7. Print In Order");        //Hugo
-//   puts("8. Print Pre-Order");
-//   puts("9. Print Post-Order");
-//   puts("10. Balance Tree");
-//   puts("11. Sair");                 //Hercules
-//
-//   return;
-// }
-//
+void imprimeMenu(){
+  system("clear");
+  puts("Selecione a ferramenta desejada digitando o No correpondente...");
+  puts("1. Load Tree From File");   //Hugo
+  puts("2. Show Tree");             //Hugo
+  puts("3. Is Full");
+  puts("4. Search Value");
+  puts("5. Get Height");
+  puts("6. Remove Value");          //Hércules
+  puts("7. Print In Order");        //Hugo
+  puts("8. Print Pre-Order");
+  puts("9. Print Post-Order");
+  puts("10. Balance Tree");
+  puts("11. Sair");                 //Hercules
+
+  return;
+}
+
 // //Objetivo: receber a opcao do menu digitada pelo usuario
-// void opcaoMenu(){
-//     int sent = 1;
-//     char opcao;
-//
-//             while(sent){
-//             imprimeMenu();
-//             opcao = validaOpcao(opcao);
-//
-//             switch(opcao){
-//             case '1':
-//                 //loadTreeFromFile();
-//                 break;
-//             case '2':
-//                 //showTree();
-//                 break;
-//             case '3':
-//                 //isFull();
-//                 break;
-//             case '4':
-//                 //searchValue();
-//                 break;
-//             case '5':
-//                 //getHeight();
-//                 break;
-//             case '6':
-//                 //removeValue();
-//                 break;
-//             case '7':
-//                 //printInOrder();
-//                 break;
-//             case '8':
-//                 //printPreOrder();
-//                 break;
-//             case '9':
-//                 //printPostOrder();
-//                 break;
-//             case '10':
-//                 //balanceTree();
-//                 break;
-//             case '11':
-//                 sair();
-//                 break;
-//             default:        //WARNING => 'stderr' deve ser declarado
-//                 fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
-//                 exit(-1);
-//             }
-//         }
-//
-//
-//   }
+void opcaoMenu(){
+    int sent = 1;
+    char opcao;
+
+            while(sent){
+            imprimeMenu();
+            opcao = validaOpcao(opcao);
+
+            switch(opcao){
+            case '1':
+                //loadTreeFromFile();
+                break;
+            case '2':
+                //showTree();
+                break;
+            case '3':
+                isFull(tree);
+                break;
+            case '4':
+                searchValue(tree);
+                break;
+            case '5':
+                getHeight(tree);
+                break;
+            case '6':
+                tree=removeValue(tree);
+                break;
+            case '7':
+                //printInOrder();
+                break;
+            case '8':
+                //printPreOrder();
+                break;
+            case '9':
+                //printPostOrder();
+                break;
+            case '10':
+                //balanceTree();
+                break;
+            case '11':
+                sair();
+                break;
+            default:        //WARNING => 'stderr' deve ser declarado
+                fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
+                exit(-1);
+            }
+        }
+
+
+  }
 //
 // //Objetivo: validar opcao do menu
-// char validaOpcao(char opcao){
-//         opcao = getchar();
-//
-//         limpabuffer();
-//         //WARNING => esse While deve ser atualizado (opcao != '1' a '11')
-//         while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' && opcao!='5'){
-//                 puts("\n\n\n\nOpção inválida!(digite um número entre 1 e 11)");
-//                 opcao = sgetchar();
-//                 limpabuffer();
-//         }
-//         return opcao;
-// }
+char validaOpcao(char opcao){
+        opcao = getchar();
+
+        limpabuffer();
+        //WARNING => esse While deve ser atualizado (opcao != '1' a '11')
+        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' && opcao!='5'){
+                puts("\n\n\n\nOpção inválida!(digite um número entre 1 e 11)");
+                opcao = sgetchar();
+                limpabuffer();
+        }
+        return opcao;
+}
 
 // Objetivo: Cria árvore vazia
 // Parâmetro:
@@ -397,10 +397,34 @@ arvore *removeValue(arvore *tree){
 // Objetivo: Calcular a altura da árvore
 // Parâmetro: árvore
 // Retorno: Imprime na tela a altura da árvore
-void getHeight(){
+void getHeight(arvore *tree){
   //Declarações:
 
   //Instruções:
+  system("clear");
+  printf("A altura da árvore é: %d\n", alturaArvore(tree));
+  puts("\n\n\nPressione ENTER para continuar...");
+  limpabuffer();
+
+  return;
+}
+
+// Objetivo: Mostra se a arvore é cheia ou não
+// Parâmetro: árvore
+// Retorno: Imprime se é cheia ou não
+void isFull(arvore *tree){
+  //Declarações:
+
+  //Instruções:
+  system("clear");
+  if(arvoreCheia(tree)==1)
+    puts("A árvore é cheia");
+  else if(arvoreCheia(tree)==0)
+    puts("A árvore não é cheia");
+  else
+    puts("A árvore não foi inicializada!");
+  puts("\n\n\nPressione ENTER para continuar...");
+  limpabuffer();
 
   return;
 }
@@ -423,30 +447,133 @@ int alturaArvore(arvore *tree){
   arvore *elemAtual;
   int altura=0;
   int cont=0;
+  int voltaEsqDir=0; // Lado de volta, 1= esquerda ou 0= direita
+  int volta=0;
   //Instruções:
   if(tree!=NULL){
+    cont++;
+    altura++;
     elemAtual=tree;
     while(elemAtual!=NULL){
-      while(elemAtual->filhoEsq!=NULL){
-        elemAtual=elemAtual->filhoEsq;
-        cont++;
-        if(cont>altura){
-          altura=cont;
+      if(!volta){
+        while(elemAtual->filhoEsq!=NULL){
+          elemAtual=elemAtual->filhoEsq;
+          volta=0;
+          cont++;
+          voltaEsqDir=0;
+          if(cont>altura){
+            altura=cont;
+          }
         }
       }
 
-      if(FOLHA){
-        elemAtual=elemAtual->pai;
-        cont--;
-      }else if(TEM_FILHO_DIR){
+      if((volta && !voltaEsqDir && elemAtual->filhoDir!=NULL) || (TEM_FILHO_DIR && elemAtual->filhoEsq==NULL && !volta)){
         elemAtual=elemAtual->filhoDir;
+        volta=0;
         cont++;
+        voltaEsqDir=1;
         if(cont>altura){
           altura=cont;
         }
+      }else if(FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir==NULL)){
+        if(elemAtual->pai!=NULL){
+          if(elemAtual->pai->filhoEsq==elemAtual)
+            voltaEsqDir=0;
+          else
+            voltaEsqDir=1;
+        }
+
+        elemAtual=elemAtual->pai;
+        cont--;
+        volta=1;
       }
     }
   }
 
   return altura;
+}
+
+// Objetivo: Testa se a árvore é cheia ou não
+// Parâmetro: árvore
+// Retorno: 1=árvore cheia, 0= árvore não é cheia, -1=árvore não inicializada
+int arvoreCheia(arvore* tree){
+  //Declarações:
+  arvore *elemAtual;
+  int voltaEsqDir=0; // Lado de volta, 1= esquerda ou 0= direita
+  int volta=0;
+  int cheia=1;
+  //Instruções:
+  if(tree!=NULL){
+    elemAtual=tree;
+    while(elemAtual!=NULL){
+      if(TEM_1_FILHO)
+        cheia=0;
+
+      if(!volta){
+        while(elemAtual->filhoEsq!=NULL){
+          elemAtual=elemAtual->filhoEsq;
+          volta=0;
+          voltaEsqDir=0;
+          if(TEM_1_FILHO)
+            cheia=0;
+        }
+      }
+
+      if((volta && !voltaEsqDir && elemAtual->filhoDir!=NULL) || (TEM_FILHO_DIR && elemAtual->filhoEsq==NULL && !volta)){
+        elemAtual=elemAtual->filhoDir;
+        volta=0;
+        voltaEsqDir=1;
+      }else if(FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir==NULL)){
+        if(elemAtual->pai!=NULL){
+          if(elemAtual->pai->filhoEsq==elemAtual)
+            voltaEsqDir=0;
+          else
+            voltaEsqDir=1;
+        }
+
+        elemAtual=elemAtual->pai;
+        volta=1;
+      }
+    }
+  }else{
+    return -1;
+  }
+
+  return cheia;
+}
+
+// Objetivo: Função para sair do programa
+// Parâmetro: árvore
+// Retorno:
+void sair(arvore *tree){
+  //Declarações:
+  char opcao;
+  //Instruções:
+  system("clear");
+  puts("Tem certeza que deseja sair?(S/N)");
+  opcao= validaSN(opcao);
+
+  if(opcao=='S' || opcao=='s'){
+    liberaArvore(tree);
+    exit(0);
+  }
+
+  return;
+}
+
+// Objetivo: Verificar se a opção escolhida é válida
+// Parâmetro: opção
+// Retorno: opção válida
+char validaSN(char opcao){
+  //Declarações:
+
+  //Instruções:
+  opcao=getchar();
+  limpabuffer();
+  while(opcao!='S' && opcao!='s' && opcao!='N' && opcao!='n'){
+    puts("\n\n\n\nOpção inválida!(digite s para sim, ou n para não)");
+    opcao=getchar();
+    limpabuffer();
+  }
+  return opcao;
 }

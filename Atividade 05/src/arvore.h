@@ -26,21 +26,22 @@ typedef struct arvore{
 //======== Funcoes ========
 
 //Interface
-// void imprimeMenu();
-// void opcaoMenu(char opcao);
-// char validaOpcao(char opcao);
+void imprimeMenu();
+void opcaoMenu(char opcao);
+char validaOpcao(char opcao);
 
 //Principais
 // void loadTreeFromFile();
 // void showTree();
-// void isFull();
+void isFull(arvore *tree);
 void searchValue(arvore *tree);
-void getHeight();
+void getHeight(arvore *tree);
 arvore *removeValue(arvore *tree);
 // void printInOrder();
 // void printPreOrder();
 // void printPostOrder();
 // void balanceTree();
+void sair(arvore *tree);
 
 //Básicas
 arvore *criaArvoreVazia();
@@ -50,6 +51,8 @@ arvore *removeArvore(arvore *tree, int busca);
 int alturaArvore(arvore *tree);
 int nivelNo(arvore *tree);
 int liberaArvore(arvore *tree);
-void limpabuffer(void);
+int arvoreCheia(arvore *tree);
+void limpabuffer();
+char validaSN(char opcao);
 
 #endif
