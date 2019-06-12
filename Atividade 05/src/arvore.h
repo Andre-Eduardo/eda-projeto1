@@ -10,13 +10,14 @@ Hugo Aragão de Oliveira - 16/0124581
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FOLHA elemAtual->filhoDir==NULL && elemAtual->filhoEsq==NULL
-#define TEM_1_FILHO elemAtual->filhoDir!=NULL && elemAtual->filhoEsq==NULL || elemAtual->filhoDir==NULL && elemAtual->filhoEsq!=NULL
-#define TEM_2_FILHO elemAtual->filhoDir!=NULL && elemAtual->filhoEsq!=NULL
-#define TEM_FILHO_ESQ elemAtual->filhoEsq!=NULL
-#define TEM_FILHO_DIR elemAtual->filhoDir!=NULL
+#define FOLHA elemAtual->filhoDir == NULL && elemAtual->filhoEsq == NULL
+#define TEM_1_FILHO elemAtual->filhoDir != NULL && elemAtual->filhoEsq == NULL || elemAtual->filhoDir == NULL && elemAtual->filhoEsq != NULL
+#define TEM_2_FILHO elemAtual->filhoDir != NULL && elemAtual->filhoEsq != NULL
+#define TEM_FILHO_ESQ elemAtual->filhoEsq != NULL
+#define TEM_FILHO_DIR elemAtual->filhoDir != NULL
 
-typedef struct arvore{
+typedef struct arvore
+{
     struct arvore *pai;
     int dado;
     struct arvore *filhoEsq;
@@ -31,16 +32,16 @@ void opcaoMenu(char opcao);
 char validaOpcao(char opcao);
 
 //Principais
-// void loadTreeFromFile();
-// void showTree();
-void isFull(arvore *tree);
-void searchValue(arvore *tree);
-void getHeight(arvore *tree);
-arvore *removeValue(arvore *tree);
-// void printInOrder();
-// void printPreOrder();
-// void printPostOrder();
-// void balanceTree();
+// void loadTreeFromFile();// hugo
+// void showTree();// hugo
+void isFull(arvore *tree);         // hercules
+void searchValue(arvore *tree);    // hercules
+void getHeight(arvore *tree);      // hercules
+arvore *removeValue(arvore *tree); // hercules
+                                   // void printInOrder(); // hugo
+                                   // void printPreOrder();// andre
+void printPostOrder(arvore *tree);             // andre
+void balanceTree(arvore *tree);    // andre
 void sair(arvore *tree);
 
 //Básicas

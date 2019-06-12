@@ -577,3 +577,25 @@ char validaSN(char opcao){
   }
   return opcao;
 }
+void balanceTree(arvore *tree){
+ 
+}
+void printPostOrder(arvore *tree){
+  if(tree==NULL){
+    fprintf(stderr,"\n\nÁrvore não foi inicializada!");
+    return -1;
+  }
+     printPostorder(tree->filhoEsq);
+     printPostorder(tree->filhoDir); 
+     printf("%d, ", tree->dado);
+}
+void printPreOrder(arvore *tree){
+  if(tree==NULL){
+    fprintf(stderr,"\n\nÁrvore não foi inicializada!");
+    return -1;
+  }
+     printf("%d, ", tree->dado);
+     printPreOrder(tree->filhoEsq);
+     printPreOrder(tree->filhoDir); 
+    
+}
