@@ -9,7 +9,7 @@ Hugo Aragão de Oliveira - 16/0124581
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
 #define FOLHA elemAtual->filhoDir == NULL && elemAtual->filhoEsq == NULL
 #define TEM_1_FILHO elemAtual->filhoDir != NULL && elemAtual->filhoEsq == NULL || elemAtual->filhoDir == NULL && elemAtual->filhoEsq != NULL
 #define TEM_2_FILHO elemAtual->filhoDir != NULL && elemAtual->filhoEsq != NULL
@@ -39,9 +39,15 @@ void searchValue(arvore *tree);    // hercules
 void getHeight(arvore *tree);      // hercules
 arvore *removeValue(arvore *tree); // hercules
                                    // void printInOrder(); // hugo
-                                   // void printPreOrder();// andre
-void printPostOrder(arvore *tree);             // andre
+int printPreOrder(arvore *tree);   // andre
+int printPostOrder(arvore *tree);  // andre
 void balanceTree(arvore *tree);    // andre
+void r_direita(arvore *avo, arvore *pai, arvore *filho);// andre
+void r_esquerda(arvore *avo, arvore *pai, arvore *filho);//andre
+int is_balance(arvore *tree);//andre
+void backbone(arvore *root);//andre
+void DSW(arvore *tree);// andre
+void rotaciona(arvore *tree, int num);//andre
 void sair(arvore *tree);
 
 //Básicas
