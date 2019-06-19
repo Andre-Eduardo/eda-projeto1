@@ -7,7 +7,8 @@ Hugo Aragão de Oliveira - 16/0124581
 #include "arvore.h"
 
 //Objetivo: mostrar menu na tela
-void imprimeMenu(){
+void imprimeMenu()
+{
   system("clear");
   puts("Selecione a ferramenta desejada digitando o No correpondente...");
   puts("0. Load Tree From File");   //Hugo
@@ -76,7 +77,52 @@ void opcaoMenu(){
         }
 
 
+  while (sent)
+  {
+    imprimeMenu();
+    opcao = validaOpcao(opcao);
+
+    switch (opcao)
+    {
+    case '1':
+      //loadTreeFromFile();
+      break;
+    case '2':
+      //showTree();
+      break;
+    case '3':
+      isFull(tree);
+      break;
+    case '4':
+      searchValue(tree);
+      break;
+    case '5':
+      getHeight(tree);
+      break;
+    case '6':
+      tree = removeValue(tree);
+      break;
+    case '7':
+      //printInOrder();
+      break;
+    case '8':
+      //printPreOrder();
+      break;
+    case '9':
+      //printPostOrder();
+      break;
+    case '10':
+      //balanceTree();
+      break;
+    case '11':
+      sair();
+      break;
+    default: //WARNING => 'stderr' deve ser declarado
+      fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
+      exit(-1);
+    }
   }
+}
 //
 // //Objetivo: validar opcao do menu
 char validaOpcao(char opcao){
@@ -97,7 +143,8 @@ char validaOpcao(char opcao){
 // Objetivo: Cria árvore vazia
 // Parâmetro:
 // Retorno: ponteiro nulo
-arvore *criaArvoreVazia(){
+arvore *criaArvoreVazia()
+{
   //Declarações:
 
   //Instruções:
@@ -108,50 +155,65 @@ arvore *criaArvoreVazia(){
 // Objetivo: Inserir um elemento na árvore
 // Parâmetro: árvore, dado ser adicionado
 // Retorno: árvore
-arvore *insereArvore(arvore *tree, int dado){
+arvore *insereArvore(arvore *tree, int dado)
+{
   //Declarações:
   arvore *novoElem;
   arvore *elemAtual;
   arvore *prox;
-  int sent=1, esqDir;
+  int sent = 1, esqDir;
   //Instruções:
 
   novoElem = (arvore *)malloc(sizeof(arvore));
-  if(novoElem==NULL){
-    fprintf(stderr,"Erro ao alocar novo elemento na árvore\n");
+  if (novoElem == NULL)
+  {
+    fprintf(stderr, "Erro ao alocar novo elemento na árvore\n");
     return NULL;
   }
 
-  novoElem->dado=dado;
-  novoElem->filhoEsq=NULL;
-  novoElem->filhoDir=NULL;
+  novoElem->dado = dado;
+  novoElem->filhoEsq = NULL;
+  novoElem->filhoDir = NULL;
 
-  if(tree==NULL){
-    novoElem->pai=NULL;
+  if (tree == NULL)
+  {
+    novoElem->pai = NULL;
     return novoElem;
-  }else{
-    elemAtual=tree;
-    while(sent){
-      if(novoElem->dado>elemAtual->dado){
-        esqDir=1;
-        prox=elemAtual->filhoDir;
-      }else{
-        esqDir=0;
-        prox=elemAtual->filhoEsq;
+  }
+  else
+  {
+    elemAtual = tree;
+    while (sent)
+    {
+      if (novoElem->dado > elemAtual->dado)
+      {
+        esqDir = 1;
+        prox = elemAtual->filhoDir;
+      }
+      else
+      {
+        esqDir = 0;
+        prox = elemAtual->filhoEsq;
       }
 
-      if(prox==NULL){
-        if(esqDir){
-          elemAtual->filhoDir=novoElem;
-          novoElem->pai=elemAtual;
-        }else{
-          elemAtual->filhoEsq=novoElem;
-          novoElem->pai=elemAtual;
+      if (prox == NULL)
+      {
+        if (esqDir)
+        {
+          elemAtual->filhoDir = novoElem;
+          novoElem->pai = elemAtual;
+        }
+        else
+        {
+          elemAtual->filhoEsq = novoElem;
+          novoElem->pai = elemAtual;
         }
 
-        sent=0;
-      }else{
-        elemAtual=prox;
+        sent = 0;
+      }
+      else
+      {
+        elemAtual = prox;
       }
     }
   }
@@ -159,100 +221,128 @@ arvore *insereArvore(arvore *tree, int dado){
   return tree;
 }
 
-
 // Objetivo: Busca elemento na árvore
 // Parâmetro: árvore, e elemento a ser buscado
 // Retorno: ponteiro para o elemento da árvore com o valor buscado(se não achar retorna NULL)
-arvore *buscaArvore(arvore *tree, int busca){
+arvore *buscaArvore(arvore *tree, int busca)
+{
   //Declarações:
   arvore *elemAtual;
-  int sent=1;
+  int sent = 1;
   //Instruções:
-  if(tree==NULL){
+  if (tree == NULL)
+  {
     return NULL;
   }
 
-  elemAtual=tree;
+  elemAtual = tree;
 
-  while(elemAtual!=NULL){
-    if(busca<elemAtual->dado){
-      elemAtual=elemAtual->filhoEsq;
-    }else if(busca> elemAtual->dado){
-      elemAtual=elemAtual->filhoDir;
-    }else{
+  while (elemAtual != NULL)
+  {
+    if (busca < elemAtual->dado)
+    {
+      elemAtual = elemAtual->filhoEsq;
+    }
+    else if (busca > elemAtual->dado)
+    {
+      elemAtual = elemAtual->filhoDir;
+    }
+    else
+    {
       return elemAtual;
     }
   }
 
-
   return NULL;
 }
-
 
 // Objetivo: remove elemento na árvore
 // Parâmetro: árvore, e elemento a ser removido
 // Retorno: ponteiro para o elemento da árvore com o valor removido
-arvore *removeArvore(arvore *tree, int busca){
+arvore *removeArvore(arvore *tree, int busca)
+{
   //Declarações:
   arvore *elemAtual;
   arvore *aux;
   int herdeiro;
   //Instruções:
-  elemAtual=buscaArvore(tree, busca);
+  elemAtual = buscaArvore(tree, busca);
 
-  if(FOLHA){
-    aux=elemAtual->pai;
-    if(aux!=NULL){
-      if(aux->filhoDir==elemAtual)
-        aux->filhoDir=NULL;
+  if (FOLHA)
+  {
+    aux = elemAtual->pai;
+    if (aux != NULL)
+    {
+      if (aux->filhoDir == elemAtual)
+        aux->filhoDir = NULL;
       else
-        aux->filhoEsq=NULL;
-    }else{
-      tree=NULL;
+        aux->filhoEsq = NULL;
+    }
+    else
+    {
+      tree = NULL;
     }
     free(elemAtual);
-  }else if(TEM_1_FILHO){
-    aux=elemAtual->pai;
-    if(aux!=NULL){
-      if(aux->filhoDir==elemAtual){
-        if(elemAtual->filhoDir==NULL){
-          aux->filhoDir=elemAtual->filhoEsq;
-          elemAtual->filhoEsq->pai=aux;
+  }
+  else if (TEM_1_FILHO)
+  {
+    aux = elemAtual->pai;
+    if (aux != NULL)
+    {
+      if (aux->filhoDir == elemAtual)
+      {
+        if (elemAtual->filhoDir == NULL)
+        {
+          aux->filhoDir = elemAtual->filhoEsq;
+          elemAtual->filhoEsq->pai = aux;
         }
-        else{
-          aux->filhoDir=elemAtual->filhoDir;
-          elemAtual->filhoDir->pai=aux;
-        }
-      }else{
-        if(elemAtual->filhoDir==NULL){
-          aux->filhoEsq=elemAtual->filhoEsq;
-          elemAtual->filhoEsq->pai=aux;
-        }
-        else{
-          aux->filhoEsq=elemAtual->filhoDir;
-          elemAtual->filhoDir->pai=aux;
+        else
+        {
+          aux->filhoDir = elemAtual->filhoDir;
+          elemAtual->filhoDir->pai = aux;
         }
       }
-    }else{
-      if(elemAtual->filhoDir==NULL){
-        elemAtual->filhoEsq->pai=NULL;
-        tree=elemAtual->filhoEsq;
-      }else{
-        elemAtual->filhoDir->pai=NULL;
-        tree=elemAtual->filhoDir;
+      else
+      {
+        if (elemAtual->filhoDir == NULL)
+        {
+          aux->filhoEsq = elemAtual->filhoEsq;
+          elemAtual->filhoEsq->pai = aux;
+        }
+        else
+        {
+          aux->filhoEsq = elemAtual->filhoDir;
+          elemAtual->filhoDir->pai = aux;
+        }
+      }
+    }
+    else
+    {
+      if (elemAtual->filhoDir == NULL)
+      {
+        elemAtual->filhoEsq->pai = NULL;
+        tree = elemAtual->filhoEsq;
+      }
+      else
+      {
+        elemAtual->filhoDir->pai = NULL;
+        tree = elemAtual->filhoDir;
       }
     }
     free(elemAtual);
-  }else{ // tem 2 filhos
-    aux=elemAtual->filhoDir;
+  }
+  else
+  { // tem 2 filhos
+    aux = elemAtual->filhoDir;
 
-    while(aux->filhoEsq!=NULL){
-      aux=aux->filhoEsq;
+    while (aux->filhoEsq != NULL)
+    {
+      aux = aux->filhoEsq;
     }
 
-    herdeiro=aux->dado;
-    tree=removeArvore(tree, herdeiro);
-    elemAtual->dado=herdeiro;
+    herdeiro = aux->dado;
+    tree = removeArvore(tree, herdeiro);
+    elemAtual->dado = herdeiro;
   }
 
   return tree;
@@ -261,33 +351,38 @@ arvore *removeArvore(arvore *tree, int busca){
 // Objetivo: libera árvore
 // Parâmetro: árvor
 // Retorno: 0 se for bem sucedido, -1 se ocorrer algum erro
-int liberaArvore(arvore *tree){
+int liberaArvore(arvore *tree)
+{
   //Declarações:
   arvore *elemAtual;
   arvore *aux;
   //Instruções:
 
-  if(tree==NULL){
+  if (tree == NULL)
+  {
     fprintf(stderr, "\n\nOcorreu um erro ao tentar liberar a árvore...\n\nÁrvore não foi inicializada!");
     return -1;
   }
 
-  elemAtual=tree;
-  while(elemAtual!=NULL){
-    while(elemAtual->filhoEsq!=NULL){
-      elemAtual=elemAtual->filhoEsq;
+  elemAtual = tree;
+  while (elemAtual != NULL)
+  {
+    while (elemAtual->filhoEsq != NULL)
+    {
+      elemAtual = elemAtual->filhoEsq;
     }
 
-    if(FOLHA){
-      aux=elemAtual->pai;
-      tree=removeArvore(tree, elemAtual->dado);
-      elemAtual=aux;
-    }else if(TEM_FILHO_DIR){
-      elemAtual=elemAtual->filhoDir;
+    if (FOLHA)
+    {
+      aux = elemAtual->pai;
+      tree = removeArvore(tree, elemAtual->dado);
+      elemAtual = aux;
+    }
+    else if (TEM_FILHO_DIR)
+    {
+      elemAtual = elemAtual->filhoDir;
     }
   }
-
-
 
   return 0;
 }
@@ -295,12 +390,14 @@ int liberaArvore(arvore *tree){
 // Objetivo: Calcular o nível do no
 // Parâmetro: nó da árvore
 // Retorno: retorna o nível do nó
-int nivelNo(arvore *tree){
+int nivelNo(arvore *tree)
+{
   //Declarações:
-  int nivel=0;
+  int nivel = 0;
   //Instruções:
-  while(tree!=NULL){
-    tree=tree->pai;
+  while (tree != NULL)
+  {
+    tree = tree->pai;
     nivel++;
   }
 
@@ -310,7 +407,8 @@ int nivelNo(arvore *tree){
 // Objetivo: procurar um valor na árvore
 // Parâmetro: raiz da árvore, e número a ser buscado
 // Retorno: Imprime na tela o que achou
-void searchValue(arvore *tree){
+void searchValue(arvore *tree)
+{
   //Declarações:
   int busca;
   arvore *noArvore;
@@ -318,7 +416,8 @@ void searchValue(arvore *tree){
   //Instruções:
   system("clear");
 
-  if(tree==NULL){
+  if (tree == NULL)
+  {
     puts("A lista não foi inicializada, portanto não há valores a serem buscados...");
     puts("\n\n\nPressione ENTER para continuar...");
     limpabuffer();
@@ -328,31 +427,38 @@ void searchValue(arvore *tree){
   puts("Digite o valor a ser procurado:");
   scanf("%d", &busca);
   limpabuffer();
-  noArvore=buscaArvore(tree, busca);
-  if(noArvore==NULL){
+  noArvore = buscaArvore(tree, busca);
+  if (noArvore == NULL)
+  {
     puts("\n\nO valor solicitado não foi encontrado.");
     puts("\n\n\nPressione ENTER para continuar...");
     limpabuffer();
     return;
   }
   printf("\n\nNível do nó: %d\n", nivelNo(noArvore));
-  if(noArvore->pai!=NULL)
+  if (noArvore->pai != NULL)
     printf("Valor do Pai: %d\n", noArvore->pai->dado);
   else
     printf("Valor do Pai: Nó não tem pai...\n");
 
-  if(noArvore->pai!=NULL){
-    if(noArvore->pai->filhoEsq==noArvore){
-      irmao=noArvore->pai->filhoDir;
-    }else{
-      irmao=noArvore->pai->filhoEsq;
+  if (noArvore->pai != NULL)
+  {
+    if (noArvore->pai->filhoEsq == noArvore)
+    {
+      irmao = noArvore->pai->filhoDir;
+    }
+    else
+    {
+      irmao = noArvore->pai->filhoEsq;
     }
 
-    if(irmao==NULL)
+    if (irmao == NULL)
       printf("Valor do Irmão: Não tem irmão\n");
     else
       printf("Valor do Irmão: %d\n", irmao->dado);
-  }else{
+  }
+  else
+  {
     printf("Valor do Irmão: Não tem irmão...\n");
   }
 
@@ -364,14 +470,16 @@ void searchValue(arvore *tree){
 // Objetivo: Remover um valor da árvore
 // Parâmetro: raiz da árvore
 // Retorno: ponteiro para árvore com valor removido
-arvore *removeValue(arvore *tree){
+arvore *removeValue(arvore *tree)
+{
   //Declarações:
   int busca;
   arvore *noArvore;
   //Instruções:
   system("clear");
 
-  if(tree==NULL){
+  if (tree == NULL)
+  {
     puts("A lista não foi inicializada, portanto não há valores a serem removidos...");
     puts("\n\n\nPressione ENTER para continuar...");
     limpabuffer();
@@ -381,15 +489,16 @@ arvore *removeValue(arvore *tree){
   puts("Digite o valor a ser excluído:");
   scanf("%d", &busca);
   limpabuffer();
-  noArvore=buscaArvore(tree, busca);
-  if(noArvore==NULL){
+  noArvore = buscaArvore(tree, busca);
+  if (noArvore == NULL)
+  {
     puts("\n\nO valor solicitado não foi encontrado.");
     puts("\n\n\nPressione ENTER para continuar...");
     limpabuffer();
     return tree;
   }
 
-  tree= removeArvore(tree, busca);
+  tree = removeArvore(tree, busca);
   puts("\n\nElemento removido com sucesso");
   puts("\n\n\nPressione ENTER para continuar...");
   limpabuffer();
@@ -400,7 +509,8 @@ arvore *removeValue(arvore *tree){
 // Objetivo: Calcular a altura da árvore
 // Parâmetro: árvore
 // Retorno: Imprime na tela a altura da árvore
-void getHeight(arvore *tree){
+void getHeight(arvore *tree)
+{
   //Declarações:
 
   //Instruções:
@@ -415,14 +525,15 @@ void getHeight(arvore *tree){
 // Objetivo: Mostra se a arvore é cheia ou não
 // Parâmetro: árvore
 // Retorno: Imprime se é cheia ou não
-void isFull(arvore *tree){
+void isFull(arvore *tree)
+{
   //Declarações:
 
   //Instruções:
   system("clear");
-  if(arvoreCheia(tree)==1)
+  if (arvoreCheia(tree) == 1)
     puts("A árvore é cheia");
-  else if(arvoreCheia(tree)==0)
+  else if (arvoreCheia(tree) == 0)
     puts("A árvore não é cheia");
   else
     puts("A árvore não foi inicializada!");
@@ -435,60 +546,73 @@ void isFull(arvore *tree){
 // Objetivo: Limpar buffer do teclado
 // Parâmetro:
 // Retorno:
-void limpabuffer(void){
+void limpabuffer(void)
+{
   //Declarações:
   char c;
   //Instruções:
-  while ((c = getchar()) != '\n' && c != EOF);
+  while ((c = getchar()) != '\n' && c != EOF)
+    ;
 }
 
 // Objetivo: calcula altura da arvore
 // Parâmetro: árvore
 // Retorno: altura da árvore
-int alturaArvore(arvore *tree){
+int alturaArvore(arvore *tree)
+{
   //Declarações:
   arvore *elemAtual;
-  int altura=0;
-  int cont=0;
-  int voltaEsqDir=0; // Lado de volta, 1= esquerda ou 0= direita
-  int volta=0;
+  int altura = 0;
+  int cont = 0;
+  int voltaEsqDir = 0; // Lado de volta, 1= esquerda ou 0= direita
+  int volta = 0;
   //Instruções:
-  if(tree!=NULL){
+  if (tree != NULL)
+  {
     cont++;
     altura++;
-    elemAtual=tree;
-    while(elemAtual!=NULL){
-      if(!volta){
-        while(elemAtual->filhoEsq!=NULL){
-          elemAtual=elemAtual->filhoEsq;
-          volta=0;
+    elemAtual = tree;
+    while (elemAtual != NULL)
+    {
+      if (!volta)
+      {
+        while (elemAtual->filhoEsq != NULL)
+        {
+          elemAtual = elemAtual->filhoEsq;
+          volta = 0;
           cont++;
-          voltaEsqDir=0;
-          if(cont>altura){
-            altura=cont;
+          voltaEsqDir = 0;
+          if (cont > altura)
+          {
+            altura = cont;
           }
         }
       }
 
-      if((volta && !voltaEsqDir && elemAtual->filhoDir!=NULL) || (TEM_FILHO_DIR && elemAtual->filhoEsq==NULL && !volta)){
-        elemAtual=elemAtual->filhoDir;
-        volta=0;
+      if ((volta && !voltaEsqDir && elemAtual->filhoDir != NULL) || (TEM_FILHO_DIR && elemAtual->filhoEsq == NULL && !volta))
+      {
+        elemAtual = elemAtual->filhoDir;
+        volta = 0;
         cont++;
-        voltaEsqDir=1;
-        if(cont>altura){
-          altura=cont;
+        voltaEsqDir = 1;
+        if (cont > altura)
+        {
+          altura = cont;
         }
-      }else if(FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir==NULL)){
-        if(elemAtual->pai!=NULL){
-          if(elemAtual->pai->filhoEsq==elemAtual)
-            voltaEsqDir=0;
+      }
+      else if (FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir == NULL))
+      {
+        if (elemAtual->pai != NULL)
+        {
+          if (elemAtual->pai->filhoEsq == elemAtual)
+            voltaEsqDir = 0;
           else
-            voltaEsqDir=1;
+            voltaEsqDir = 1;
         }
 
-        elemAtual=elemAtual->pai;
+        elemAtual = elemAtual->pai;
         cont--;
-        volta=1;
+        volta = 1;
       }
     }
   }
@@ -499,46 +623,57 @@ int alturaArvore(arvore *tree){
 // Objetivo: Testa se a árvore é cheia ou não
 // Parâmetro: árvore
 // Retorno: 1=árvore cheia, 0= árvore não é cheia, -1=árvore não inicializada
-int arvoreCheia(arvore* tree){
+int arvoreCheia(arvore *tree)
+{
   //Declarações:
   arvore *elemAtual;
-  int voltaEsqDir=0; // Lado de volta, 1= esquerda ou 0= direita
-  int volta=0;
-  int cheia=1;
+  int voltaEsqDir = 0; // Lado de volta, 1= esquerda ou 0= direita
+  int volta = 0;
+  int cheia = 1;
   //Instruções:
-  if(tree!=NULL){
-    elemAtual=tree;
-    while(elemAtual!=NULL){
-      if(TEM_1_FILHO)
-        cheia=0;
+  if (tree != NULL)
+  {
+    elemAtual = tree;
+    while (elemAtual != NULL)
+    {
+      if (TEM_1_FILHO)
+        cheia = 0;
 
-      if(!volta){
-        while(elemAtual->filhoEsq!=NULL){
-          elemAtual=elemAtual->filhoEsq;
-          volta=0;
-          voltaEsqDir=0;
-          if(TEM_1_FILHO)
-            cheia=0;
+      if (!volta)
+      {
+        while (elemAtual->filhoEsq != NULL)
+        {
+          elemAtual = elemAtual->filhoEsq;
+          volta = 0;
+          voltaEsqDir = 0;
+          if (TEM_1_FILHO)
+            cheia = 0;
         }
       }
 
-      if((volta && !voltaEsqDir && elemAtual->filhoDir!=NULL) || (TEM_FILHO_DIR && elemAtual->filhoEsq==NULL && !volta)){
-        elemAtual=elemAtual->filhoDir;
-        volta=0;
-        voltaEsqDir=1;
-      }else if(FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir==NULL)){
-        if(elemAtual->pai!=NULL){
-          if(elemAtual->pai->filhoEsq==elemAtual)
-            voltaEsqDir=0;
+      if ((volta && !voltaEsqDir && elemAtual->filhoDir != NULL) || (TEM_FILHO_DIR && elemAtual->filhoEsq == NULL && !volta))
+      {
+        elemAtual = elemAtual->filhoDir;
+        volta = 0;
+        voltaEsqDir = 1;
+      }
+      else if (FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir == NULL))
+      {
+        if (elemAtual->pai != NULL)
+        {
+          if (elemAtual->pai->filhoEsq == elemAtual)
+            voltaEsqDir = 0;
           else
-            voltaEsqDir=1;
+            voltaEsqDir = 1;
         }
 
-        elemAtual=elemAtual->pai;
-        volta=1;
+        elemAtual = elemAtual->pai;
+        volta = 1;
       }
     }
-  }else{
+  }
+  else
+  {
     return -1;
   }
 
@@ -548,15 +683,17 @@ int arvoreCheia(arvore* tree){
 // Objetivo: Função para sair do programa
 // Parâmetro: árvore
 // Retorno:
-void sair(arvore *tree){
+void sair(arvore *tree)
+{
   //Declarações:
   char opcao;
   //Instruções:
   system("clear");
   puts("Tem certeza que deseja sair?(S/N)");
-  opcao= validaSN(opcao);
+  opcao = validaSN(opcao);
 
-  if(opcao=='S' || opcao=='s'){
+  if (opcao == 'S' || opcao == 's')
+  {
     liberaArvore(tree);
     exit(0);
   }
@@ -567,25 +704,165 @@ void sair(arvore *tree){
 // Objetivo: Verificar se a opção escolhida é válida
 // Parâmetro: opção
 // Retorno: opção válida
-char validaSN(char opcao){
+char validaSN(char opcao)
+{
   //Declarações:
 
   //Instruções:
-  opcao=getchar();
+  opcao = getchar();
   limpabuffer();
-  while(opcao!='S' && opcao!='s' && opcao!='N' && opcao!='n'){
+  while (opcao != 'S' && opcao != 's' && opcao != 'N' && opcao != 'n')
+  {
     puts("\n\n\n\nOpção inválida!(digite s para sim, ou n para não)");
-    opcao=getchar();
+    opcao = getchar();
     limpabuffer();
   }
   return opcao;
 }
-arvore* printInOrder(arvore *tree){
-  if(tree == NULL)
-          return;
-      if(*tree != NULL){
-          emOrdem_ArvBin(&((*tree)->esq));
-          printf("%d\n", (*tree)->info);
-          emOrdem_ArvBin(&((*tree)->dir));
+
+int printPostOrder(arvore *tree)
+{
+  if (tree == NULL)
+  {
+    fprintf(stderr, "\n\nÁrvore não foi inicializada!");
+    return -1;
+  }
+  printPostOrder(tree->filhoEsq);
+  printPostOrder(tree->filhoDir);
+  printf("%d, ", tree->dado);
+}
+int printPreOrder(arvore *tree)
+{
+  if (tree == NULL)
+  {
+    fprintf(stderr, "\n\nÁrvore não foi inicializada!");
+    return -1;
+  }
+  printf("%d, ", tree->dado);
+  printPreOrder(tree->filhoEsq);
+  printPreOrder(tree->filhoDir);
+}
+// faz uma rotaçao para direita
+void r_direita(arvore *avo, arvore *pai, arvore *filho)
+{
+  if (avo != NULL)
+  {
+    if (avo->filhoEsq == pai)
+    {
+      avo->filhoEsq = filho;
+    }
+    else
+    {
+      avo->filhoDir = filho;
+    }
+  }
+  pai->filhoEsq = filho->filhoDir;
+  filho->filhoDir = pai;
+}
+// faz uma rotaçao para esquerda
+void r_esquerda(arvore *avo, arvore *pai, arvore *filho)
+{
+  if (avo != NULL)
+  {
+    if (avo->filhoEsq == pai)
+    {
+      avo->filhoEsq = filho;
+    }
+    else
+    {
+      avo->filhoDir = filho;
+    }
+  }
+  pai->filhoDir = filho->filhoEsq;
+  filho->filhoEsq = pai;
+}
+
+// verifica balenceamento da arvore (1> ret, esta  balanceado)
+int is_balance(arvore *tree)
+{
+  int alt_dir;
+  int alt_esq;
+  if (tree == NULL)
+  {
+    return 1;
+  }
+  alt_dir = alturaArvore(tree->filhoDir);
+  alt_esq = alturaArvore(tree->filhoEsq);
+  if (abs(alt_dir - alt_esq) >= 1)
+  {
+    return 0;
+  }
+  return is_balance(tree->filhoEsq) * is_balance(tree->filhoDir);
+}
+
+void backbone(arvore *root)
+{
+  arvore *filho = root;
+  arvore *pai = NULL;
+  arvore *avo = NULL;
+
+  while (filho != NULL)
+  {
+    if (filho->filhoEsq != NULL)
+    {
+      if (filho == root)
+      {
+        root = filho->filhoEsq;
       }
+      pai = filho;
+      filho = filho->filhoEsq;
+      r_direita(avo, pai, filho);
+    }
+    else
+    {
+      avo = filho;
+      filho = filho->filhoDir;
+    }
+  }
+}
+void DSW(arvore *tree)
+{
+  if (is_balance(tree) >= 1)
+  {
+    return;
+  }
+  int qtd, m, n;
+  backbone(tree);
+
+  qtd = alturaArvore(tree);
+  m = (1 << (int)floor(log(qtd + 1) / log(2))) - 1;
+  n = qtd - m;
+  rotaciona(tree, n);
+  while (m > 1)
+  {
+  }
+  {
+    m = m / 2;
+    rotaciona(tree,m);
+  }
+}
+void rotaciona(arvore *tree, int num)
+{
+  arvore *avo = NULL, *pai = NULL, *filho = NULL;
+  while (num--)
+  {
+    for (int i = 0; i <= 1; i++)
+    {
+      avo = pai;
+      pai = filho;
+      if (filho != NULL)
+      {
+        filho = filho->filhoDir;
+      }
+      else if (pai == NULL)
+      {
+        filho = tree;
+      }
+    }
+    if (pai == tree)
+    {
+      tree = filho;
+      r_esquerda(avo, pai, filho);
+    }
+  }
 }

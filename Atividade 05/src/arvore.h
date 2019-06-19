@@ -9,12 +9,12 @@ Hugo Aragão de Oliveira - 16/0124581
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#define FOLHA elemAtual->filhoDir==NULL && elemAtual->filhoEsq==NULL
-#define TEM_1_FILHO elemAtual->filhoDir!=NULL && elemAtual->filhoEsq==NULL || elemAtual->filhoDir==NULL && elemAtual->filhoEsq!=NULL
-#define TEM_2_FILHO elemAtual->filhoDir!=NULL && elemAtual->filhoEsq!=NULL
-#define TEM_FILHO_ESQ elemAtual->filhoEsq!=NULL
-#define TEM_FILHO_DIR elemAtual->filhoDir!=NULL
+#include <math.h>
+#define FOLHA elemAtual->filhoDir == NULL && elemAtual->filhoEsq == NULL
+#define TEM_1_FILHO elemAtual->filhoDir != NULL && elemAtual->filhoEsq == NULL || elemAtual->filhoDir == NULL && elemAtual->filhoEsq != NULL
+#define TEM_2_FILHO elemAtual->filhoDir != NULL && elemAtual->filhoEsq != NULL
+#define TEM_FILHO_ESQ elemAtual->filhoEsq != NULL
+#define TEM_FILHO_DIR elemAtual->filhoDir != NULL
 
 typedef struct arvore{ 
     int dado; //info    
@@ -31,16 +31,22 @@ void opcaoMenu();
 char validaOpcao(char opcao);
 
 //Principais
-// void loadTreeFromFile();
-// void showTree();
-void isFull(arvore *tree);
-void searchValue(arvore *tree);
-void getHeight(arvore *tree);
-arvore *removeValue(arvore *tree);
-arvore* printInOrder();
-// void printPreOrder();
-// void printPostOrder();
-// void balanceTree();
+// void loadTreeFromFile();// hugo
+// void showTree();// hugo
+void isFull(arvore *tree);         // hercules
+void searchValue(arvore *tree);    // hercules
+void getHeight(arvore *tree);      // hercules
+arvore *removeValue(arvore *tree); // hercules
+                                   // void printInOrder(); // hugo
+int printPreOrder(arvore *tree);   // andre
+int printPostOrder(arvore *tree);  // andre
+void balanceTree(arvore *tree);    // andre
+void r_direita(arvore *avo, arvore *pai, arvore *filho);// andre
+void r_esquerda(arvore *avo, arvore *pai, arvore *filho);//andre
+int is_balance(arvore *tree);//andre
+void backbone(arvore *root);//andre
+void DSW(arvore *tree);// andre
+void rotaciona(arvore *tree, int num);//andre
 void sair(arvore *tree);
 
 //Básicas
