@@ -10,7 +10,8 @@ Hugo Aragão de Oliveira - 16/0124581
 
 int main(){
     
-    puts("Bem vindo a ferramenta de manipulacao de arvores!");
+    puts("Ferramenta de manipulacao de arvores iniciada!");
+    puts("Aperte enter para acessar o menu:");
     getchar();
     imprimeMenu();
 

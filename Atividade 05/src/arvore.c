@@ -10,23 +10,24 @@ Hugo Aragão de Oliveira - 16/0124581
 void imprimeMenu(){
   system("clear");
   puts("Selecione a ferramenta desejada digitando o No correpondente...");
-  puts("1. Load Tree From File");   //Hugo
-  puts("2. Show Tree");             //Hugo
-  puts("3. Is Full");
-  puts("4. Search Value");
-  puts("5. Get Height");
-  puts("6. Remove Value");          //Hércules
-  puts("7. Print In Order");        //Hugo
-  puts("8. Print Pre-Order");
-  puts("9. Print Post-Order");
-  puts("10. Balance Tree");
-  puts("11. Sair");                 //Hercules
+  puts("0. Load Tree From File");   //Hugo
+  puts("1. Show Tree");             //Hugo
+  puts("2. Is Full");
+  puts("3. Search Value");
+  puts("4. Get Height");
+  puts("5. Remove Value");          //Hércules
+  puts("6. Print In Order");        //Hugo
+  puts("7. Print Pre-Order");
+  puts("8. Print Post-Order");
+  puts("9. Balance Tree");
+  puts("s. Sair");                 //Hercules
 
   return;
 }
 
 // //Objetivo: receber a opcao do menu digitada pelo usuario
 void opcaoMenu(){
+    arvore *tree;
     int sent = 1;
     char opcao;
 
@@ -35,38 +36,38 @@ void opcaoMenu(){
             opcao = validaOpcao(opcao);
 
             switch(opcao){
-            case '1':
+            case '0':
                 //loadTreeFromFile();
                 break;
-            case '2':
+            case '1':
                 //showTree();
                 break;
-            case '3':
+            case '2':
                 isFull(tree);
                 break;
-            case '4':
+            case '3':
                 searchValue(tree);
                 break;
-            case '5':
+            case '4':
                 getHeight(tree);
                 break;
-            case '6':
+            case '5':
                 tree=removeValue(tree);
                 break;
-            case '7':
+            case '6':
                 //printInOrder();
                 break;
-            case '8':
+            case '7':
                 //printPreOrder();
                 break;
-            case '9':
+            case '8':
                 //printPostOrder();
                 break;
-            case '10':
+            case '9':
                 //balanceTree();
                 break;
-            case '11':
-                sair();
+            case 's':
+                sair(tree);
                 break;
             default:        //WARNING => 'stderr' deve ser declarado
                 fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
@@ -83,9 +84,11 @@ char validaOpcao(char opcao){
 
         limpabuffer();
         //WARNING => esse While deve ser atualizado (opcao != '1' a '11')
-        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' && opcao!='5'){
-                puts("\n\n\n\nOpção inválida!(digite um número entre 1 e 11)");
-                opcao = sgetchar();
+        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' 
+              && opcao!='5' && opcao!= '6' && opcao!= '7' && opcao!= '8'
+              && opcao!= '9'&& opcao!= '10' && opcao!= '11'){
+                puts("\n\n\n\nOpção inválida!(digite um número entre 0 e 9 ou s)");
+                opcao = getchar();
                 limpabuffer();
         }
         return opcao;
@@ -576,4 +579,13 @@ char validaSN(char opcao){
     limpabuffer();
   }
   return opcao;
+}
+arvore* printInOrder(arvore *tree){
+  if(tree == NULL)
+          return;
+      if(*tree != NULL){
+          emOrdem_ArvBin(&((*tree)->esq));
+          printf("%d\n", (*tree)->info);
+          emOrdem_ArvBin(&((*tree)->dir));
+      }
 }
