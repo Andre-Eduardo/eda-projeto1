@@ -201,13 +201,14 @@ void showTree(arvore *tree, int space){
   space += 10;
 
   showTree(tree->filhoDir, space);
-  showTree(tree->filhoEsq, space);
 
   printf("\n");//pula linha
   for(int i = 10; i < space; i++){
-      printf(" ");
+      printf("/");
   }
   printf("%d\n", tree->dado);
+
+  showTree(tree->filhoEsq, space);
 
 }
 //Printa raiz
