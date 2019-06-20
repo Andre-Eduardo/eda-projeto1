@@ -31,12 +31,15 @@ void opcaoMenu();
 char validaOpcao(char opcao);
 
 //Principais
-arvore *loadTreeFromFile(char *cep);           // hugo
+arvore *loadTreeFromFile(arvore* tree, char *cep);           // hugo
 void showTree(arvore *tree, int space);       // hugo
 void isFull(arvore *tree);         // hercules
 void searchValue(arvore *tree);    // hercules
 void getHeight(arvore *tree);      // hercules
 arvore *removeValue(arvore *tree); // hercules
+int inOrder(arvore *tree);
+int preOrder(arvore *tree);
+int postOrder(arvore *tree);
 int printInOrder(arvore *tree);   // hugo
 int printPreOrder(arvore *tree);   // andre
 int printPostOrder(arvore *tree);  // andre
