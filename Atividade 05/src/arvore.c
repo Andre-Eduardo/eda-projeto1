@@ -765,11 +765,8 @@ char validaSN(char opcao)
   return opcao;
 }
 //Pos-Order
-int printPostOrder(arvore *tree)
-{
-  if (tree == NULL)
-  {
-    fprintf(stderr, "\n\nÁrvore não foi inicializada!");
+int printPostOrder(arvore *tree){
+  if (tree == NULL){
     return -1;
   }
   printPostOrder(tree->filhoEsq);
@@ -781,17 +778,16 @@ int printPreOrder(arvore *tree)
 {
   if (tree == NULL)
   {
-    fprintf(stderr, "\n\nÁrvore não foi inicializada!");
     return -1;
   }
   printf("%d, ", tree->dado);
   printPreOrder(tree->filhoEsq);
   printPreOrder(tree->filhoDir);
 }
+//In-Order
 int printInOrder(arvore *tree){
   if (tree == NULL)
   {
-    fprintf(stderr, "\n\nÁrvore não foi inicializada!");
     return -1;
   }
   printf("%d, ", tree->dado);
