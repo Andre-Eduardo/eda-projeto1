@@ -45,11 +45,11 @@ int printPreOrder(arvore *tree);   // andre
 int printPostOrder(arvore *tree);  // andre
 void balanceTree(arvore *tree);    // andre
 void r_direita(arvore *avo, arvore *pai, arvore *filho);// andre
-void r_esquerda(arvore *avo, arvore *pai, arvore *filho);//andre
+arvore* r_esquerda(arvore *avo, arvore *pai, arvore *filho);//andre
 int is_balance(arvore *tree);//andre
-void backbone(arvore *root);//andre
-void DSW(arvore *tree);// andre
-void rotaciona(arvore *tree, int num);//andre
+arvore* backbone(arvore *root);//andre
+arvore* DSW(arvore *tree);// andre
+arvore* rotaciona(arvore *tree, int num);//andre
 void sair(arvore *tree);
 
 //Básicas

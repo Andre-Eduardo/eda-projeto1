@@ -873,7 +873,7 @@ void r_direita(arvore *avo, arvore *pai, arvore *filho)
   filho->filhoDir = pai;
 }
 // faz uma rotaçao para esquerda
-void r_esquerda(arvore *avo, arvore *pai, arvore *filho)
+arvore* r_esquerda(arvore *avo, arvore *pai, arvore *filho)
 {
   if (avo != NULL)
   {
@@ -888,6 +888,7 @@ void r_esquerda(arvore *avo, arvore *pai, arvore *filho)
   }
   pai->filhoDir = filho->filhoEsq;
   filho->filhoEsq = pai;
+  return filho;
 }
 
 // verifica balenceamento da arvore (1> ret, esta  balanceado)
@@ -908,7 +909,7 @@ int is_balance(arvore *tree)
   return is_balance(tree->filhoEsq) * is_balance(tree->filhoDir);
 }
 
-void backbone(arvore *root)
+arvore* backbone(arvore *root)
 {
   arvore *filho = root;
   arvore *pai = NULL;
@@ -932,29 +933,31 @@ void backbone(arvore *root)
       filho = filho->filhoDir;
     }
   }
+  return root;
 }
-void DSW(arvore *tree)
+arvore* DSW(arvore *tree)
 {
   if (is_balance(tree) >= 1)
   {
-    return;
+    return tree;
   }
   int qtd, m, n;
-  backbone(tree);
+ tree = backbone(tree);
 
   qtd = alturaArvore(tree);
   m = (1 << (int)floor(log(qtd + 1) / log(2))) - 1;
   n = qtd - m;
-  rotaciona(tree, n);
+ tree= rotaciona(tree, n);
   while (m > 1)
   {
   }
   {
     m = m / 2;
-    rotaciona(tree,m);
+   tree= rotaciona(tree,m);
   }
+  return tree;
 }
-void rotaciona(arvore *tree, int num)
+arvore* rotaciona(arvore *tree, int num)
 {
   arvore *avo = NULL, *pai = NULL, *filho = NULL;
   while (num--)
@@ -975,7 +978,8 @@ void rotaciona(arvore *tree, int num)
     if (pai == tree)
     {
       tree = filho;
-      r_esquerda(avo, pai, filho);
+      tree =r_esquerda(avo, pai, filho);
     }
   }
+  return tree;
 }
