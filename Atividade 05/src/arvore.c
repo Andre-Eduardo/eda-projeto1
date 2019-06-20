@@ -5,6 +5,7 @@ Hugo Aragão de Oliveira - 16/0124581
 */
 
 #include "arvore.h"
+#define CONT 10
 
 //Objetivo: mostrar menu na tela
 void imprimeMenu()
@@ -193,7 +194,6 @@ arvore *loadTreeFromFile(arvore *tree, char *cep){
 
   return tree;
 }
-
 //Mostrar Arvore
 void showTree(arvore *tree, int space){
   if(tree == NULL)
@@ -202,15 +202,16 @@ void showTree(arvore *tree, int space){
 
   showTree(tree->filhoDir, space);
 
-  printf("\n");
+  printf("\n");//pula linha
   for(int i = 10; i < space; i++){
-      printf(" ");
+      printf("/");
   }
   printf("%d\n", tree->dado);
 
   showTree(tree->filhoEsq, space);
+
 }
-//Prita raiz
+//Printa raiz
 void printRaiz(arvore *tree){
   showTree(tree, 0);
 }
@@ -624,13 +625,13 @@ int alturaArvore(arvore *tree)
   //Declarações:
   arvore *elemAtual;
   int altura = 0;
-  int cont = 0;
+  int contador = 0;
   int voltaEsqDir = 0; // Lado de volta, 1= esquerda ou 0= direita
   int volta = 0;
   //Instruções:
   if (tree != NULL)
   {
-    cont++;
+    contador ++;
     altura++;
     elemAtual = tree;
     while (elemAtual != NULL)
@@ -641,11 +642,12 @@ int alturaArvore(arvore *tree)
         {
           elemAtual = elemAtual->filhoEsq;
           volta = 0;
-          cont++;
+          contador ++;
           voltaEsqDir = 0;
-          if (cont > altura)
+          if (contador
+         > altura)
           {
-            altura = cont;
+            altura = contador;
           }
         }
       }
@@ -654,11 +656,12 @@ int alturaArvore(arvore *tree)
       {
         elemAtual = elemAtual->filhoDir;
         volta = 0;
-        cont++;
+        contador ++;
         voltaEsqDir = 1;
-        if (cont > altura)
+        if (CONT
+       > altura)
         {
-          altura = cont;
+          altura = contador;
         }
       }
       else if (FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir == NULL))
@@ -672,7 +675,7 @@ int alturaArvore(arvore *tree)
         }
 
         elemAtual = elemAtual->pai;
-        cont--;
+        contador --;
         volta = 1;
       }
     }
