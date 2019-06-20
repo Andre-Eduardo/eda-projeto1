@@ -143,9 +143,8 @@ arvore *loadTreeFromFile(char *cep){
   FILE *txt;
   int valor;
 
-  arvore **tree  = (arvore **)malloc(sizeof(arvore *));
-  if(tree != NULL)//foi
-    *tree = NULL;
+  arvore *tree  = (arvore *)malloc(sizeof(arvore));
+
   
   txt = fopen(cep, "r");//abre no modo leitura sendo cep o endereco
   if(txt == NULL){//o modo r requer existencia de um arquivo
@@ -154,7 +153,8 @@ arvore *loadTreeFromFile(char *cep){
   }else{
       while(!feof(txt)){
         fscanf(txt, "%d", &valor);
-        printf("No inserido %d\n", valor);
+        if(insereArvore(tree, valor))
+          printf("No inserido %d\n", valor);
       }
   }
   fclose(txt);

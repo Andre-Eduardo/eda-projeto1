@@ -14,6 +14,7 @@ int main(){
     puts("Aperte enter para acessar o menu:");
     getchar();
     imprimeMenu();
+    opcaoMenu();
 
 
     return 0;
