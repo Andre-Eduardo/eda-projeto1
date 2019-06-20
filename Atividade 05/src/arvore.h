@@ -37,7 +37,7 @@ void isFull(arvore *tree);         // hercules
 void searchValue(arvore *tree);    // hercules
 void getHeight(arvore *tree);      // hercules
 arvore *removeValue(arvore *tree); // hercules
-// void printInOrder();            // hugo
+void printInOrder(arvore *tree);   // hugo
 int printPreOrder(arvore *tree);   // andre
 int printPostOrder(arvore *tree);  // andre
 void balanceTree(arvore *tree);    // andre
@@ -61,5 +61,6 @@ int arvoreCheia(arvore *tree);
 void limpabuffer();
 char validaSN(char opcao);
 char *loadFile();
+char validaOpcaoFile(char opcao);
 
 #endif

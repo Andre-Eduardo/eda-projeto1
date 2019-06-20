@@ -39,10 +39,11 @@ void opcaoMenu(){
 
     switch(opcao){
     case '0':
+        cep = loadFile();
         loadTreeFromFile(cep);
         break;
     case '1':
-        //showTree();
+        showTree(tree);
         break;
     case '2':
         isFull(tree);
@@ -60,10 +61,10 @@ void opcaoMenu(){
         //printInOrder();
         break;
     case '7':
-        //printPreOrder();
+        printPreOrder(tree);
         break;
     case '8':
-        //printPostOrder();
+        printPostOrder(tree);
         break;
     case '9':
         //balanceTree();
@@ -78,16 +79,30 @@ void opcaoMenu(){
   }
 }
 
-// //Objetivo: validar opcao do menu
+//Objetivo: validar opcao do menu
 char validaOpcao(char opcao){
         opcao = getchar();
 
         limpabuffer();
-        //WARNING => esse While deve ser atualizado (opcao != '1' a '11')
+        
         while(opcao!='0' && opcao!='1' && opcao!='2' && opcao!='3' 
               && opcao!='4' && opcao!= '5' && opcao!= '6' && opcao!= '7'
               && opcao!= '8'&& opcao!= '9' && opcao!= 's'){
                 puts("\n\n\n\nOpção inválida!(digite um número entre 0 e 9 ou s)");
+                opcao = getchar();
+                limpabuffer();
+        }
+        return opcao;
+}
+//Objetivo: validar opcao do menu de arquivos
+char validaOpcaoFile(char opcao){
+        opcao = getchar();
+
+        limpabuffer();
+        
+        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' 
+              && opcao!='5' && opcao!= '6'){
+                puts("\n\n\n\nOpção inválida!(digite um número entre 0 e 6)");
                 opcao = getchar();
                 limpabuffer();
         }
@@ -112,24 +127,25 @@ char *loadFile(){
   puts("5 - bst5.txt");
   puts("6 - bst6.txt");
 
+  opcao = validaOpcaoFile(opcao);
   switch(opcao){
     case '1':
-      return "/BSTs/bst1.txt";
+      return "../BSTs/bst1.txt";
       break;
     case '2':
-      return "/BSTs/bst2.txt";
+      return "../BSTs/bst2.txt";
       break;
     case '3':
-      return "/BSTs/bst3.txt";
+      return "../BSTs/bst3.txt";
       break;
     case '4':
-      return "/BSTs/bst4.txt";
+      return "../BSTs/bst4.txt";
       break;
     case '5':
-      return "/BSTs/bst5.txt";
+      return "../BSTs/bst5.txt";
       break;
     case '6':
-      return "/BSTs/bst6.txt";
+      return "../BSTs/bst6.txt";
       break;
     default:
       fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
@@ -156,9 +172,31 @@ arvore *loadTreeFromFile(char *cep){
         if(insereArvore(tree, valor))
           printf("No inserido %d\n", valor);
       }
+        limpabuffer();
   }
   fclose(txt);
   return tree;
+}
+
+//Mostrar Arvore
+void showTree(arvore *tree, int space){
+  if(tree == NULL)
+      return;
+  space += cont;
+
+  showTree(tree->filhoDir, space);
+
+  printf("\n");
+  for(int i = cont; i < space; i++){
+      printf(" ");
+  }
+  printf("%d\n", tree->dado);
+
+  showTree(tree->filhoEsq, space);
+}
+//Prita raiz
+void printRaiz(arvore *tree){
+  showTree(tree, 0)
 }
 
 // Objetivo: Inserir um elemento na árvore
@@ -520,8 +558,6 @@ arvore *removeValue(arvore *tree)
 // Retorno: Imprime na tela a altura da árvore
 void getHeight(arvore *tree)
 {
-  //Declarações:
-
   //Instruções:
   system("clear");
   printf("A altura da árvore é: %d\n", alturaArvore(tree));
@@ -728,7 +764,7 @@ char validaSN(char opcao)
   }
   return opcao;
 }
-
+//Pos-Order
 int printPostOrder(arvore *tree)
 {
   if (tree == NULL)
@@ -740,6 +776,7 @@ int printPostOrder(arvore *tree)
   printPostOrder(tree->filhoDir);
   printf("%d, ", tree->dado);
 }
+//Pre-Order
 int printPreOrder(arvore *tree)
 {
   if (tree == NULL)
@@ -750,6 +787,16 @@ int printPreOrder(arvore *tree)
   printf("%d, ", tree->dado);
   printPreOrder(tree->filhoEsq);
   printPreOrder(tree->filhoDir);
+}
+int printInOrder(arvore *tree){
+  if (tree == NULL)
+  {
+    fprintf(stderr, "\n\nÁrvore não foi inicializada!");
+    return -1;
+  }
+  printf("%d, ", tree->dado);
+  printPostOrder(tree->filhoEsq);
+  printPostOrder(tree->filhoDir);
 }
 // faz uma rotaçao para direita
 void r_direita(arvore *avo, arvore *pai, arvore *filho)
