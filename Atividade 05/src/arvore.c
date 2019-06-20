@@ -137,22 +137,22 @@ char *loadFile(){
   opcao = validaOpcaoFile(opcao);
   switch(opcao){
     case '1':
-      return "../../BSTs/bst1.txt";
+      return "../BSTs/bst1.txt";
       break;
     case '2':
-      return "../../BSTs/bst2.txt";
+      return "../BSTs/bst2.txt";
       break;
     case '3':
-      return "../../BSTs/bst3.txt";
+      return "../BSTs/bst3.txt";
       break;
     case '4':
-      return "../../BSTs/bst4.txt";
+      return "../BSTs/bst4.txt";
       break;
     case '5':
-      return "../../BSTs/bst5.txt";
+      return "../BSTs/bst5.txt";
       break;
     case '6':
-      return "../../BSTs/bst6.txt";
+      return "../BSTs/bst6.txt";
       break;
     default:
       fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
@@ -948,4 +948,3 @@ void rotaciona(arvore *tree, int num)
     }
   }
 }
-
