@@ -32,7 +32,7 @@ char validaOpcao(char opcao);
 
 //Principais
 arvore *loadTreeFromFile(char *cep);           // hugo
-void showTree(arvore *tree);       // hugo
+void showTree(arvore *tree, int space);       // hugo
 void isFull(arvore *tree);         // hercules
 void searchValue(arvore *tree);    // hercules
 void getHeight(arvore *tree);      // hercules
