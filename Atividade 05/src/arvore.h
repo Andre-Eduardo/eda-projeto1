@@ -16,8 +16,8 @@ Hugo Aragão de Oliveira - 16/0124581
 #define TEM_FILHO_ESQ elemAtual->filhoEsq != NULL
 #define TEM_FILHO_DIR elemAtual->filhoDir != NULL
 
-typedef struct arvore{ 
-    int dado; //info    
+typedef struct arvore{
+    int dado; //info
     struct arvore *pai;
     struct arvore *filhoEsq;
     struct arvore *filhoDir;
@@ -32,12 +32,12 @@ char validaOpcao(char opcao);
 
 //Principais
 arvore *loadTreeFromFile(char *cep);           // hugo
-void showTree(arvore *tree);       // hugo
+void showTree(arvore *tree, int space);       // hugo
 void isFull(arvore *tree);         // hercules
 void searchValue(arvore *tree);    // hercules
 void getHeight(arvore *tree);      // hercules
 arvore *removeValue(arvore *tree); // hercules
-void printInOrder(arvore *tree);   // hugo
+int printInOrder(arvore *tree);   // hugo
 int printPreOrder(arvore *tree);   // andre
 int printPostOrder(arvore *tree);  // andre
 void balanceTree(arvore *tree);    // andre
