@@ -31,13 +31,13 @@ void opcaoMenu();
 char validaOpcao(char opcao);
 
 //Principais
-// void loadTreeFromFile();// hugo
-// void showTree();// hugo
+arvore *loadTreeFromFile(char *cep);           // hugo
+void showTree(arvore *tree);       // hugo
 void isFull(arvore *tree);         // hercules
 void searchValue(arvore *tree);    // hercules
 void getHeight(arvore *tree);      // hercules
 arvore *removeValue(arvore *tree); // hercules
-                                   // void printInOrder(); // hugo
+// void printInOrder();            // hugo
 int printPreOrder(arvore *tree);   // andre
 int printPostOrder(arvore *tree);  // andre
 void balanceTree(arvore *tree);    // andre
@@ -60,5 +60,6 @@ int liberaArvore(arvore *tree);
 int arvoreCheia(arvore *tree);
 void limpabuffer();
 char validaSN(char opcao);
+char *loadFile();
 
 #endif

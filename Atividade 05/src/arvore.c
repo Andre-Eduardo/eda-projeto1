@@ -26,113 +26,67 @@ void imprimeMenu()
   return;
 }
 
-// //Objetivo: receber a opcao do menu digitada pelo usuario
+//Objetivo: receber a opcao do menu digitada pelo usuario
 void opcaoMenu(){
     arvore *tree;
     int sent = 1;
     char opcao;
 
-            while(sent){
-            imprimeMenu();
-            opcao = validaOpcao(opcao);
-
-            switch(opcao){
-            case '0':
-                //loadTreeFromFile();
-                break;
-            case '1':
-                //showTree();
-                break;
-            case '2':
-                isFull(tree);
-                break;
-            case '3':
-                searchValue(tree);
-                break;
-            case '4':
-                getHeight(tree);
-                break;
-            case '5':
-                tree=removeValue(tree);
-                break;
-            case '6':
-                //printInOrder();
-                break;
-            case '7':
-                //printPreOrder();
-                break;
-            case '8':
-                //printPostOrder();
-                break;
-            case '9':
-                //balanceTree();
-                break;
-            case 's':
-                sair(tree);
-                break;
-            default:        //WARNING => 'stderr' deve ser declarado
-                fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
-                exit(-1);
-            }
-        }
-
-
-  while (sent)
-  {
+    while(sent){
     imprimeMenu();
     opcao = validaOpcao(opcao);
+    char *cep;
 
-    switch (opcao)
-    {
+    switch(opcao){
+    case '0':
+        loadTreeFromFile(cep);
+        break;
     case '1':
-      //loadTreeFromFile();
-      break;
+        //showTree();
+        break;
     case '2':
-      //showTree();
-      break;
+        isFull(tree);
+        break;
     case '3':
-      isFull(tree);
-      break;
+        searchValue(tree);
+        break;
     case '4':
-      searchValue(tree);
-      break;
+        getHeight(tree);
+        break;
     case '5':
-      getHeight(tree);
-      break;
+        tree=removeValue(tree);
+        break;
     case '6':
-      tree = removeValue(tree);
-      break;
+        //printInOrder();
+        break;
     case '7':
-      //printInOrder();
-      break;
+        //printPreOrder();
+        break;
     case '8':
-      //printPreOrder();
-      break;
+        //printPostOrder();
+        break;
     case '9':
-      //printPostOrder();
-      break;
-    case '10':
-      //balanceTree();
-      break;
-    case '11':
-      sair();
-      break;
-    default: //WARNING => 'stderr' deve ser declarado
-      fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
-      exit(-1);
+        //balanceTree();
+        break;
+    case 's':
+        sair(tree);
+        break;
+    default:        //WARNING => 'stderr' deve ser declarado
+        fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
+        exit(-1);
     }
   }
 }
-//
+
 // //Objetivo: validar opcao do menu
 char validaOpcao(char opcao){
         opcao = getchar();
 
         limpabuffer();
         //WARNING => esse While deve ser atualizado (opcao != '1' a '11')
-        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' 
-              && opcao!='5' && opcao!= '6' && opcao!= '7' && opcao!= '8'
-              && opcao!= '9'&& opcao!= '10' && opcao!= '11'){
+        while(opcao!='0' && opcao!='1' && opcao!='2' && opcao!='3' 
+              && opcao!='4' && opcao!= '5' && opcao!= '6' && opcao!= '7'
+              && opcao!= '8'&& opcao!= '9' && opcao!= 's'){
                 puts("\n\n\n\nOpção inválida!(digite um número entre 0 e 9 ou s)");
                 opcao = getchar();
                 limpabuffer();
@@ -143,13 +97,68 @@ char validaOpcao(char opcao){
 // Objetivo: Cria árvore vazia
 // Parâmetro:
 // Retorno: ponteiro nulo
-arvore *criaArvoreVazia()
-{
-  //Declarações:
-
-  //Instruções:
+arvore *criaArvoreVazia(){
 
   return NULL;
+}
+//Carrega arquivo
+char *loadFile(){
+  char opcao;
+  puts("Digite o numero do arquivo que deseja abrir: ");
+  puts("1 - bst1.txt");
+  puts("2 - bst2.txt");
+  puts("3 - bst3.txt");
+  puts("4 - bst4.txt");
+  puts("5 - bst5.txt");
+  puts("6 - bst6.txt");
+
+  switch(opcao){
+    case '1':
+      return "/BSTs/bst1.txt";
+      break;
+    case '2':
+      return "/BSTs/bst2.txt";
+      break;
+    case '3':
+      return "/BSTs/bst3.txt";
+      break;
+    case '4':
+      return "/BSTs/bst4.txt";
+      break;
+    case '5':
+      return "/BSTs/bst5.txt";
+      break;
+    case '6':
+      return "/BSTs/bst6.txt";
+      break;
+    default:
+      fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
+        exit(-1);
+  }
+
+}
+
+//Carrega arvore apartir de arquivo
+arvore *loadTreeFromFile(char *cep){
+  FILE *txt;
+  int valor;
+
+  arvore **tree  = (arvore **)malloc(sizeof(arvore *));
+  if(tree != NULL)//foi
+    *tree = NULL;
+  
+  txt = fopen(cep, "r");//abre no modo leitura sendo cep o endereco
+  if(txt == NULL){//o modo r requer existencia de um arquivo
+    printf("Arquivo inexistente...\n");
+    exit(1);
+  }else{
+      while(!feof(txt)){
+        fscanf(txt, "%d", &valor);
+        printf("No inserido %d\n", valor);
+      }
+  }
+  fclose(txt);
+  return tree;
 }
 
 // Objetivo: Inserir um elemento na árvore
