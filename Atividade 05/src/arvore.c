@@ -44,13 +44,9 @@ void opcaoMenu(){
         tree=loadTreeFromFile(cep);
         break;
     case '1':
-<<<<<<< HEAD
-        showTree(tree, space);
-=======
         showTree(tree, 0);
         puts("\n\nAperte qualquer coisa para continuar...");
         limpabuffer();
->>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
         break;
     case '2':
         isFull(tree);
@@ -65,7 +61,7 @@ void opcaoMenu(){
         tree=removeValue(tree);
         break;
     case '6':
-        //printInOrder();
+        printInOrder(tree);
         break;
     case '7':
         printPreOrder(tree);
@@ -188,36 +184,21 @@ arvore *loadTreeFromFile(char *cep){
 void showTree(arvore *tree, int space){
   if(tree == NULL)
       return;
-<<<<<<< HEAD
-  space += CONT
-;
-=======
   space += 10;
->>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
 
   showTree(tree->filhoDir, space);
+  showTree(tree->filhoEsq, space);
 
-  printf("\n");
-<<<<<<< HEAD
-  for(int i = CONT
-; i < space; i++){
-=======
+  printf("\n");//pula linha
   for(int i = 10; i < space; i++){
->>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
       printf(" ");
   }
   printf("%d\n", tree->dado);
 
-  showTree(tree->filhoEsq, space);
 }
-//Prita raiz
-<<<<<<< HEAD
-void printRaiz(arvore *tree, int space){
-  showTree(tree, 0)
-=======
+//Printa raiz
 void printRaiz(arvore *tree){
   showTree(tree, 0);
->>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
 }
 
 // Objetivo: Inserir um elemento na árvore
@@ -629,15 +610,13 @@ int alturaArvore(arvore *tree)
   //Declarações:
   arvore *elemAtual;
   int altura = 0;
-  int CONT
- = 0;
+  int contador = 0;
   int voltaEsqDir = 0; // Lado de volta, 1= esquerda ou 0= direita
   int volta = 0;
   //Instruções:
   if (tree != NULL)
   {
-    CONT
-  ++;
+    contador ++;
     altura++;
     elemAtual = tree;
     while (elemAtual != NULL)
@@ -648,14 +627,12 @@ int alturaArvore(arvore *tree)
         {
           elemAtual = elemAtual->filhoEsq;
           volta = 0;
-          CONT
-        ++;
+          contador ++;
           voltaEsqDir = 0;
-          if (CONT
+          if (contador
          > altura)
           {
-            altura = CONT
-          ;
+            altura = contador;
           }
         }
       }
@@ -664,14 +641,12 @@ int alturaArvore(arvore *tree)
       {
         elemAtual = elemAtual->filhoDir;
         volta = 0;
-        CONT
-      ++;
+        contador ++;
         voltaEsqDir = 1;
         if (CONT
        > altura)
         {
-          altura = CONT
-        ;
+          altura = contador;
         }
       }
       else if (FOLHA || (volta && voltaEsqDir) || (volta && elemAtual->filhoDir == NULL))
@@ -685,8 +660,7 @@ int alturaArvore(arvore *tree)
         }
 
         elemAtual = elemAtual->pai;
-        CONT
-      --;
+        contador --;
         volta = 1;
       }
     }
