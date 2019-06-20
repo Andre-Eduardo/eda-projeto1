@@ -41,10 +41,16 @@ void opcaoMenu(){
     switch(opcao){
     case '0':
         cep = loadFile();
-        loadTreeFromFile(cep);
+        tree=loadTreeFromFile(cep);
         break;
     case '1':
+<<<<<<< HEAD
         showTree(tree, space);
+=======
+        showTree(tree, 0);
+        puts("\n\nAperte qualquer coisa para continuar...");
+        limpabuffer();
+>>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
         break;
     case '2':
         isFull(tree);
@@ -85,8 +91,8 @@ char validaOpcao(char opcao){
         opcao = getchar();
 
         limpabuffer();
-        
-        while(opcao!='0' && opcao!='1' && opcao!='2' && opcao!='3' 
+
+        while(opcao!='0' && opcao!='1' && opcao!='2' && opcao!='3'
               && opcao!='4' && opcao!= '5' && opcao!= '6' && opcao!= '7'
               && opcao!= '8'&& opcao!= '9' && opcao!= 's'){
                 puts("\n\n\n\nOpção inválida!(digite um número entre 0 e 9 ou s)");
@@ -100,8 +106,8 @@ char validaOpcaoFile(char opcao){
         opcao = getchar();
 
         limpabuffer();
-        
-        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4' 
+
+        while(opcao!='1' && opcao!='2' && opcao!='3' && opcao!='4'
               && opcao!='5' && opcao!= '6'){
                 puts("\n\n\n\nOpção inválida!(digite um número entre 0 e 6)");
                 opcao = getchar();
@@ -131,22 +137,22 @@ char *loadFile(){
   opcao = validaOpcaoFile(opcao);
   switch(opcao){
     case '1':
-      return "../BSTs/bst1.txt";
+      return "../../BSTs/bst1.txt";
       break;
     case '2':
-      return "../BSTs/bst2.txt";
+      return "../../BSTs/bst2.txt";
       break;
     case '3':
-      return "../BSTs/bst3.txt";
+      return "../../BSTs/bst3.txt";
       break;
     case '4':
-      return "../BSTs/bst4.txt";
+      return "../../BSTs/bst4.txt";
       break;
     case '5':
-      return "../BSTs/bst5.txt";
+      return "../../BSTs/bst5.txt";
       break;
     case '6':
-      return "../BSTs/bst6.txt";
+      return "../../BSTs/bst6.txt";
       break;
     default:
       fprintf(stderr, "Um erro inesperado aconteceu...\n\n\nO programa será desligado\n");
@@ -162,7 +168,7 @@ arvore *loadTreeFromFile(char *cep){
 
   arvore *tree  = (arvore *)malloc(sizeof(arvore));
 
-  
+
   txt = fopen(cep, "r");//abre no modo leitura sendo cep o endereco
   if(txt == NULL){//o modo r requer existencia de um arquivo
     printf("Arquivo inexistente...\n");
@@ -182,14 +188,22 @@ arvore *loadTreeFromFile(char *cep){
 void showTree(arvore *tree, int space){
   if(tree == NULL)
       return;
+<<<<<<< HEAD
   space += CONT
 ;
+=======
+  space += 10;
+>>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
 
   showTree(tree->filhoDir, space);
 
   printf("\n");
+<<<<<<< HEAD
   for(int i = CONT
 ; i < space; i++){
+=======
+  for(int i = 10; i < space; i++){
+>>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
       printf(" ");
   }
   printf("%d\n", tree->dado);
@@ -197,8 +211,13 @@ void showTree(arvore *tree, int space){
   showTree(tree->filhoEsq, space);
 }
 //Prita raiz
+<<<<<<< HEAD
 void printRaiz(arvore *tree, int space){
   showTree(tree, 0)
+=======
+void printRaiz(arvore *tree){
+  showTree(tree, 0);
+>>>>>>> 4124eee10d6c832dd7957ab9f0e841dbed203c57
 }
 
 // Objetivo: Inserir um elemento na árvore
@@ -929,3 +948,4 @@ void rotaciona(arvore *tree, int num)
     }
   }
 }
+
