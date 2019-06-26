@@ -1,10 +1,14 @@
-
+/*
+Hércules Ismael de Abreu Santos - 16/0124450
+André Eduardo Souza de Oliveira - 16/0111978
+Hugo Aragão de Oliveira - 16/0124581
+*/
 #include "funcoes.h"
 
 double F_logistica(double n)
 {
     double e = 2.71828182;
-    double p=0;
+    double p = 0;
     p = 1/(1+exp((-1*n)));
     
 
@@ -12,7 +16,7 @@ double F_logistica(double n)
 }
 double F_mult(int p, double w)
 {
-    double s=0;
+    double s = 0;
     s = p * w;
     return s;
 }

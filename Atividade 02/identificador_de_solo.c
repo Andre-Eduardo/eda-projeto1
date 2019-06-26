@@ -25,7 +25,7 @@ Hugo Aragão de Oliveira - 16/0124581
 #define TAM_GLCM 24
 #define TAM_ILBD 512
 
-//ILBD
+//ILBP
 int *ilbp(int *imagem);
 int calcula_media_viz(int *posicao);
 int *cria_matriz_viz(int *posicao_imagem);
@@ -67,7 +67,6 @@ int main()
   int acertos = 0, falsa_rej = 0, falsa_acei = 0;
 
   // Instruções:
-
   vet_feat_grama = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
   vet_feat_asfalto = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
   vet_feat_grama_teste = (double *)malloc((NUM_IMG / 2) * TAM_VET_FEAT * sizeof(double));
