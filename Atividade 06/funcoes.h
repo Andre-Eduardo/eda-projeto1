@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include<time.h>
+#include <time.h>
 #include <stdio.h>
 #define VET_FEQ 536
 #define TAMANHO_VET 536
@@ -11,6 +11,7 @@ typedef struct neuronio
 {
     double pesos[536];
     double deslocamento;
+    double saida;
 
 } Neuronio;
 
