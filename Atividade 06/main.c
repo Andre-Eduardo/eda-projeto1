@@ -8,7 +8,7 @@ int main(int argc, char const *argv[]){
     double* vet_feat_asfalto; 
     double* vet_feat_grama_teste;
     double* vet_feat_asfalto_teste;
-    Neuronio *n,n2,n_f;
+    Neuronio *n,*n2,*n_f;
     //Instruções
 
     srand(time(NULL));
@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]){
     n = inicializa_neuronio(VET_FEQ);// quantidade da primera camada/
     n2 = inicializa_neuronio(num_camada_oculta); // numero de neuronios na camada oculta;
     n_f = inicializa_neuronio(1); // ultima camada da rede neural
-    
+
     // teste
    
     n = inicializa_neuronio(4);
