@@ -72,3 +72,11 @@ double inic_deslocamento(){
     return rand()%10;
 }
 
+
+
+// entrada:vetor de feature e neuronio
+// retorna o valor de saida de um neuronio
+double F_neuronio(double *vet, Neuronio *neu){
+    double somatorio = F_aux(vet, neu->pesos, neu->deslocamento);
+    return F_logistica(somatorio);
+}
