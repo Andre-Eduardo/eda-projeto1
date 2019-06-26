@@ -1,5 +1,6 @@
 #include "funcoes.h"
-
+#include "identificador_de_solo.h"
+#include <stdio.h>
 int main(int argc, char const *argv[])
 {
     srand(time(NULL));
