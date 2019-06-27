@@ -15,6 +15,16 @@ typedef struct neuronio
 
 } Neuronio;
 
+typedef struct neuronio_saida
+{
+    double *pesos;
+    int tam_vet_pesos;
+    double deslocamento;
+    double saida;
+
+} Neuronio_saida;
+
+
 Neuronio *inicializa_neuronio(int qtd);
 double F_aux(double *p, double *w, double b);
 double F_mult(int p, double w);
