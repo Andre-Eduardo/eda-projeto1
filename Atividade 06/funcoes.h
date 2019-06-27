@@ -9,7 +9,7 @@
 #define TAMANHO_VET 536
 typedef struct neuronio
 {
-    double pesos[536];
+    double pesos[TAMANHO_VET];
     double deslocamento;
     double saida;
 
