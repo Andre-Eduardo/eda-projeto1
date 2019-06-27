@@ -12,6 +12,7 @@ Hugo Aragão de Oliveira - 16/0124581
 #include "identificador_de_solo.h"
 
 int retira_features(double** vet_feat_grama,double** vet_feat_asfalto, double** vet_feat_grama_teste, double** vet_feat_asfalto_teste){
+  srand(time(NULL));
   // Declarações:
   int *imagem;
   int i;
@@ -60,7 +61,7 @@ int retira_features(double** vet_feat_grama,double** vet_feat_asfalto, double** 
     fprintf(stderr, "\rRetirando features %.2f%%", (float) i+76);
   }
   gera_num_alea(1);
-  puts("\rRetirando features 100%% ");
+  puts("\rRetirando features 100%%    ");
 
   return 0;
 }
@@ -588,7 +589,7 @@ int gera_num_alea(char zera)
   static char num_usados[NUM_IMG] = {0};
 
   // Instruções:
-  srand(time(NULL));
+
   if (zera)
   {
     for (i = 0; i < NUM_IMG; i++)

@@ -18,7 +18,7 @@ Hugo Aragão de Oliveira - 16/0124581
 
 #define TAMANHO_IMG 1025 * 1025
 #define LADO_IMG 1025
-#define NUM_IMG 50
+#define NUM_IMG 25
 #define TAM_VET_FEAT 516
 #define DIM_GLCM 256   // dimensao da matriz  gerada pelo glcm
 #define TAM_VT_GLCM 24 // tamanho do vetor de ocorrencia glcm

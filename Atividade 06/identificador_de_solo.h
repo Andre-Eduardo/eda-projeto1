@@ -7,8 +7,8 @@
 
 #define TAMANHO_IMG 1025 * 1025
 #define LADO_IMG 1025
-#define NUM_IMG 2
-#define TAM_VET_FEAT 516
+#define NUM_IMG 10
+#define TAM_VET_FEAT 536
 #define DIM_GLCM 256   // dimensao da matriz  gerada pelo glcmint retira_features(double** vet_feat_grama,double** vet_feat_asfalto, double** vet_feat_grama_teste, double** vet_feat_asfalto_teste)
 #define TAM_VT_GLCM 24 // tamanho do vetor de ocorrencia glcmint retira_features(double** vet_feat_grama,double** vet_feat_asfalto, double** vet_feat_grama_teste, double** vet_feat_asfalto_teste);
 #define TAM_GLCM 24
