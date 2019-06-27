@@ -191,19 +191,20 @@ void backpropagation(double *entrada, Neuronio *camada_oculta,int tam_camada_ocu
     fprintf(stderr, "\n\nValor inválido de camada oculta!");
     exit(-1);
   }
-
+  fprintf(stderr, "    1");
   grad_saida=gradiente_saida(esperado, camada_saida->saida);
   grad_camada_oculta=(double *)malloc(tam_camada_oculta*sizeof(double));
 
   for(i=0; i<tam_camada_oculta; i++){
     *(grad_camada_oculta+i)=gradiente_camada_oculta((camada_oculta+i)->saida, i, camada_saida, 1, &grad_saida);
   }
-
+  fprintf(stderr, "2");
   //calcula pesos da saída
   for(i=0; i<tam_camada_oculta; i++){
     camada_saida->pesos[i]=novo_peso(camada_saida->pesos[i], (camada_oculta+i)->saida, grad_saida);
   }
   camada_saida->deslocamento=novo_peso(camada_saida->deslocamento, 1, grad_saida);
+  fprintf(stderr, "3");
   //calcula pesos camada oculta
   for(i=0; i<tam_camada_oculta; i++){
     for(j=0; j<TAMANHO_VET; j++){
@@ -211,6 +212,7 @@ void backpropagation(double *entrada, Neuronio *camada_oculta,int tam_camada_ocu
     }
     camada_oculta->deslocamento=novo_peso(camada_oculta->deslocamento, 1, *(grad_camada_oculta+i));
   }
+  fprintf(stderr, "4\n");
   free(grad_camada_oculta);
 
   return;
