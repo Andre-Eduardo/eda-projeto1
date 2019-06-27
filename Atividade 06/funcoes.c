@@ -22,15 +22,15 @@ double F_mult(int p, double w)
 }
 // entradas: vetor de elementos, vetor de pesos , deslocamento
 // responsavel por fazer o somatorio com os pesos e o deslocamento do neuronio;
-double F_aux(double *p, double *w, double b)
+double F_aux(double *p, double *w, double b, int tam_camada_anterior)
 {
     double s=0;
 
-    for (int i = 0; i < VET_FEQ; i++)
+    for (int i = 0; i < tam_camada_anterior; i++)
     {
         s += F_mult(p[i], w[i]);
     }
-    printf(" b= %lf\n",b);
+    //printf(" b= %lf\n",b);
     s += b;
     return s;
 }
@@ -59,6 +59,32 @@ Neuronio *inicializa_neuronio(int qtd)
     return neu;
 }
 
+// aloca neuronios e inicializa peso e deslocamento
+// entrada: quantidade de neuronios peso
+Neuronio_saida *inicializa_neuronio_saida(int qtd, int tam_camada_oculta)
+{
+    Neuronio_saida *neu;
+    for (int i = 0; i < qtd; i++)
+    {
+        neu = (Neuronio_saida *)malloc(sizeof(Neuronio_saida) * qtd);
+
+    }
+    if (neu == NULL){
+        printf("deu ruim no alocamento");
+        exit(1);
+    }
+        for (int i = 0; i < qtd; i++)
+    {
+
+        neu[i].pesos=inic_peso_saida(tam_camada_oculta);
+        neu[i].tam_vet_pesos=tam_camada_oculta;
+        neu[i].deslocamento = inic_deslocamento();
+    }
+
+
+    return neu;
+}
+
 double *inic_peso(double *vet){
 
     for (int i = 0; i < TAMANHO_VET; i++)
@@ -66,8 +92,20 @@ double *inic_peso(double *vet){
         vet[i]= rand()%10;
     }
     return vet;
-
 }
+
+double *inic_peso_saida(int qtd){
+    double *vet;
+
+    vet= (double *)malloc(qtd*sizeof(double));
+
+    for (int i = 0; i < qtd; i++)
+    {
+        vet[i]= rand()%10;
+    }
+    return vet;
+}
+
 double inic_deslocamento(){
     return rand()%10;
 }
@@ -76,27 +114,19 @@ double inic_deslocamento(){
 
 // entrada:vetor de feature e camada inicial, camada oculta , numeros de neuronios da camada ouculta e neuronio final
 // retorna o valor de saida de um neuronio
-double F_neuronio(double *vet, Neuronio *camada1, Neuronio *camada2,int N_camada, Neuronio *n_f){
-    double * aux_vet = (double*)malloc(sizeof(double)*TAMANHO_VET);
-    double * aux_oculta = (double*)malloc(sizeof(double)*N_camada);
-   for (int i = 0; i < VET_FEQ; i++)
-   {
+double F_neuronio(double *vet, Neuronio *camada_oculta,int N_camada, Neuronio_saida *camada_saida){
+  double * aux_oculta = (double*)malloc(sizeof(double)*N_camada);
 
-     camada1[i].saida = F_logistica(F_aux(vet, camada1[i].pesos, camada1[i].deslocamento));
-     aux_vet[i] = camada1[i].saida;
-   }
-   // camada oculta
-   for (int i = 0; i < N_camada; i++)
-   {
-       camada2[i].saida = F_logistica(F_aux(aux_vet, camada2[i].pesos, camada2[i].deslocamento));
-       aux_vet[i] = camada2[i].saida;
-   }
-          n_f->saida = F_logistica(F_aux(aux_vet, n_f->pesos, n_f->deslocamento));
+  // camada oculta
+  for (int i = 0; i < N_camada; i++){
+     camada_oculta[i].saida = F_logistica(F_aux(vet, camada_oculta[i].pesos, camada_oculta[i].deslocamento, VET_FEQ));
+     aux_vet[i] = camada_oculta[i].saida;
+  }
+        camada_saida->saida = F_logistica(F_aux(aux_vet, camada_saida->pesos, camada_saida->deslocamento, N_camada));
 
-   free(aux_oculta);
-   free(aux_vet);
-   return n_f->saida;
+  free(aux_oculta);
 
+  return camada_saida->saida;
 }
 
 // Objetivo: Calcular erro da saída
@@ -184,4 +214,45 @@ void backpropagation(double *entrada, Neuronio *camada_oculta,int tam_camada_ocu
   free(grad_camada_oculta);
 
   return;
+}
+
+
+// Objetivo: libera rede neural
+// Parâmetro: camada de entradas, camada oculta, camada de saída
+// Retorno:
+int libera_rede_neural(double* vet_feat_grama, double* vet_feat_asfalto,
+double* vet_feat_grama_teste, double* vet_feat_asfalto_teste,
+Neuronio *camada_oculta, Neuronio_saida *camada_saida){
+
+  free(vet_feat_grama);
+  free(vet_feat_asfalto);
+  free(vet_feat_grama_teste);
+  free(vet_feat_asfalto_teste);
+
+  free(camada_oculta);
+
+  free(camada_saida->pesos);
+  free(camada_saida);
+
+  return 0;
+}
+
+// Objetivo: Calcula a variância
+// Parâmetro: saida do neuronio, valor esperad
+// Retorno: nova variância
+double mse(double variancia_anterior, double valor_esperado, double valor_real, int epoca){
+  double resultado;
+
+  if(epoca==1){
+    resultado = (valor_real-valor_esperado)*(valor_real-valor_esperado);
+  }else if(epoca>1){
+    resultado=variancia_anterior/(epoca-1);
+    resultado+=(valor_real-valor_esperado)*(valor_real-valor_esperado);
+    resultado/=epoca;
+  }else{
+    fprintf(stderr, "\n\nÉpoca inválida!!!!");
+    exit(-1);
+  }
+
+  return resultado;
 }
