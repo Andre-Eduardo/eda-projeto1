@@ -74,9 +74,27 @@ double inic_deslocamento(){
 
 
 
-// entrada:vetor de feature e neuronio
+// entrada:vetor de feature e camada inicial, camada oculta , numeros de neuronios da camada ouculta e neuronio final
 // retorna o valor de saida de um neuronio
-double F_neuronio(double *vet, Neuronio *neu){
-    double somatorio = F_aux(vet, neu->pesos, neu->deslocamento);
-    return F_logistica(somatorio);
+double F_neuronio(double *vet, Neuronio *camada1, Neuronio *camada2,int N_camada, Neuronio *n_f){
+    double * aux_vet = (double*)malloc(sizeof(double)*TAMANHO_VET);
+    double * aux_oculta = (double*)malloc(sizeof(double)*N_camada);
+   for (int i = 0; i < VET_FEQ; i++)
+   {
+      
+     camada1[i].saida = F_logistica(F_aux(vet, camada1[i].pesos, camada1[i].deslocamento));
+     aux_vet[i] = camada1[i].saida;
+   }
+   // camada oculta
+   for (int i = 0; i < N_camada; i++)
+   {
+       camada2[i].saida = F_logistica(F_aux(aux_vet, camada2[i].pesos, camada2[i].deslocamento));
+       aux_vet[i] = camada2[i].saida;
+   }
+          n_f->saida = F_logistica(F_aux(aux_vet, n_f->pesos, n_f->deslocamento));
+
+   free(aux_oculta);
+   free(aux_vet);
+   return n_f->saida; 
+     
 }

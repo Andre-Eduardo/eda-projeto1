@@ -21,6 +21,7 @@ double F_mult(int p, double w);
 double F_logistica(double n);
 double *inic_peso(double *vet);
 double inic_deslocamento();
+double F_neuronio(double *vet, Neuronio *camada1, Neuronio *camada2,int N_camada, Neuronio *n_f);
 
 
 
