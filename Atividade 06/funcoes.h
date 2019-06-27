@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-#define VET_FEQ 2 //536
-#define TAMANHO_VET 2 //536
+#define VET_FEQ 536
+#define TAMANHO_VET 536
 #define ALFA 0.1
 #define EPOCAS 1000
 #define VARIANCIA 0.2
@@ -29,7 +29,7 @@ typedef struct neuronio_saida
 } Neuronio_saida;
 
 Neuronio *inicializa_neuronio(int qtd);
-Neuronio_saida *inicializa_neuronio_saida(int qtd, int tam_camada_oculta)
+Neuronio_saida *inicializa_neuronio_saida(int qtd, int tam_camada_oculta);
 double F_aux(double *p, double *w, double b, int tam_camada_anterior);
 double F_mult(int p, double w);
 double F_logistica(double n);

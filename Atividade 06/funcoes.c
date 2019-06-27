@@ -120,9 +120,9 @@ double F_neuronio(double *vet, Neuronio *camada_oculta,int N_camada, Neuronio_sa
   // camada oculta
   for (int i = 0; i < N_camada; i++){
      camada_oculta[i].saida = F_logistica(F_aux(vet, camada_oculta[i].pesos, camada_oculta[i].deslocamento, VET_FEQ));
-     aux_vet[i] = camada_oculta[i].saida;
+     aux_oculta[i] = camada_oculta[i].saida;
   }
-        camada_saida->saida = F_logistica(F_aux(aux_vet, camada_saida->pesos, camada_saida->deslocamento, N_camada));
+        camada_saida->saida = F_logistica(F_aux(aux_oculta, camada_saida->pesos, camada_saida->deslocamento, N_camada));
 
   free(aux_oculta);
 

@@ -40,24 +40,28 @@ int retira_features(double** vet_feat_grama,double** vet_feat_asfalto, double** 
   for (i = 0; i < (NUM_IMG / 2); i++)
   {
     calcula_vet_feat(1, gera_num_alea(0), (*vet_feat_grama) + i * TAM_VET_FEAT);
+    fprintf(stderr, "\rRetirando features %.2f%%", (float) i+1);
   }
   for (i = 0; i < (NUM_IMG / 2); i++)
   {
     calcula_vet_feat(1, gera_num_alea(0), (*vet_feat_grama_teste) + i * TAM_VET_FEAT);
+    fprintf(stderr, "\rRetirando features %.2f%%", (float) i+26);
   }
 
   gera_num_alea(1);
   for (i = 0; i < (NUM_IMG / 2); i++)
   {
     calcula_vet_feat(0, gera_num_alea(0), (*vet_feat_asfalto) + i * TAM_VET_FEAT);
+    fprintf(stderr, "\rRetirando features %.2f%%", (float) i+51);
   }
   for (i = 0; i < (NUM_IMG / 2); i++)
   {
     calcula_vet_feat(0, gera_num_alea(0), (*vet_feat_asfalto_teste) + i * TAM_VET_FEAT);
+    fprintf(stderr, "\rRetirando features %.2f%%", (float) i+76);
   }
   gera_num_alea(1);
+  puts("\rRetirando features 100%% ");
 
-  
   return 0;
 }
 
