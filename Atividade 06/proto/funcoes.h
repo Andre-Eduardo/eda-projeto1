@@ -7,6 +7,8 @@
 #include <stdio.h>
 #define VET_FEQ 536
 #define TAMANHO_VET 536
+#define ALFA 0.1
+
 typedef struct neuronio
 {
     double pesos[536];
@@ -15,13 +17,21 @@ typedef struct neuronio
 
 } Neuronio;
 
+typedef struct neuronio_saida
+{
+    double *pesos;
+    int tam_vet_pesos;
+    double deslocamento;
+    double saida;
+
+} Neuronio_saida;
+
 Neuronio *inicializa_neuronio(int qtd);
 double F_aux(double *p, double *w, double b);
 double F_mult(int p, double w);
 double F_logistica(double n);
 double *inic_peso(double *vet);
 double inic_deslocamento();
-double F_neuronio(double *vet, Neuronio *camada1, Neuronio *camada2,int N_camada, Neuronio *n_f);
 double erro_saida(double esperado, double real);
 double d_F_logistica(double x);
 double gradiente_saida(double esperado, double real);
