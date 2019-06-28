@@ -147,6 +147,7 @@ double d_F_logistica(double x){
 // Parâmetro: saída e valor esperado
 // Retorno: gradiente do neurônio de Saída
 double gradiente_saida(double esperado, double real){
+  //fprintf(stderr, "derivada : %.2lf; erro %.2lf\n", d_F_logistica(real), erro_saida(esperado, real));
   return d_F_logistica(real)*erro_saida(esperado, real);
 }
 
@@ -175,6 +176,7 @@ double diff_pesos(double saida, double gradiente){
 // Parâmetro: saída associada ao peso, gradiente do neuronio
 // Retorno: diferença de pesos
 double novo_peso(double peso, double saida, double gradiente){
+  //printf("%.2lf\n", peso + diff_pesos(saida, gradiente));
   return peso + diff_pesos(saida, gradiente);
 }
 
@@ -191,7 +193,7 @@ void backpropagation(double *entrada, Neuronio *camada_oculta,int tam_camada_ocu
     fprintf(stderr, "\n\nValor inválido de camada oculta!");
     exit(-1);
   }
-  
+
   grad_saida=gradiente_saida(esperado, camada_saida->saida);
   grad_camada_oculta=(double *)malloc(tam_camada_oculta*sizeof(double));
 
@@ -208,9 +210,11 @@ void backpropagation(double *entrada, Neuronio *camada_oculta,int tam_camada_ocu
   //calcula pesos camada oculta
   for(i=0; i<tam_camada_oculta; i++){
     for(j=0; j<TAMANHO_VET; j++){
-      camada_oculta->pesos[j]=novo_peso(camada_oculta->pesos[j], *(entrada+j), *(grad_camada_oculta+i));
+      //printf("camada oculta: neuronio %d, peso %d : ", i, j);
+      camada_oculta[i].pesos[j]=novo_peso(camada_oculta[i].pesos[j], *(entrada+j), *(grad_camada_oculta+i));
     }
-    camada_oculta->deslocamento=novo_peso(camada_oculta->deslocamento, 1, *(grad_camada_oculta+i));
+    //printf("camada oculta: neuronio %d, viés : ", i);
+    camada_oculta[i].deslocamento=novo_peso(camada_oculta[i].deslocamento, 1, *(grad_camada_oculta+i));
   }
   free(grad_camada_oculta);
 
@@ -239,7 +243,7 @@ Neuronio *camada_oculta, Neuronio_saida *camada_saida){
 }
 
 // Objetivo: Calcula a variância
-// Parâmetro: saida do neuronio, valor esperad
+// Parâmetro: saida do neuronio, valor esperado
 // Retorno: nova variância
 double mse(double variancia_anterior, double valor_esperado, double valor_real, int epoca){
   double resultado;
@@ -247,7 +251,7 @@ double mse(double variancia_anterior, double valor_esperado, double valor_real, 
   if(epoca==1){
     resultado = (valor_real-valor_esperado)*(valor_real-valor_esperado);
   }else if(epoca>1){
-    resultado=variancia_anterior/(epoca-1);
+    resultado=variancia_anterior*(epoca-1);
     resultado+=(valor_real-valor_esperado)*(valor_real-valor_esperado);
     resultado/=epoca;
   }else{

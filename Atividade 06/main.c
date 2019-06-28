@@ -2,6 +2,15 @@
 #include "identificador_de_solo.h"
 #include <stdio.h>
 
+void limpabuffer(void)
+{
+  //Declarações:
+  char c;
+  //Instruções:
+  while ((c = getchar()) != '\n' && c != EOF)
+    ;
+}
+
 int main(int argc, char const *argv[]){
     //Declarações
     int i, aux, epocas=0;
@@ -17,7 +26,7 @@ int main(int argc, char const *argv[]){
     double* vet_feat_atual;
     Neuronio *camada_oculta;
     Neuronio_saida *camada_saida;
-    FILE *arquivo;
+    FILE *arquivo=NULL;
     //Instruções
     srand(time(NULL));
     if (argc > 1)
@@ -64,7 +73,7 @@ int main(int argc, char const *argv[]){
 
     puts("Neurônios inicializados");
 
-    while(epocas<EPOCAS && variancia>VARIANCIA){
+    while(epocas<EPOCAS && variancia> VARIANCIA){
       for(i=0; i<NUM_IMG; i++){
         aux=gera_num_alea(0);
         if(aux>25){
@@ -81,8 +90,9 @@ int main(int argc, char const *argv[]){
 
       epocas++;
       variancia = mse(variancia, esperado, camada_saida->saida, epocas);
-      fprintf(stderr, "\rÉpocas %d; Variância %.2lf", epocas, variancia);
+      fprintf(stderr, "\rÉpocas %d; Variância %.2lf; saida %.2lf; esperado %.2lf", epocas, variancia, camada_saida->saida, esperado);
       gera_num_alea(1);
+      //limpabuffer();
     }
 
     printf("\nTreinamento finalizado após %d épocas\n", epocas);
@@ -96,6 +106,8 @@ int main(int argc, char const *argv[]){
       }else{
         falsa_acei++;
       }
+      // fprintf(stderr, "\rsaida %.2lf; esperado 0", teste);
+      // limpabuffer();
     }
 
     puts("Realizando testes...");
@@ -108,6 +120,8 @@ int main(int argc, char const *argv[]){
       }else{
         falsa_rej++;
       }
+      // fprintf(stderr, "\rsaida %.2lf; esperado 1", teste);
+      // limpabuffer();
     }
 
     puts("\n");
